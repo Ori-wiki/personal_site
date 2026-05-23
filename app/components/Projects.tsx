@@ -1,5 +1,4 @@
 import { CodeGlow } from "./CodeGlow";
-import { ScrollRail } from "./ScrollRail";
 
 const projects = [
   {
@@ -16,14 +15,13 @@ export function Projects() {
     <section id="work" className="portfolio-section">
       <CodeGlow position="top-left" />
       <CodeGlow position="bottom-right" />
-      <ScrollRail active={3} />
       <a className="absolute bottom-[56px] left-[50px] z-20 text-3xl font-black text-white" href="https://github.com">
         gh
       </a>
 
       <div className="absolute left-[20%] top-[4%] hidden h-[96%] w-[360px] bg-[radial-gradient(circle,#3f414a_1.7px,transparent_2px)] bg-[length:42px_42px] lg:block" />
 
-      <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-[1500px] items-center gap-12 px-8 pt-28 lg:grid-cols-[1fr_0.9fr] lg:px-[130px]">
+      <div className="section-content relative z-10 mx-auto grid min-h-screen w-full max-w-[1500px] items-center gap-12 px-8 pt-28 lg:grid-cols-[1fr_0.9fr] lg:px-[130px]">
         <div className="relative hidden min-h-[560px] items-center justify-center lg:flex">
           <div className="relative h-[280px] w-[610px] -rotate-[16deg] rounded-[48px] border-[11px] border-zinc-500 bg-[#111318] shadow-[0_0_26px_rgba(255,255,255,0.55)]">
             <div className="absolute -inset-3 rounded-[58px] border border-zinc-700" />

@@ -1,5 +1,4 @@
 import { CodeGlow } from "./CodeGlow";
-import { ScrollRail } from "./ScrollRail";
 
 const skills = [
   { label: "JavaScript", mark: "JS", boxed: true },
@@ -23,12 +22,11 @@ export function Skills() {
     <section id="skills" className="portfolio-section">
       <CodeGlow position="top-right" />
       <CodeGlow position="bottom-left" />
-      <ScrollRail active={2} />
       <a className="absolute bottom-[56px] left-[50px] z-20 text-3xl font-black text-white" href="https://github.com">
         gh
       </a>
 
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col items-center justify-center px-8 pt-24 text-center lg:px-[130px]">
+      <div className="section-content relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col items-center justify-center px-8 pt-24 text-center lg:px-[130px]">
         <p className="text-base uppercase text-zinc-500">A problem is an opportunity to do your best.</p>
         <h2 className="mt-4 text-5xl font-black leading-none tracking-tight text-white sm:text-6xl xl:text-[58px]">
           Skills &amp; Experience

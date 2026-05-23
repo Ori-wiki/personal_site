@@ -27,7 +27,26 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                var sectionIds = ["top", "about", "skills", "work", "contact"];
+                var hash = window.location.hash ? window.location.hash.slice(1) : "top";
+                var index = Math.max(sectionIds.indexOf(hash), 0);
+                document.documentElement.dataset.activeSection = String(index);
+                document.documentElement.style.setProperty("--initial-section-offset", "-" + (index * 100) + "vh");
+                if ("scrollRestoration" in history) {
+                  history.scrollRestoration = "manual";
+                }
+                window.scrollTo(0, 0);
+              })();
+            `,
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }
