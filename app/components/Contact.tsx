@@ -1,19 +1,28 @@
 export function Contact() {
   return (
-    <section id="contact" className="mx-auto w-full max-w-6xl px-5 py-16">
-      <div className="rounded-lg border border-stone-200 bg-[linear-gradient(135deg,#ffffff,#eef3ea)] p-8 shadow-sm md:p-12">
-        <p className="text-sm font-semibold text-emerald-800">Contact</p>
-        <h2 className="mt-3 text-3xl font-semibold text-slate-950">Let&apos;s work together</h2>
-        <p className="mt-4 max-w-lg text-base leading-7 text-slate-600">
-          I&apos;m currently open to new opportunities. Feel free to reach out.
-        </p>
-        <a
-          className="mt-8 inline-flex rounded-md bg-emerald-800 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-emerald-900"
-          href="mailto:hello@example.com"
-        >
-          Send me a message
+    <footer id="contact" className="bg-[#1b1d26] px-5 py-24 text-center text-white">
+      <div className="mx-auto max-w-4xl">
+        <a className="inline-block text-5xl font-black tracking-tighter text-zinc-300" href="#top">
+          DK
         </a>
+        <div className="mt-10 flex flex-wrap justify-center gap-8 text-sm font-black">
+          <a className="text-zinc-200 transition-colors hover:text-white" href="https://x.com">
+            Twitter
+          </a>
+          <a className="text-zinc-200 transition-colors hover:text-white" href="https://linkedin.com">
+            LinkedIn
+          </a>
+          <a className="text-zinc-200 transition-colors hover:text-white" href="https://github.com">
+            Github
+          </a>
+          <a className="text-zinc-200 transition-colors hover:text-white" href="mailto:hello@example.com">
+            Contact
+          </a>
+        </div>
+        <p className="mt-8 text-xs font-semibold text-zinc-400">
+          (c) 2026 Denis Kazakov - Frontend Developer
+        </p>
       </div>
-    </section>
+    </footer>
   );
 }
