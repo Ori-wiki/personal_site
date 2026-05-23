@@ -12,13 +12,6 @@ export function Contact() {
       >
         gh
       </a>
-      <a
-        className='absolute right-10 bottom-16 hidden rotate-[-90deg] items-center gap-3 text-xs font-semibold tracking-widest text-zinc-400 lg:flex'
-        href='#top'
-      >
-        Back to Top
-        <span aria-hidden='true'>^</span>
-      </a>
       <div className='section-content relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] items-center justify-center px-8 pt-24 lg:px-28'>
         <div className='max-w-[560px] text-left'>
           <p className='text-lg font-black leading-8 text-zinc-100'>
