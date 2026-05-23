@@ -1,6 +1,25 @@
 import { CodeGlow } from './CodeGlow';
-import styles from './Hero.module.css';
 import { IsometricWorkspace } from './IsometricWorkspace';
+
+const aboutLinkClassName = `
+  group relative mt-9 inline-flex w-fit items-center gap-4 pb-1.5
+  text-lg font-semibold drop-shadow-[0_0_18px_rgba(184,44,224,0.18)]
+  transition-[color,filter,transform] duration-200
+  after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-8 after:content-['']
+  after:origin-left after:rounded-full after:bg-[#b82ce0] after:transition-[width] after:duration-500 after:ease-out
+  hover:text-[#b82ce0] hover:drop-shadow-[0_0_18px_rgba(184,44,224,0.55)]
+  hover:after:w-[calc(100%+0.5rem)]
+  focus-visible:text-[#b82ce0] focus-visible:outline-2 focus-visible:outline-offset-[0.34rem] focus-visible:outline-[#f4c8ff]/60
+  focus-visible:after:w-[calc(100%-2.55rem)]
+  motion-reduce:transition-none motion-reduce:after:transition-none
+`;
+
+const aboutLinkArrowClassName = `
+  inline-block transition-transform duration-500 ease-out
+  group-hover:translate-x-1.5 group-hover:rotate-90
+  group-focus-visible:translate-x-1.5 group-focus-visible:rotate-90
+  motion-reduce:transition-none
+`;
 
 export function Hero() {
   return (
@@ -17,12 +36,9 @@ export function Hero() {
             Building modern web interfaces with React, Next.js and TypeScript.
             Focused on clean UI, motion and scalable frontend architecture.
           </p>
-          <a
-            className={`${styles.aboutLink} mt-9 inline-flex items-center gap-4 text-lg font-semibold text-  transition-colors hover:text-[#f4c8ff] focus-visible:text-[#f4c8ff]`}
-            href='#about'
-          >
-            <span className={styles.aboutLinkLabel}>About me</span>
-            <span className={styles.aboutLinkArrow} aria-hidden='true'>
+          <a className={aboutLinkClassName} href='#about'>
+            <span>About me</span>
+            <span className={aboutLinkArrowClassName} aria-hidden='true'>
               &gt;
             </span>
           </a>
