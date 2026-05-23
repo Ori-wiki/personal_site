@@ -1,4 +1,5 @@
 import { CodeGlow } from './CodeGlow';
+import styles from './Hero.module.css';
 import { IsometricWorkspace } from './IsometricWorkspace';
 
 export function Hero() {
@@ -23,11 +24,13 @@ export function Hero() {
             Focused on clean UI, motion and scalable frontend architecture.
           </p>
           <a
-            className='mt-9 inline-flex items-center gap-4 text-lg font-semibold text-[#b82ce0]'
+            className={`${styles.aboutLink} mt-9 inline-flex items-center gap-4 text-lg font-semibold text-[#b82ce0] transition-colors hover:text-[#f4c8ff] focus-visible:text-[#f4c8ff]`}
             href='#about'
           >
-            About me
-            <span aria-hidden='true'>&gt;</span>
+            <span className={styles.aboutLinkLabel}>About me</span>
+            <span className={styles.aboutLinkArrow} aria-hidden='true'>
+              &gt;
+            </span>
           </a>
         </div>
         <div className='hidden -translate-x-4 translate-y-4 justify-center lg:flex'>
