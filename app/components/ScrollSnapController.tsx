@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 
 const sectionIds = ["top", "about", "skills", "work", "contact"];
+const wheelLockMs = 520;
 const wheelThreshold = 1;
 const goToSectionEventName = "portfolio-go-to-section";
 
@@ -19,6 +20,8 @@ function getIndexByHash() {
 
 export function ScrollSnapController() {
   const targetIndexRef = useRef(0);
+  const wheelLockedRef = useRef(false);
+  const wheelUnlockTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     const pages = document.getElementById("portfolio-pages");
@@ -26,6 +29,20 @@ export function ScrollSnapController() {
     if (!pages) {
       return;
     }
+
+    const unlockWheel = () => {
+      wheelLockedRef.current = false;
+    };
+
+    const lockWheel = () => {
+      wheelLockedRef.current = true;
+
+      if (wheelUnlockTimeoutRef.current) {
+        window.clearTimeout(wheelUnlockTimeoutRef.current);
+      }
+
+      wheelUnlockTimeoutRef.current = window.setTimeout(unlockWheel, wheelLockMs);
+    };
 
     const goToSection = (index: number, updateHash = true) => {
       const nextIndex = clampSectionIndex(index);
@@ -52,10 +69,15 @@ export function ScrollSnapController() {
         return;
       }
 
+      if (wheelLockedRef.current) {
+        return;
+      }
+
       const direction = event.deltaY > 0 ? 1 : -1;
       const nextIndex = clampSectionIndex(targetIndexRef.current + direction);
 
       if (nextIndex !== targetIndexRef.current) {
+        lockWheel();
         goToSection(nextIndex);
       }
     };
@@ -97,6 +119,10 @@ export function ScrollSnapController() {
     window.addEventListener(goToSectionEventName, handleGoToSection);
 
     return () => {
+      if (wheelUnlockTimeoutRef.current) {
+        window.clearTimeout(wheelUnlockTimeoutRef.current);
+      }
+
       window.removeEventListener("wheel", handleWheel, { capture: true });
       document.removeEventListener("click", handleClick, { capture: true });
       window.removeEventListener("hashchange", handleHashChange);
