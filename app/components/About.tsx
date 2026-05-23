@@ -6,12 +6,6 @@ export function About() {
     <section id='about' className='portfolio-section'>
       <CodeGlow position='top-left' />
       <CodeGlow position='bottom-right' />
-      <a
-        className='absolute bottom-[56px] left-[50px] z-20 text-3xl font-black text-white'
-        href='https://github.com'
-      >
-        gh
-      </a>
       <div className='absolute left-[53%] top-[21%] h-16 w-16 rotate-12 bg-[#a52ac2] shadow-[0_24px_40px_rgba(165,42,194,0.35)] [clip-path:polygon(50%_0,100%_50%,50%_100%,0_50%)]' />
       <div className='absolute left-[17%] bottom-[20%] h-20 w-20 rotate-12 rounded-2xl bg-gradient-to-br from-zinc-700 to-sky-950 opacity-60 shadow-[0_26px_40px_rgba(0,0,0,0.35)]' />
 

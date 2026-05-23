@@ -1,5 +1,6 @@
 import { About } from "./components/About";
 import { Contact } from "./components/Contact";
+import { GithubLink } from "./components/GithubLink";
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
 import { Projects } from "./components/Projects";
@@ -12,6 +13,7 @@ export default function Home() {
     <div className="min-h-screen bg-background text-foreground">
       <ScrollSnapController />
       <ScrollRail />
+      <GithubLink />
       <Header />
       <main id="portfolio-pages" className="portfolio-pages">
         <Hero />

@@ -7,12 +7,6 @@ export function Hero() {
     <section id='top' className='portfolio-section'>
       <div className='absolute left-[43%] right-[9%] top-[37%] hidden h-px bg-[radial-gradient(circle,#3f414a_1.5px,transparent_2px)] bg-[length:40px_1px] lg:block' />
       <CodeGlow position='bottom-left' />
-      <a
-        className='absolute bottom-[56px] left-[50px] z-20 text-3xl font-black text-white'
-        href='https://github.com'
-      >
-        gh
-      </a>
 
       <div className='section-content relative z-10 mx-auto grid min-h-screen w-full max-w-[1500px] items-center gap-8 px-8 pt-28 lg:grid-cols-[0.72fr_1fr] lg:px-[130px]'>
         <div className='pt-[88px]'>

@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import Image from 'next/image';
 import { CodeGlow } from './CodeGlow';
 
 const skills = [
@@ -70,13 +70,6 @@ export function Skills() {
     <section id='skills' className='portfolio-section'>
       <CodeGlow position='top-right' />
       <CodeGlow position='bottom-left' />
-      <a
-        target='blank'
-        className='absolute bottom-[56px] left-[50px] z-20 text-3xl font-black text-white'
-        href='https://github.com'
-      >
-        gh
-      </a>
 
       <div className='section-content relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col items-center justify-center px-8 pt-24 text-center lg:px-[130px]'>
         <p className='text-base uppercase text-zinc-500'>
@@ -121,11 +114,11 @@ export function Skills() {
               className='flex w-[88px] flex-col items-center gap-3'
             >
               <div className='grid h-[64px] w-[64px] place-items-center rounded-md border border-white/10 bg-white/[0.04] shadow-[0_0_28px_rgba(184,44,224,0.08)] transition duration-300 hover:-translate-y-1 hover:border-[#b82ce0]/50 hover:bg-white/[0.07] hover:shadow-[0_0_32px_rgba(184,44,224,0.22)]'>
-                <img
+                <Image
                   src={skill.icon}
                   alt={`${skill.label} logo`}
-                  height='44'
-                  width='44'
+                  height={44}
+                  width={44}
                   className={`h-11 w-11 object-contain ${
                     skill.invert ? 'invert' : ''
                   }`}

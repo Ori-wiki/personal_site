@@ -15,9 +15,6 @@ export function Projects() {
     <section id="work" className="portfolio-section">
       <CodeGlow position="top-left" />
       <CodeGlow position="bottom-right" />
-      <a className="absolute bottom-[56px] left-[50px] z-20 text-3xl font-black text-white" href="https://github.com">
-        gh
-      </a>
 
       <div className="absolute left-[20%] top-[4%] hidden h-[96%] w-[360px] bg-[radial-gradient(circle,#3f414a_1.7px,transparent_2px)] bg-[length:42px_42px] lg:block" />
 
