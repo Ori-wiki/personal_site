@@ -71,6 +71,7 @@ export function Skills() {
       <CodeGlow position='top-right' />
       <CodeGlow position='bottom-left' />
       <a
+        target='blank'
         className='absolute bottom-[56px] left-[50px] z-20 text-3xl font-black text-white'
         href='https://github.com'
       >
@@ -97,6 +98,7 @@ export function Skills() {
         <p className='mt-5 text-base font-bold text-zinc-100'>
           For a deeper look at my work and experience, visit my{' '}
           <a
+            target='blank'
             href='https://spb.hh.ru/resume/33cc3ec3ff0b768f8d0039ed1f433375464777'
             className='text-amber-400 hover:text-[#b82ce0]'
           >
@@ -104,6 +106,7 @@ export function Skills() {
           </a>
           <span className=''> or </span>
           <a
+            target='blank'
             href='https://spb.hh.ru/resume/33cc3ec3ff0b768f8d0039ed1f433375464777'
             className='text-amber-400 hover:text-[#b82ce0]'
           >

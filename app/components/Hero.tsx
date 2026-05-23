@@ -24,7 +24,7 @@ export function Hero() {
             Focused on clean UI, motion and scalable frontend architecture.
           </p>
           <a
-            className={`${styles.aboutLink} mt-9 inline-flex items-center gap-4 text-lg font-semibold text-[#b82ce0] transition-colors hover:text-[#f4c8ff] focus-visible:text-[#f4c8ff]`}
+            className={`${styles.aboutLink} mt-9 inline-flex items-center gap-4 text-lg font-semibold text-  transition-colors hover:text-[#f4c8ff] focus-visible:text-[#f4c8ff]`}
             href='#about'
           >
             <span className={styles.aboutLinkLabel}>About me</span>
