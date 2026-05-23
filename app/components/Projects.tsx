@@ -1,75 +1,76 @@
+import { CodeGlow } from "./CodeGlow";
+import { ScrollRail } from "./ScrollRail";
+
 const projects = [
   {
-    title: "Analytics Redesign",
-    description: "A sharper dashboard interface for reading product metrics faster.",
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    title: "Project Lato",
-    description: "A management system focused on dense data and calm interactions.",
-    image:
-      "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    title: "Coastal Stories",
-    description: "A visual landing page for places, routes, and outdoor experiences.",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    title: "Sportland Motion",
-    description: "A high-energy product page with editorial imagery and motion cues.",
-    image:
-      "https://images.unsplash.com/photo-1541625602330-2277a4c46182?auto=format&fit=crop&w=1200&q=80",
+    title: "Fit & Healthy",
+    eyebrow: "Fitness & Wellness Coaching Platform",
+    description:
+      "Server rendered, progressive web application for online fitness and health coaching. Providing workout programs, nutrition plans, workout logs, follow up with client's progress and more.",
+    builtWith: "NuxtJs, VueJs, JavaScript, Firebase, SASS.",
   },
 ];
 
 export function Projects() {
   return (
-    <section
-      id="projects"
-      className="relative overflow-hidden bg-[#f3f3f3] px-5 py-20 text-[#535057] md:py-28"
-    >
-      <div className="pointer-events-none absolute inset-y-0 left-[23%] hidden w-px bg-zinc-300/50 md:block" />
-      <div className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-px bg-zinc-300/50 md:block" />
-      <div className="pointer-events-none absolute inset-y-0 right-[23%] hidden w-px bg-zinc-300/50 md:block" />
+    <section id="work" className="portfolio-section">
+      <CodeGlow position="top-left" />
+      <CodeGlow position="bottom-right" />
+      <ScrollRail active={3} />
+      <a className="absolute bottom-[56px] left-[50px] z-20 text-3xl font-black text-white" href="https://github.com">
+        gh
+      </a>
 
-      <div className="relative mx-auto max-w-5xl text-center">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[#c7aaa4]">Case Studies</p>
-        <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Latest Works</h2>
-      </div>
+      <div className="absolute left-[20%] top-[4%] hidden h-[96%] w-[360px] bg-[radial-gradient(circle,#3f414a_1.7px,transparent_2px)] bg-[length:42px_42px] lg:block" />
 
-      <div className="relative mx-auto mt-14 flex max-w-4xl flex-col gap-24">
-        {projects.map((project, index) => (
-          <article
-            key={project.title}
-            className={`relative min-h-[310px] overflow-hidden shadow-[0_34px_70px_rgba(31,35,45,0.28)] ${
-              index % 2 === 1 ? "md:-translate-x-10" : "md:translate-x-10"
-            }`}
-            style={{
-              backgroundImage: `linear-gradient(rgba(24, 27, 35, 0.58), rgba(24, 27, 35, 0.58)), url(${project.image})`,
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-            }}
-          >
-            <div className="flex min-h-[310px] items-center px-8 py-12 md:px-20">
-              <div className={index % 2 === 1 ? "ml-auto text-right" : ""}>
-                <h3 className="max-w-xl text-4xl font-black leading-none tracking-tight text-white sm:text-5xl">
-                  {project.title}
-                </h3>
-                <p className="mt-2 max-w-md font-serif text-base font-semibold italic text-white">
-                  {project.description}
-                </p>
-                <a
-                  className="mt-6 inline-flex items-center gap-3 bg-[#ff4738] px-5 py-3 text-xs font-black tracking-wider text-white transition-transform hover:-translate-y-0.5"
-                  href="#contact"
-                >
-                  Case Study
-                  <span aria-hidden="true">-&gt;</span>
-                </a>
+      <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-[1500px] items-center gap-12 px-8 pt-28 lg:grid-cols-[1fr_0.9fr] lg:px-[130px]">
+        <div className="relative hidden min-h-[560px] items-center justify-center lg:flex">
+          <div className="relative h-[280px] w-[610px] -rotate-[16deg] rounded-[48px] border-[11px] border-zinc-500 bg-[#111318] shadow-[0_0_26px_rgba(255,255,255,0.55)]">
+            <div className="absolute -inset-3 rounded-[58px] border border-zinc-700" />
+            <div className="mx-auto mt-7 h-5 w-28 rounded-full bg-black" />
+            <div className="mx-14 mt-7 rounded-lg bg-[#2f3135] p-6">
+              <div className="mb-5 flex items-center justify-between">
+                <div className="h-7 w-36 rounded bg-[#8be36d]" />
+                <div className="h-4 w-20 rounded bg-zinc-600" />
+              </div>
+              <div className="grid grid-cols-[1fr_0.8fr] gap-6">
+                <div className="relative h-28 rounded bg-zinc-700">
+                  <div className="absolute left-7 top-5 h-16 w-4 rounded-full bg-zinc-950" />
+                  <div className="absolute right-10 top-5 h-16 w-4 rounded-full bg-zinc-950" />
+                  <div className="absolute left-1/2 top-8 h-10 w-10 -translate-x-1/2 rounded-full border-2 border-zinc-500" />
+                </div>
+                <div className="space-y-3 pt-1">
+                  <div className="h-3 rounded bg-zinc-500" />
+                  <div className="h-3 rounded bg-zinc-500" />
+                  <div className="h-3 w-2/3 rounded bg-zinc-500" />
+                  <div className="mt-7 h-7 w-28 rounded bg-[#8be36d]" />
+                </div>
               </div>
             </div>
+          </div>
+          <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-6">
+            <span className="h-2 w-2 rounded-full bg-zinc-600" />
+            <span className="h-2 w-2 rounded-full bg-zinc-600" />
+            <span className="h-4 w-4 rounded-full bg-zinc-500" />
+          </div>
+        </div>
+
+        {projects.map((project) => (
+          <article key={project.title} className="-translate-y-1">
+            <p className="text-base uppercase text-zinc-500">{project.eyebrow}</p>
+            <h2 className="mt-4 text-5xl font-black leading-none tracking-tight text-white sm:text-6xl xl:text-[58px]">
+              {project.title}
+            </h2>
+            <p className="mt-10 max-w-[610px] text-base font-bold leading-7 text-zinc-100">
+              {project.description}
+            </p>
+            <p className="mt-6 max-w-[610px] text-base font-black leading-7 text-zinc-100">
+              Built with: <span className="font-semibold">{project.builtWith}</span>
+            </p>
+            <a className="mt-12 inline-flex items-center gap-4 text-lg font-black text-[#8be36d]" href="#contact">
+              Visit the app
+              <span aria-hidden="true">&gt;</span>
+            </a>
           </article>
         ))}
       </div>

@@ -1,29 +1,18 @@
-const navItems = [
-  { label: "Case Studies", href: "#projects" },
-  { label: "Experiments", href: "#experiments" },
-  { label: "Contact", href: "#contact" },
-];
-
 export function Header() {
   return (
-    <header className="absolute inset-x-0 top-0 z-20">
-      <nav className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-5">
-        <a className="text-3xl font-black tracking-tighter text-white" href="#top">
-          DK
+    <header className="fixed inset-x-0 top-0 z-50">
+      <nav className="flex h-[145px] w-full items-center justify-between px-8 sm:px-[55px]">
+        <a className="flex items-center gap-3 text-[28px] font-black tracking-[0.19em] text-white" href="#top">
+          <span className="grid h-[23px] w-[29px] place-items-center bg-white text-base font-black leading-none text-[#121318]">
+            &gt;
+          </span>
+          DVLPR
         </a>
-        <div className="hidden items-center gap-9 text-xs font-black text-zinc-300 md:flex">
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              className="transition-colors hover:text-white"
-              href={item.href}
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
-        <a className="text-xs font-black text-zinc-300 transition-colors hover:text-white" href="/resume.pdf">
-          Resume
+        <a
+          className="rounded-md border-2 border-zinc-100 px-8 py-3 text-base font-black text-white transition-colors hover:bg-white hover:text-[#121318]"
+          href="#contact"
+        >
+          Contact
         </a>
       </nav>
     </header>

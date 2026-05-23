@@ -1,32 +1,44 @@
-const stats = [
-  { value: "3+", label: "Years of experience" },
-  { value: "10+", label: "Completed projects" },
-  { value: "5+", label: "Happy clients" },
-  { value: "100%", label: "Job success" },
-];
+import { ScrollRail } from "./ScrollRail";
+import { CodeGlow } from "./CodeGlow";
 
 export function About() {
   return (
-    <section id="about" className="mx-auto w-full max-w-6xl px-5 py-20">
-      <div className="grid gap-12 rounded-lg border border-stone-200 bg-white p-8 shadow-sm lg:grid-cols-[0.9fr_1.1fr_0.8fr] lg:p-12">
-        <div className="aspect-square w-full max-w-64 rounded-full bg-[linear-gradient(135deg,#e8eadf,#9fb29e)]" />
-        <div>
-          <p className="text-sm font-semibold text-emerald-800">About me</p>
-          <h2 className="mt-3 text-3xl font-semibold leading-tight text-slate-950">
-            I&apos;m a frontend developer who loves clean code and beautiful interfaces.
+    <section id="about" className="portfolio-section">
+      <CodeGlow position="top-left" />
+      <CodeGlow position="bottom-right" />
+      <ScrollRail active={1} />
+      <a className="absolute bottom-[56px] left-[50px] z-20 text-3xl font-black text-white" href="https://github.com">
+        gh
+      </a>
+      <div className="absolute left-[53%] top-[21%] h-16 w-16 rotate-12 bg-[#a52ac2] shadow-[0_24px_40px_rgba(165,42,194,0.35)] [clip-path:polygon(50%_0,100%_50%,50%_100%,0_50%)]" />
+      <div className="absolute left-[17%] bottom-[20%] h-20 w-20 rotate-12 rounded-2xl bg-gradient-to-br from-zinc-700 to-sky-950 opacity-60 shadow-[0_26px_40px_rgba(0,0,0,0.35)]" />
+
+      <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-[1500px] items-center gap-12 px-8 pt-28 lg:grid-cols-[0.83fr_1fr] lg:px-[130px]">
+        <div className="pt-14">
+          <h2 className="text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-[58px]">
+            Hi, I&apos;m Denis
+            <br />
+            Web Developer
           </h2>
-          <p className="mt-5 text-base leading-7 text-slate-600">
-            I focus on performance, usability, and clear design. I enjoy turning ideas into
-            products that solve real problems.
+          <p className="mt-7 text-xl tracking-wide text-zinc-500">
+            JavaScript Enthusiast / Creative Problem Solver
           </p>
         </div>
-        <div className="grid gap-5">
-          {stats.map((stat) => (
-            <div key={stat.label}>
-              <p className="text-2xl font-semibold text-slate-950">{stat.value}</p>
-              <p className="text-sm text-slate-600">{stat.label}</p>
-            </div>
-          ))}
+
+        <div className="relative pt-20">
+          <div className="absolute -left-60 -top-16 hidden h-[405px] w-[405px] bg-[linear-gradient(90deg,rgba(18,19,24,0.98)_0_30%,rgba(18,19,24,0.45)_30%_68%,rgba(18,19,24,0.98)_68%),url('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=700&q=80')] bg-cover bg-center opacity-35 lg:block" />
+          <div className="relative max-w-[650px] space-y-8 text-base font-bold leading-[1.5] text-zinc-100">
+            <p>Professionally connected to the web development world.</p>
+            <p>
+              I&apos;m a detail-oriented engineer who enjoys building thoughtful, high-quality user
+              experiences. I&apos;m passionate about solving problems, collaborating with great people,
+              and continuously learning.
+            </p>
+            <p>
+              Outside of work, you&apos;ll find me exploring design systems, sharpening frontend
+              architecture, and experimenting with new web tech.
+            </p>
+          </div>
         </div>
       </div>
     </section>
