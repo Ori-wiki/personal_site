@@ -1,34 +1,166 @@
+const trapCount = 49;
+
 export function IsometricWorkspace() {
   return (
-    <div className="relative h-[650px] w-full max-w-[760px]">
-      <div className="absolute left-24 top-20 h-52 w-[560px] -skew-y-12 rounded-sm bg-[#8d96ad] opacity-80 shadow-[0_28px_70px_rgba(0,0,0,0.45)]" />
-      <div className="absolute left-48 top-4 h-[300px] w-[330px] -skew-y-12 bg-[#23252b] shadow-[20px_20px_0_rgba(0,0,0,0.35)]">
-        <div className="h-6 bg-[#101116]" />
-        <div className="mt-12 mx-auto h-40 w-40 rounded-full bg-[#a328c7] shadow-[8px_8px_0_#111]" />
-        <div className="absolute left-[112px] top-[142px] text-7xl font-black tracking-[-0.2em] text-white drop-shadow-[5px_5px_0_#111]">
-          DK
+    <div className="isometric-scene" aria-label="Interactive portfolio preview">
+      <style>{`
+        .isometric-scene {
+          --n: 7;
+          --ma: 24deg;
+          --oz: 4.25rem;
+          --dz: 3.25rem;
+          --fn: cubic-bezier(.175, .885, .32, 1.275);
+          --g: 1.25rem;
+          --l: 1px;
+          --back:
+            radial-gradient(circle at 72% 18%, rgba(184, 44, 224, .34), transparent 0 20%),
+            linear-gradient(135deg, #262931, #111217 68%);
+          position: relative;
+          display: grid;
+          place-content: center;
+          min-height: 650px;
+          width: min(100%, 760px);
+          overflow: hidden;
+          perspective: 65rem;
+          color: #eef4fb;
+        }
+
+        .isometric-grid,
+        .isometric-card,
+        .isometric-card::before,
+        .isometric-text {
+          grid-area: 1 / 1;
+        }
+
+        .isometric-grid {
+          position: relative;
+          z-index: 2;
+          display: grid;
+          grid-template-columns: repeat(var(--n), 1fr);
+          width: clamp(15rem, 39vmin, 27rem);
+          aspect-ratio: 2 / 3;
+        }
+
+        .isometric-trap {
+          display: block;
+          min-width: 0;
+          min-height: 0;
+          border: 0;
+          background: transparent;
+          opacity: 0;
+        }
+
+        .isometric-card {
+          --di: calc(2 * var(--i, 3) / (var(--n) - 1) - 1);
+          --dj: calc(1 - 2 * var(--j, 3) / (var(--n) - 1));
+          position: relative;
+          container-type: size;
+          display: grid;
+          width: clamp(15rem, 39vmin, 27rem);
+          aspect-ratio: 2 / 3;
+          overflow: hidden;
+          border: 1px solid rgba(238, 244, 251, .1);
+          border-radius: 1.25rem;
+          background:
+            conic-gradient(from 90deg at var(--l) var(--l), transparent 25%, rgba(238, 244, 251, .08) 0)
+              0 / var(--g) var(--g),
+            linear-gradient(rgba(0, 0, 0, .08), rgba(0, 0, 0, .08)),
+            var(--back);
+          box-shadow:
+            0 2rem 4.5rem -1rem rgba(0, 0, 0, .68),
+            0 0 5rem rgba(184, 44, 224, .16);
+          transform:
+            rotateX(calc(var(--dj) * var(--ma)))
+            rotateY(calc(var(--di) * var(--ma)));
+          transform-origin: 50% 50% var(--oz);
+          transform-style: preserve-3d;
+          transition: transform .42s var(--fn);
+        }
+
+        .isometric-card::before {
+          margin: -50cqh -50cqw;
+          background: radial-gradient(65cqw, rgba(238, 244, 251, .18), transparent);
+          content: "";
+          opacity: calc(min(var(--i, -1) + 1, 1));
+          translate: calc(var(--di, 0) * -40%) calc(var(--dj, 0) * 40%);
+          transition: translate .42s var(--fn), opacity .42s var(--fn);
+        }
+
+        .isometric-text {
+          display: grid;
+          place-content: center;
+          gap: .58rem;
+          padding: 2.5rem;
+          text-align: left;
+          transform: translateZ(var(--dz));
+        }
+
+        .isometric-code {
+          width: min(100%, 20rem);
+          font: 700 clamp(.9rem, 4.4cqw, 1.25rem) / 1.55 var(--font-geist-mono), ui-monospace, monospace;
+          text-shadow: .18em .18em 0 rgba(0, 0, 0, .32);
+        }
+
+        .isometric-code-line {
+          display: block;
+          white-space: nowrap;
+        }
+
+        .isometric-code-line:nth-child(1) {
+          color: #67e8f9;
+        }
+
+        .isometric-code-line:nth-child(2) {
+          color: #e879f9;
+        }
+
+        .isometric-code-line:nth-child(3) {
+          color: #fcd34d;
+        }
+
+        .isometric-code-line:nth-child(4) {
+          color: #d4d4d8;
+        }
+
+        .isometric-scene:has(.isometric-trap:nth-child(7n + 1):hover) { --i: 0; }
+        .isometric-scene:has(.isometric-trap:nth-child(7n + 2):hover) { --i: 1; }
+        .isometric-scene:has(.isometric-trap:nth-child(7n + 3):hover) { --i: 2; }
+        .isometric-scene:has(.isometric-trap:nth-child(7n + 4):hover) { --i: 3; }
+        .isometric-scene:has(.isometric-trap:nth-child(7n + 5):hover) { --i: 4; }
+        .isometric-scene:has(.isometric-trap:nth-child(7n + 6):hover) { --i: 5; }
+        .isometric-scene:has(.isometric-trap:nth-child(7n + 7):hover) { --i: 6; }
+        .isometric-scene:has(.isometric-trap:nth-child(n + 1):hover) { --j: 0; }
+        .isometric-scene:has(.isometric-trap:nth-child(n + 8):hover) { --j: 1; }
+        .isometric-scene:has(.isometric-trap:nth-child(n + 15):hover) { --j: 2; }
+        .isometric-scene:has(.isometric-trap:nth-child(n + 22):hover) { --j: 3; }
+        .isometric-scene:has(.isometric-trap:nth-child(n + 29):hover) { --j: 4; }
+        .isometric-scene:has(.isometric-trap:nth-child(n + 36):hover) { --j: 5; }
+        .isometric-scene:has(.isometric-trap:nth-child(n + 43):hover) { --j: 6; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .isometric-card,
+          .isometric-card::before {
+            transition: none;
+          }
+        }
+      `}</style>
+
+      <div className="isometric-grid" aria-hidden="true">
+        {Array.from({ length: trapCount }).map((_, index) => (
+          <span className="isometric-trap" key={index} />
+        ))}
+      </div>
+
+      <div className="isometric-card">
+        <div className="isometric-text">
+          <div className="isometric-code" aria-label="Portfolio code snippet">
+            <span className="isometric-code-line">const portfolio = build()</span>
+            <span className="isometric-code-line">interface Motion</span>
+            <span className="isometric-code-line">return cleanCode</span>
+            <span className="isometric-code-line">export default work</span>
+          </div>
         </div>
       </div>
-      <div className="absolute left-10 top-20 h-36 w-44 -skew-y-12 bg-[#59616d]/80" />
-      <div className="absolute left-20 top-56 h-36 w-28 -skew-y-12 bg-[#59616d]/80" />
-      <div className="absolute right-0 top-40 h-44 w-48 -skew-y-12 bg-[#4b5360]/80" />
-      <div className="absolute right-20 top-52 h-60 w-48 -skew-y-12 bg-[#111317] shadow-[16px_16px_0_rgba(0,0,0,0.35)]">
-        <div className="space-y-2 p-5 text-[8px] leading-tight text-cyan-300">
-          <p>const portfolio = build()</p>
-          <p className="text-fuchsia-400">interface Motion</p>
-          <p className="text-amber-300">return cleanCode</p>
-          <p className="text-zinc-300">export default work</p>
-        </div>
-      </div>
-      <div className="absolute bottom-24 left-44 h-20 w-80 -skew-y-12 bg-[#dbe7f5] shadow-[0_22px_30px_rgba(0,0,0,0.45)]">
-        <div className="grid grid-cols-10 gap-1 p-3">
-          {Array.from({ length: 40 }).map((_, index) => (
-            <span key={index} className="h-2 bg-[#8794a9]" />
-          ))}
-        </div>
-      </div>
-      <div className="absolute bottom-5 right-28 h-24 w-16 rounded-b-2xl rounded-t-lg bg-zinc-300 shadow-[10px_18px_0_rgba(0,0,0,0.35)]" />
-      <div className="absolute bottom-52 left-0 h-20 w-20 rotate-12 bg-[#9d27b8] shadow-[0_24px_35px_rgba(157,39,184,0.35)] [clip-path:polygon(50%_0,100%_50%,50%_100%,0_50%)]" />
     </div>
   );
 }

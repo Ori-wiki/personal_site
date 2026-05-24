@@ -6,7 +6,7 @@ export function Contact() {
       <CodeGlow position='top-right' />
       <CodeGlow position='bottom-left' />
       <div className='absolute right-[16%] bottom-[13%] h-20 w-20 rotate-12 rounded-2xl bg-gradient-to-br from-zinc-100 to-sky-950 shadow-[0_26px_40px_rgba(0,0,0,0.45)]' />
-      <div className='section-content relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] items-center justify-center px-8 pt-24 lg:px-28'>
+      <div className='section-content relative z-10 mx-auto flex h-screen w-full max-w-[1500px] items-center justify-center px-8 lg:px-28'>
         <div className='max-w-[560px] text-left'>
           <p className='text-lg font-black leading-8 text-zinc-100'>
             Have a project in mind or looking for a frontend developer?

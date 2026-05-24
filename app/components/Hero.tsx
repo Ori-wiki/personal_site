@@ -24,11 +24,11 @@ const aboutLinkArrowClassName = `
 export function Hero() {
   return (
     <section id='top' className='portfolio-section'>
-      <div className='absolute left-[43%] right-[9%] top-[37%] hidden h-px bg-[radial-gradient(circle,#3f414a_1.5px,transparent_2px)] bg-[length:40px_1px] lg:block' />
+      <div className='pointer-events-none absolute left-[40%] top-[28%] hidden h-[210px] w-[52%] bg-[radial-gradient(circle,#3f414a_1.7px,transparent_2px)] bg-[length:42px_42px] lg:block' />
       <CodeGlow position='bottom-left' />
 
-      <div className='section-content relative z-10 mx-auto grid min-h-screen w-full max-w-[1500px] items-center gap-8 px-8 pt-28 lg:grid-cols-[0.72fr_1fr] lg:px-[130px]'>
-        <div className='pt-[88px]'>
+      <div className='section-content relative z-10 mx-auto grid h-screen w-full max-w-[1500px] items-center gap-8 px-8 lg:grid-cols-[0.72fr_1fr] lg:px-[130px]'>
+        <div>
           <h1 className='max-w-[650px] text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-[58px]'>
             Frontend Developer
           </h1>
@@ -43,7 +43,7 @@ export function Hero() {
             </span>
           </a>
         </div>
-        <div className='hidden -translate-x-4 translate-y-4 justify-center lg:flex'>
+        <div className='hidden -translate-x-4 justify-center lg:flex'>
           <IsometricWorkspace />
         </div>
       </div>

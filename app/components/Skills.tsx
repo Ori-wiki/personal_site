@@ -71,7 +71,7 @@ export function Skills() {
       <CodeGlow position='top-right' />
       <CodeGlow position='bottom-left' />
 
-      <div className='section-content relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col items-center justify-center px-8 pt-24 text-center lg:px-[130px]'>
+      <div className='section-content relative z-10 mx-auto flex h-screen w-full max-w-[1500px] flex-col items-center justify-center px-8 text-center lg:px-[130px]'>
         <p className='text-base uppercase text-zinc-500'>
           A problem is an opportunity to do your best.
         </p>

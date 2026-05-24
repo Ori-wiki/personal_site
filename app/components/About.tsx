@@ -9,8 +9,8 @@ export function About() {
       <div className='absolute left-[53%] top-[21%] h-16 w-16 rotate-12 bg-[#a52ac2] shadow-[0_24px_40px_rgba(165,42,194,0.35)] [clip-path:polygon(50%_0,100%_50%,50%_100%,0_50%)]' />
       <div className='absolute left-[17%] bottom-[20%] h-20 w-20 rotate-12 rounded-2xl bg-gradient-to-br from-zinc-700 to-sky-950 opacity-60 shadow-[0_26px_40px_rgba(0,0,0,0.35)]' />
 
-      <div className='section-content relative z-10 mx-auto grid min-h-screen w-full max-w-[1500px] items-center gap-12 px-8 pt-28 lg:grid-cols-[0.83fr_1fr] lg:px-[130px]'>
-        <div className='pt-14'>
+      <div className='section-content relative z-10 mx-auto grid h-screen w-full max-w-[1500px] items-center gap-12 px-8 lg:grid-cols-[0.83fr_1fr] lg:px-[130px]'>
+        <div>
           <h2 className='text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-[58px]'>
             Hi, I&apos;m Denis
             <br />
@@ -21,7 +21,7 @@ export function About() {
           </p>
         </div>
 
-        <div className='relative pt-20'>
+        <div className='relative'>
           <div className='absolute -left-60 -top-16 hidden h-[405px] w-[405px] opacity-35 lg:block'>
             <Image
               src='/images/perImg.png'
