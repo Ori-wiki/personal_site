@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { CodeGlow } from '../../shared/CodeGlow';
 import { IsometricWorkspace } from './IsometricWorkspace';
 
@@ -32,7 +33,21 @@ export function Hero() {
       <CodeGlow position='bottom-left' />
 
       <div className='section-content relative z-10 mx-auto grid h-screen w-full max-w-[1500px] items-center gap-8 px-8 lg:grid-cols-[0.72fr_1fr] lg:px-[130px]'>
-        <div>
+        <div
+          aria-hidden='true'
+          className='pointer-events-none absolute left-[45%] top-[58%] z-20 hidden h-40 w-40 -translate-x-1/2 rotate-12 opacity-90 drop-shadow-[0_28px_36px_rgba(184,44,224,0.24)] lg:block xl:h-52 xl:w-52'
+          data-reveal='tilt-right'
+          data-reveal-delay='1'
+        >
+          <Image
+            alt=''
+            className='object-contain'
+            fill
+            sizes='208px'
+            src='/images/5.png'
+          />
+        </div>
+        <div data-hero-text>
           <h1 className='max-w-[650px] text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-[58px]'>
             Frontend Developer
           </h1>
@@ -40,12 +55,20 @@ export function Hero() {
             Building modern web interfaces with React, Next.js and TypeScript.
             Focused on clean UI, motion and scalable frontend architecture.
           </p>
-          <a className={aboutLinkClassName} href='#about'>
+          <a
+            className={aboutLinkClassName}
+            href='#about'
+          >
             <span>About me</span>
             <span className={aboutLinkArrowClassName} aria-hidden='true' />
           </a>
         </div>
-        <div className='hidden -translate-x-4 justify-center lg:flex'>
+        <div
+          className='relative hidden -translate-x-4 justify-center lg:flex'
+          data-hero-visual='isometric'
+          data-reveal='right'
+          data-reveal-delay='1'
+        >
           <IsometricWorkspace />
         </div>
       </div>

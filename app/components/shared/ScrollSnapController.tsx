@@ -1,18 +1,21 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-const sectionIds = ["top", "about", "skills", "work", "contact"];
-const wheelLockMs = 520;
+const sectionIds = ['top', 'about', 'skills', 'work', 'contact'];
+const wheelLockMs = 1250;
 const wheelThreshold = 1;
-const goToSectionEventName = "portfolio-go-to-section";
+const goToSectionEventName = 'portfolio-go-to-section';
+const heroScrollStartDelayMs = 40;
+const sectionTransitionMs = 940;
+const aboutIntroDelayMs = 620;
 
 function clampSectionIndex(index: number) {
   return Math.min(Math.max(index, 0), sectionIds.length - 1);
 }
 
 function getIndexByHash() {
-  const hash = window.location.hash.replace("#", "");
+  const hash = window.location.hash.replace('#', '');
   const hashIndex = sectionIds.indexOf(hash);
 
   return hashIndex === -1 ? 0 : hashIndex;
@@ -22,9 +25,11 @@ export function ScrollSnapController() {
   const targetIndexRef = useRef(0);
   const wheelLockedRef = useRef(false);
   const wheelUnlockTimeoutRef = useRef<number | null>(null);
+  const aboutIntroTimeoutRef = useRef<number | null>(null);
+  const aboutIntroResetTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const pages = document.getElementById("portfolio-pages");
+    const pages = document.getElementById('portfolio-pages');
 
     if (!pages) {
       return;
@@ -41,21 +46,97 @@ export function ScrollSnapController() {
         window.clearTimeout(wheelUnlockTimeoutRef.current);
       }
 
-      wheelUnlockTimeoutRef.current = window.setTimeout(unlockWheel, wheelLockMs);
+      wheelUnlockTimeoutRef.current = window.setTimeout(
+        unlockWheel,
+        wheelLockMs,
+      );
     };
 
-    const goToSection = (index: number, updateHash = true) => {
+    const goToSection = (
+      index: number,
+      updateHash = true,
+      clearSectionPhase = true,
+    ) => {
       const nextIndex = clampSectionIndex(index);
       const nextId = sectionIds[nextIndex];
+      const previousIndex = targetIndexRef.current;
+      const direction = nextIndex >= targetIndexRef.current ? 'down' : 'up';
+      document.documentElement.dataset.previousSection = String(previousIndex);
+      document.documentElement.dataset.sectionDirection = direction;
+
+      if (clearSectionPhase) {
+        delete document.documentElement.dataset.sectionPhase;
+      }
+
+      if (aboutIntroTimeoutRef.current) {
+        window.clearTimeout(aboutIntroTimeoutRef.current);
+        aboutIntroTimeoutRef.current = null;
+      }
+
+      if (aboutIntroResetTimeoutRef.current) {
+        window.clearTimeout(aboutIntroResetTimeoutRef.current);
+        aboutIntroResetTimeoutRef.current = null;
+      }
+
       targetIndexRef.current = nextIndex;
-      document.documentElement.style.setProperty("--initial-section-offset", `-${nextIndex * 100}vh`);
+      document.documentElement.style.setProperty(
+        '--initial-section-offset',
+        `-${nextIndex * 100}vh`,
+      );
       pages.style.transform = `translate3d(0, -${nextIndex * 100}vh, 0)`;
       document.documentElement.dataset.activeSection = String(nextIndex);
-      window.dispatchEvent(new CustomEvent("portfolio-section-change", { detail: nextIndex }));
+      window.dispatchEvent(
+        new CustomEvent('portfolio-section-change', { detail: nextIndex }),
+      );
+
+      if (nextIndex === 1) {
+        aboutIntroTimeoutRef.current = window.setTimeout(() => {
+          document.documentElement.dataset.sectionPhase = 'about-intro';
+          document.documentElement.dataset.aboutIntroShown = 'true';
+        }, aboutIntroDelayMs);
+      } else if (previousIndex === 1) {
+        aboutIntroResetTimeoutRef.current = window.setTimeout(() => {
+          delete document.documentElement.dataset.aboutIntroShown;
+        }, sectionTransitionMs);
+      }
 
       if (updateHash) {
-        window.history.replaceState(null, "", nextIndex === 0 ? window.location.pathname : `#${nextId}`);
+        window.history.replaceState(
+          null,
+          '',
+          nextIndex === 0 ? window.location.pathname : `#${nextId}`,
+        );
       }
+    };
+
+    const startSectionChange = (index: number, updateHash = true) => {
+      const nextIndex = clampSectionIndex(index);
+      const previousIndex = targetIndexRef.current;
+
+      if (nextIndex === previousIndex) {
+        return;
+      }
+
+      if (previousIndex === 0 && nextIndex > previousIndex) {
+        document.documentElement.dataset.previousSection =
+          String(previousIndex);
+        document.documentElement.dataset.sectionDirection = 'down';
+        document.documentElement.dataset.sectionPhase = 'hero-text-exit';
+        window.setTimeout(
+          () => goToSection(nextIndex, updateHash, false),
+          heroScrollStartDelayMs,
+        );
+        window.setTimeout(() => {
+          if (
+            document.documentElement.dataset.sectionPhase === 'hero-text-exit'
+          ) {
+            delete document.documentElement.dataset.sectionPhase;
+          }
+        }, heroScrollStartDelayMs + sectionTransitionMs);
+        return;
+      }
+
+      goToSection(nextIndex, updateHash);
     };
 
     const handleWheel = (event: WheelEvent) => {
@@ -78,15 +159,15 @@ export function ScrollSnapController() {
 
       if (nextIndex !== targetIndexRef.current) {
         lockWheel();
-        goToSection(nextIndex);
+        startSectionChange(nextIndex);
       }
     };
 
     const handleClick = (event: MouseEvent) => {
-      const link = (event.target as Element | null)?.closest("a");
-      const href = link?.getAttribute("href");
+      const link = (event.target as Element | null)?.closest('a');
+      const href = link?.getAttribute('href');
 
-      if (!href?.startsWith("#")) {
+      if (!href?.startsWith('#')) {
         return;
       }
 
@@ -97,25 +178,28 @@ export function ScrollSnapController() {
       }
 
       event.preventDefault();
-      goToSection(sectionIndex);
+      startSectionChange(sectionIndex);
     };
 
     const handleHashChange = () => {
-      goToSection(getIndexByHash(), false);
+      startSectionChange(getIndexByHash(), false);
     };
 
     const handleGoToSection = (event: Event) => {
-      if (!(event instanceof CustomEvent) || typeof event.detail !== "number") {
+      if (!(event instanceof CustomEvent) || typeof event.detail !== 'number') {
         return;
       }
 
-      goToSection(event.detail);
+      startSectionChange(event.detail);
     };
 
     goToSection(getIndexByHash(), false);
-    window.addEventListener("wheel", handleWheel, { capture: true, passive: false });
-    document.addEventListener("click", handleClick, { capture: true });
-    window.addEventListener("hashchange", handleHashChange);
+    window.addEventListener('wheel', handleWheel, {
+      capture: true,
+      passive: false,
+    });
+    document.addEventListener('click', handleClick, { capture: true });
+    window.addEventListener('hashchange', handleHashChange);
     window.addEventListener(goToSectionEventName, handleGoToSection);
 
     return () => {
@@ -123,9 +207,17 @@ export function ScrollSnapController() {
         window.clearTimeout(wheelUnlockTimeoutRef.current);
       }
 
-      window.removeEventListener("wheel", handleWheel, { capture: true });
-      document.removeEventListener("click", handleClick, { capture: true });
-      window.removeEventListener("hashchange", handleHashChange);
+      if (aboutIntroTimeoutRef.current) {
+        window.clearTimeout(aboutIntroTimeoutRef.current);
+      }
+
+      if (aboutIntroResetTimeoutRef.current) {
+        window.clearTimeout(aboutIntroResetTimeoutRef.current);
+      }
+
+      window.removeEventListener('wheel', handleWheel, { capture: true });
+      document.removeEventListener('click', handleClick, { capture: true });
+      window.removeEventListener('hashchange', handleHashChange);
       window.removeEventListener(goToSectionEventName, handleGoToSection);
     };
   }, []);

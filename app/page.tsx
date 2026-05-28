@@ -17,7 +17,7 @@ export default function Home() {
       <Header />
       <main
         id="portfolio-pages"
-        className="fixed inset-0 min-h-screen w-full overflow-visible transition-[transform] duration-[620ms] ease-[cubic-bezier(0.76,0,0.24,1)] will-change-transform [transform:translate3d(0,var(--initial-section-offset),0)]"
+        className="fixed inset-0 min-h-screen w-full overflow-visible transition-[transform] duration-[940ms] ease-[cubic-bezier(0.76,0,0.24,1)] will-change-transform [transform:translate3d(0,var(--initial-section-offset),0)]"
       >
         <Hero />
         <About />

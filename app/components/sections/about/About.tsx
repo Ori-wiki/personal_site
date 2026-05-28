@@ -23,7 +23,7 @@ export function About() {
       </div>
 
       <div className='section-content relative z-10 mx-auto grid h-screen w-full max-w-[1500px] items-center gap-12 px-8 lg:grid-cols-[0.83fr_1fr] lg:px-[130px]'>
-        <div className='relative z-20'>
+        <div className='relative z-20' data-about-intro>
           <h2 className='text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-[58px]'>
             Hi, I&apos;m Denis
             <br />
@@ -35,7 +35,11 @@ export function About() {
         </div>
 
         <div className='relative z-10'>
-          <div className='pointer-events-none absolute -left-60 -top-16 z-0 hidden h-[405px] w-[405px] opacity-35 lg:block'>
+          <div
+            className='pointer-events-none absolute -left-60 -top-16 z-0 hidden h-[405px] w-[405px] opacity-35 lg:block'
+            data-reveal='scale'
+            data-reveal-delay='2'
+          >
             <Image
               src='/images/perImg.png'
               alt=''
@@ -46,17 +50,17 @@ export function About() {
             <div className='absolute inset-0 bg-[linear-gradient(90deg,rgba(18,19,24,0.98)_0_30%,rgba(18,19,24,0.45)_30%_68%,rgba(18,19,24,0.98)_68%)]' />
           </div>
           <div className='relative z-10 max-w-[650px] space-y-8 text-base font-bold leading-[1.5] text-zinc-100'>
-            <p>
+            <p data-reveal='right' data-reveal-delay='2'>
               Professionally focused on frontend development and modern web
               applications.
             </p>
-            <p>
+            <p data-reveal='right' data-reveal-delay='3'>
               I&apos;m a frontend developer experienced in building scalable and
               maintainable applications. I enjoy solving complex technical
               challenges, improving performance and working with application
               architecture to create reliable digital products.
             </p>
-            <p>
+            <p data-reveal='right' data-reveal-delay='4'>
               Outside of projects, I explore modern development approaches,
               architecture patterns and new tools to continuously improve my
               skills.

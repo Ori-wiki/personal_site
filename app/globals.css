@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #121318;
@@ -9,8 +9,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
+  --font-sans: 'Geist', 'Geist Fallback', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback', ui-monospace, monospace;
 }
 
 body {
@@ -27,21 +27,182 @@ html {
 }
 
 .section-content {
-  opacity: 0;
-  transform: translate3d(0, 36px, 0) scale(0.985);
-  transition:
-    opacity 460ms ease,
-    transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+  transform: none;
 }
 
 html:not([data-active-section]) #top .section-content,
-html[data-active-section="0"] #top .section-content,
-html[data-active-section="1"] #about .section-content,
-html[data-active-section="2"] #skills .section-content,
-html[data-active-section="3"] #work .section-content,
-html[data-active-section="4"] #contact .section-content {
-  opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
-  transition-delay: 180ms;
+html[data-active-section='0'] #top .section-content,
+html[data-active-section='1'] #about .section-content,
+html[data-active-section='2'] #skills .section-content,
+html[data-active-section='3'] #work .section-content,
+html[data-active-section='4'] #contact .section-content {
+  transform: none;
+}
+
+.section-content [data-reveal] {
+  --reveal-x: 0;
+  --reveal-y: 64px;
+  --reveal-rotate: 0deg;
+  --reveal-scale: 0.985;
+  transform: translate3d(var(--reveal-x), var(--reveal-y), 0)
+    rotate(var(--reveal-rotate)) scale(var(--reveal-scale));
+  transition: transform 1800ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform;
+}
+
+html[data-section-direction='up'] .section-content [data-reveal] {
+  --reveal-y: -64px;
+}
+
+html[data-section-direction='down'] .section-content [data-reveal] {
+  --reveal-y: 64px;
+}
+
+.section-content [data-reveal-axis='x-left'] {
+  --reveal-x: -72px;
+  --reveal-y: 0;
+}
+
+html[data-section-direction='down'][data-previous-section='0']
+  #top
+  .section-content
+  [data-reveal],
+html[data-section-direction='down'][data-previous-section='1']
+  #about
+  .section-content
+  [data-reveal],
+html[data-section-direction='down'][data-previous-section='2']
+  #skills
+  .section-content
+  [data-reveal],
+html[data-section-direction='down'][data-previous-section='3']
+  #work
+  .section-content
+  [data-reveal],
+html[data-section-direction='down'][data-previous-section='4']
+  #contact
+  .section-content
+  [data-reveal] {
+  --reveal-y: -64px;
+}
+
+html[data-section-direction='up'][data-previous-section='0']
+  #top
+  .section-content
+  [data-reveal],
+html[data-section-direction='up'][data-previous-section='1']
+  #about
+  .section-content
+  [data-reveal],
+html[data-section-direction='up'][data-previous-section='2']
+  #skills
+  .section-content
+  [data-reveal],
+html[data-section-direction='up'][data-previous-section='3']
+  #work
+  .section-content
+  [data-reveal],
+html[data-section-direction='up'][data-previous-section='4']
+  #contact
+  .section-content
+  [data-reveal] {
+  --reveal-y: 64px;
+}
+
+.section-content [data-reveal-delay='1'] {
+  --reveal-delay: 180ms;
+}
+
+.section-content [data-reveal-delay='2'] {
+  --reveal-delay: 340ms;
+}
+
+.section-content [data-reveal-delay='3'] {
+  --reveal-delay: 500ms;
+}
+
+.section-content [data-reveal-delay='4'] {
+  --reveal-delay: 660ms;
+}
+
+.section-content [data-reveal-delay='5'] {
+  --reveal-delay: 820ms;
+}
+
+.section-content [data-reveal-delay='6'] {
+  --reveal-delay: 980ms;
+}
+
+.section-content [data-reveal-delay='7'] {
+  --reveal-delay: 1140ms;
+}
+
+.section-content [data-reveal-delay='8'] {
+  --reveal-delay: 1300ms;
+}
+
+html:not([data-active-section]) #top .section-content [data-reveal],
+html[data-active-section='0'] #top .section-content [data-reveal],
+html[data-active-section='1'] #about .section-content [data-reveal],
+html[data-active-section='2'] #skills .section-content [data-reveal],
+html[data-active-section='3'] #work .section-content [data-reveal],
+html[data-active-section='4'] #contact .section-content [data-reveal] {
+  transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+}
+
+#top [data-hero-text] {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+html[data-section-phase='hero-text-exit'] #top [data-hero-text] {
+  animation: hero-text-exit 920ms cubic-bezier(0.55, 0, 0.2, 1) forwards;
+}
+
+html[data-section-phase='hero-text-exit'] #top [data-hero-visual='isometric'] {
+  animation: hero-visual-exit 920ms cubic-bezier(0.55, 0, 0.2, 1) 30ms forwards;
+}
+
+#about [data-about-intro] {
+  transform: translate3d(-42vw, 0, 0);
+  transition: transform 1650ms cubic-bezier(0.19, 1, 0.22, 1);
+  will-change: transform;
+}
+
+html[data-active-section='1'][data-section-phase='about-intro']
+  #about
+  [data-about-intro],
+html[data-about-intro-shown='true']
+  #about
+  [data-about-intro] {
+  transform: translate3d(0, 0, 0);
+}
+
+@keyframes hero-text-exit {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, -72vh, 0);
+  }
+}
+
+@keyframes hero-visual-exit {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, -72vh, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-content,
+  .section-content [data-reveal] {
+    transform: none;
+    transition: none;
+  }
 }

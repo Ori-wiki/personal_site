@@ -75,23 +75,39 @@ export function Skills() {
       <CodeGlow position='bottom-left' />
 
       <div className='section-content relative z-10 mx-auto flex h-screen w-full max-w-[1500px] flex-col items-center justify-center px-8 text-center lg:px-[130px]'>
-        <p className='text-base uppercase text-zinc-500'>
+        <p className='text-base uppercase text-zinc-500' data-reveal='down'>
           A problem is an opportunity to do your best.
         </p>
-        <h2 className='mt-4 text-5xl font-black leading-none tracking-tight text-white sm:text-6xl xl:text-[58px]'>
+        <h2
+          className='mt-4 text-5xl font-black leading-none tracking-tight text-white sm:text-6xl xl:text-[58px]'
+          data-reveal='scale'
+          data-reveal-delay='1'
+        >
           Skills &amp; Experience
         </h2>
-        <p className='mt-8 max-w-3xl text-base font-bold leading-7 text-zinc-100'>
+        <p
+          className='mt-8 max-w-3xl text-base font-bold leading-7 text-zinc-100'
+          data-reveal='up'
+          data-reveal-delay='2'
+        >
           I specialize in crafting engaging and high-quality client-side web
           applications.
         </p>
-        <p className='mt-5 max-w-[700px] text-base font-bold leading-7 text-zinc-100'>
+        <p
+          className='mt-5 max-w-[700px] text-base font-bold leading-7 text-zinc-100'
+          data-reveal='up'
+          data-reveal-delay='3'
+        >
           My experience includes HTML, CSS, and JavaScript, building projects
           with React and Vue, developing custom features and plugins, creating
           animations, and coding interactive layouts. I also have full-stack
           experience, including working with Node.js, and Go.
         </p>
-        <p className='mt-5 text-base font-bold text-zinc-100'>
+        <p
+          className='mt-5 text-base font-bold text-zinc-100'
+          data-reveal='up'
+          data-reveal-delay='4'
+        >
           For a deeper look at my work and experience, visit my{' '}
           <a
             target='blank'
@@ -111,10 +127,12 @@ export function Skills() {
         </p>
 
         <div className='mt-12 flex w-full max-w-[960px] flex-wrap justify-center gap-x-5 gap-y-7'>
-          {skills.map((skill) => (
+          {skills.map((skill, index) => (
             <div
               key={skill.label}
               className='flex w-[88px] flex-col items-center gap-3'
+              data-reveal='scale'
+              data-reveal-delay={String((index % 5) + 4)}
             >
               <div className='grid h-[64px] w-[64px] place-items-center rounded-md border border-white/10 bg-white/[0.04] shadow-[0_0_28px_rgba(184,44,224,0.08)] transition duration-300 hover:-translate-y-1 hover:border-[#b82ce0]/50 hover:bg-white/[0.07] hover:shadow-[0_0_32px_rgba(184,44,224,0.22)]'>
                 <Image

@@ -24,6 +24,12 @@ const initActiveSectionScript = `
     const hash = window.location.hash ? window.location.hash.slice(1) : "top";
     const index = Math.max(sectionIds.indexOf(hash), 0);
     document.documentElement.dataset.activeSection = String(index);
+    document.documentElement.dataset.previousSection = String(index);
+    document.documentElement.dataset.sectionDirection = "down";
+    if (index === 1) {
+      document.documentElement.dataset.sectionPhase = "about-intro";
+      document.documentElement.dataset.aboutIntroShown = "true";
+    }
     document.documentElement.style.setProperty("--initial-section-offset", "-" + (index * 100) + "vh");
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
@@ -43,7 +49,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <Script id="init-active-section" strategy="beforeInteractive">
           {initActiveSectionScript}
         </Script>

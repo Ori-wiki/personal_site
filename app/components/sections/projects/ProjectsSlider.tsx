@@ -197,7 +197,11 @@ function SliderControls({
   setActiveIndex: (index: number) => void;
 }) {
   return (
-    <div className='absolute bottom-0 left-1/2 z-20 flex -translate-x-1/2 items-center gap-7'>
+    <div
+      className='absolute bottom-0 left-1/2 z-20 flex -translate-x-1/2 items-center gap-7'
+      data-reveal='up'
+      data-reveal-delay='5'
+    >
       <div className='flex gap-4'>
         {projectSlides.map((item, dotIndex) => (
           <button
@@ -246,14 +250,23 @@ function ProjectArticle({
     return (
       <article className='relative col-span-full mx-auto flex min-h-[430px] max-w-[820px] flex-col items-center justify-center text-center'>
         <IntroDecorations />
-        <h2 className='relative z-10 max-w-[820px] text-5xl font-black leading-[0.92] tracking-tight text-white sm:text-6xl xl:text-[58px]'>
+        <h2
+          className='relative z-10 max-w-[820px] text-5xl font-black leading-[0.92] tracking-tight text-white sm:text-6xl xl:text-[58px]'
+          data-reveal='scale'
+        >
           {slide.title}
         </h2>
-        <p className='relative z-10 mt-8 max-w-[690px] text-base font-bold leading-7 text-zinc-100'>
+        <p
+          className='relative z-10 mt-8 max-w-[690px] text-base font-bold leading-7 text-zinc-100'
+          data-reveal='up'
+          data-reveal-delay='1'
+        >
           {slide.description}
         </p>
         <button
           className='group relative z-10 mt-8 inline-flex cursor-pointer items-center gap-4 text-lg font-black text-[#b82ce0] transition-colors hover:text-white'
+          data-reveal='tilt-left'
+          data-reveal-delay='2'
           onClick={() => setActiveIndex(firstProjectIndex)}
           type='button'
         >
@@ -268,18 +281,32 @@ function ProjectArticle({
     <>
       <ProjectSlideDecorations />
       <article className='relative min-h-[430px] max-w-[620px]'>
-        <p className='text-base uppercase text-zinc-500'>{slide.eyebrow}</p>
-        <h2 className='mt-4 max-w-[650px] text-5xl font-black leading-[0.92] tracking-tight text-white sm:text-6xl xl:text-[58px]'>
+        <p className='text-base uppercase text-zinc-500' data-reveal='down'>
+          {slide.eyebrow}
+        </p>
+        <h2
+          className='mt-4 max-w-[650px] text-5xl font-black leading-[0.92] tracking-tight text-white sm:text-6xl xl:text-[58px]'
+          data-reveal='left'
+          data-reveal-delay='1'
+        >
           {slide.title}
         </h2>
-        <p className='mt-10 max-w-[560px] text-base font-bold leading-7 text-zinc-100'>
+        <p
+          className='mt-10 max-w-[560px] text-base font-bold leading-7 text-zinc-100'
+          data-reveal='up'
+          data-reveal-delay='2'
+        >
           {slide.description}
         </p>
-        <p className='mt-6 max-w-[590px] text-base font-black leading-7 text-zinc-100'>
+        <p
+          className='mt-6 max-w-[590px] text-base font-black leading-7 text-zinc-100'
+          data-reveal='up'
+          data-reveal-delay='3'
+        >
           Stack: <span className='font-semibold'>{slide.builtWith}</span>
         </p>
 
-        <div className='mt-11'>
+        <div className='mt-11' data-reveal='tilt-left' data-reveal-delay='4'>
           <ProjectLinks
             codeHref={slide.codeHref}
             linkLabel={slide.linkLabel}
@@ -288,7 +315,11 @@ function ProjectArticle({
         </div>
       </article>
 
-      <div className='relative hidden min-h-[560px] items-center justify-center overflow-visible lg:flex'>
+      <div
+        className='relative hidden min-h-[560px] items-center justify-center overflow-visible lg:flex'
+        data-reveal='right'
+        data-reveal-delay='3'
+      >
         <ProjectPreview image={slide.image} title={slide.title} />
       </div>
     </>
