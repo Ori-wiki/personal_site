@@ -1,12 +1,12 @@
-import { About } from "./components/About";
-import { Contact } from "./components/Contact";
-import { GithubLink } from "./components/GithubLink";
-import { Header } from "./components/Header";
-import { Hero } from "./components/Hero";
-import { Projects } from "./components/Projects";
-import { ScrollRail } from "./components/ScrollRail";
-import { ScrollSnapController } from "./components/ScrollSnapController";
-import { Skills } from "./components/Skills";
+import { About } from "./components/sections/about/About";
+import { Contact } from "./components/sections/contact/Contact";
+import { Hero } from "./components/sections/hero/Hero";
+import { Projects } from "./components/sections/projects/Projects";
+import { Skills } from "./components/sections/skills/Skills";
+import { GithubLink } from "./components/shared/GithubLink";
+import { Header } from "./components/shared/Header";
+import { ScrollRail } from "./components/shared/ScrollRail";
+import { ScrollSnapController } from "./components/shared/ScrollSnapController";
 
 export default function Home() {
   return (

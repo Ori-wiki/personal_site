@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import styles from './Contact.module.css';
 
 const WORD = "LET'S CONNECT".split('');
 const COLORS = [
@@ -269,9 +268,9 @@ export function ContactString() {
     function updateCursor() {
       cursor.style.left = `${mouse.x}px`;
       cursor.style.top = `${mouse.y}px`;
-      cursor.classList.toggle(styles.visible, mouse.inside);
-      cursor.classList.toggle(styles.near, mouse.nearString);
-      cursor.classList.toggle(styles.dragging, mouse.dragging);
+      cursor.dataset.visible = String(mouse.inside);
+      cursor.dataset.near = String(mouse.nearString);
+      cursor.dataset.dragging = String(mouse.dragging);
     }
 
     function localPointer(event: PointerEvent) {
@@ -633,10 +632,13 @@ export function ContactString() {
   return (
     <div
       ref={wrapRef}
-      className={`${styles.string} relative hidden h-[470px] w-full max-w-[620px] lg:block`}
+      className="relative hidden h-[470px] w-full max-w-[620px] cursor-none before:pointer-events-none before:absolute before:inset-[-8%] before:rounded-[40px] before:bg-[radial-gradient(circle_at_50%_42%,rgba(23,25,34,0.92)_0%,rgba(15,16,20,0.64)_55%,rgba(9,10,13,0)_76%)] before:content-[''] lg:block"
     >
       <canvas ref={canvasRef} className='relative z-[1] block h-full w-full' />
-      <div ref={cursorRef} className={styles.cursor} />
+      <div
+        ref={cursorRef}
+        className="pointer-events-none absolute left-0 top-0 z-[4] h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f4f1ea] opacity-0 mix-blend-difference transition-[width,height,opacity] duration-200 after:absolute after:inset-[-6px] after:rounded-full after:border after:border-white/20 after:opacity-0 after:scale-[0.85] after:transition-[opacity,transform] after:duration-150 after:content-[''] data-[near=true]:h-4 data-[near=true]:w-4 data-[near=true]:after:scale-100 data-[near=true]:after:opacity-100 data-[visible=true]:opacity-100 data-[dragging=true]:!h-[18px] data-[dragging=true]:!w-[18px]"
+      />
     </div>
   );
 }

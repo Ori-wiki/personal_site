@@ -1,4 +1,4 @@
-import { CodeGlow } from './CodeGlow';
+import { CodeGlow } from '../../shared/CodeGlow';
 import { IsometricWorkspace } from './IsometricWorkspace';
 
 const aboutLinkClassName = `

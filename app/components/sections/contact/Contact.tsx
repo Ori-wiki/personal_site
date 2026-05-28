@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CodeGlow } from './CodeGlow';
-import styles from './Contact.module.css';
+import { CodeGlow } from '../../shared/CodeGlow';
 import { ContactString } from './ContactString';
 
 const EMAIL = 'ori21wiki@gmail.com';
@@ -56,16 +55,14 @@ export function Contact() {
                 aria-label={
                   copiedTelegram ? 'Telegram copied' : 'Copy Telegram'
                 }
-                className={`${styles.copyButton} relative block h-7 w-7 shrink-0 cursor-pointer border-0 bg-transparent
-               text-white/75 outline-none transition-colors duration-200 hover:text-[#b82ce0] focus-visible:outline-2
-                focus-visible:outline-offset-4 focus-visible:outline-[#b82ce0]`}
+                className='relative block h-7 w-7 shrink-0 cursor-pointer border-0 bg-transparent text-white/75 outline-none transition-colors duration-200 [-webkit-tap-highlight-color:transparent] hover:text-[#b82ce0] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#b82ce0]'
                 onClick={copyTelegram}
                 type='button'
               >
                 <span className='pointer-events-none absolute left-1.5 top-1 block h-[15px] w-3 box-border rounded-tl-[2px] border-l-2 border-t-2 border-current' />
                 <span
-                  className={`pointer-events-none absolute left-2.5 top-2 block h-[17px] w-3.5 box-border rounded-[2px] border-2 border-current ${
-                    copiedTelegram ? styles.copyBottomActive : ''
+                  className={`pointer-events-none absolute left-2.5 top-2 block h-[17px] w-3.5 box-border rounded-[2px] border-2 border-current transition-transform duration-300 ease-out ${
+                    copiedTelegram ? '-translate-x-1 -translate-y-1' : ''
                   }`}
                 />
               </button>
@@ -79,14 +76,14 @@ export function Contact() {
               </a>
               <button
                 aria-label={copiedEmail ? 'Email copied' : 'Copy email'}
-                className={`${styles.copyButton} relative block h-7 w-7 shrink-0 cursor-pointer border-0 bg-transparent text-white/75 outline-none transition-colors duration-200 hover:text-[#b82ce0] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#b82ce0]`}
+                className='relative block h-7 w-7 shrink-0 cursor-pointer border-0 bg-transparent text-white/75 outline-none transition-colors duration-200 [-webkit-tap-highlight-color:transparent] hover:text-[#b82ce0] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#b82ce0]'
                 onClick={copyEmail}
                 type='button'
               >
                 <span className='pointer-events-none absolute left-1.5 top-1 block h-[15px] w-3 box-border rounded-tl-[2px] border-l-2 border-t-2 border-current' />
                 <span
-                  className={`pointer-events-none absolute left-2.5 top-2 block h-[17px] w-3.5 box-border rounded-[2px] border-2 border-current ${
-                    copiedEmail ? styles.copyBottomActive : ''
+                  className={`pointer-events-none absolute left-2.5 top-2 block h-[17px] w-3.5 box-border rounded-[2px] border-2 border-current transition-transform duration-300 ease-out ${
+                    copiedEmail ? '-translate-x-1 -translate-y-1' : ''
                   }`}
                 />
               </button>

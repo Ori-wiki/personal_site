@@ -338,10 +338,12 @@ export function ProjectsSlider() {
           transform: `translate3d(-${activeIndex * (100 / slides.length)}%, 0, 0)`,
         }}
       >
-        {slides.map((slide) => (
+        {slides.map((slide, slideIndex) => (
           <div
+            aria-hidden={activeIndex !== slideIndex}
             className='min-h-[560px] shrink-0'
             key={slide.title}
+            inert={activeIndex !== slideIndex}
             style={{ width: `${100 / slides.length}%` }}
           >
             <div className='relative mx-auto grid min-h-[560px] w-full max-w-[1500px] items-center gap-12 px-8 lg:grid-cols-[0.74fr_1fr] lg:px-[130px]'>

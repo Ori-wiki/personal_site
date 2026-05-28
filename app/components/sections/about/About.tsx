@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { CodeGlow } from './CodeGlow';
+import { CodeGlow } from '../../shared/CodeGlow';
 
 export function About() {
   return (
