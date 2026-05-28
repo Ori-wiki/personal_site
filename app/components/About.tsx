@@ -6,11 +6,21 @@ export function About() {
     <section id='about' className='portfolio-section'>
       <CodeGlow position='top-left' />
       <CodeGlow position='bottom-right' />
-      <div className='absolute left-[53%] top-[21%] h-16 w-16 rotate-12 bg-[#a52ac2] shadow-[0_24px_40px_rgba(165,42,194,0.35)] [clip-path:polygon(50%_0,100%_50%,50%_100%,0_50%)]' />
-      <div className='absolute left-[17%] bottom-[20%] h-20 w-20 rotate-12 rounded-2xl bg-gradient-to-br from-zinc-700 to-sky-950 opacity-60 shadow-[0_26px_40px_rgba(0,0,0,0.35)]' />
+
+      <div
+        aria-hidden='true'
+        className='pointer-events-none absolute inset-0 hidden overflow-hidden lg:block'
+      >
+        <div className='absolute right-[9%] top-[18%] h-[300px] w-[520px] -rotate-6 border border-white/[0.08] bg-white/[0.018] shadow-[0_38px_90px_rgba(0,0,0,0.28)]' />
+        <div className='absolute right-[15%] top-[25%] h-[300px] w-[520px] -rotate-6 border border-fuchsia-400/25' />
+        <div className='absolute right-[20%] top-[31%] h-px w-[360px] -rotate-6 bg-gradient-to-r from-transparent via-fuchsia-300/45 to-transparent' />
+        <div className='absolute right-[18%] top-[40%] h-px w-[300px] -rotate-6 bg-gradient-to-r from-transparent via-sky-300/35 to-transparent' />
+        <div className='absolute right-[27%] top-[49%] h-px w-[240px] -rotate-6 bg-gradient-to-r from-transparent via-amber-300/35 to-transparent' />
+        <div className='absolute left-[33%] bottom-[18%] h-24 w-24 rotate-45 border border-sky-300/20 bg-sky-300/[0.03] shadow-[0_24px_52px_rgba(14,165,233,0.16)]' />
+      </div>
 
       <div className='section-content relative z-10 mx-auto grid h-screen w-full max-w-[1500px] items-center gap-12 px-8 lg:grid-cols-[0.83fr_1fr] lg:px-[130px]'>
-        <div>
+        <div className='relative z-20'>
           <h2 className='text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-[58px]'>
             Hi, I&apos;m Denis
             <br />
@@ -21,8 +31,8 @@ export function About() {
           </p>
         </div>
 
-        <div className='relative'>
-          <div className='absolute -left-60 -top-16 hidden h-[405px] w-[405px] opacity-35 lg:block'>
+        <div className='relative z-10'>
+          <div className='pointer-events-none absolute -left-60 -top-16 z-0 hidden h-[405px] w-[405px] opacity-35 lg:block'>
             <Image
               src='/images/perImg.png'
               alt=''
@@ -32,7 +42,7 @@ export function About() {
             />
             <div className='absolute inset-0 bg-[linear-gradient(90deg,rgba(18,19,24,0.98)_0_30%,rgba(18,19,24,0.45)_30%_68%,rgba(18,19,24,0.98)_68%)]' />
           </div>
-          <div className='relative max-w-[650px] space-y-8 text-base font-bold leading-[1.5] text-zinc-100'>
+          <div className='relative z-10 max-w-[650px] space-y-8 text-base font-bold leading-[1.5] text-zinc-100'>
             <p>
               Professionally focused on frontend development and modern web
               applications.

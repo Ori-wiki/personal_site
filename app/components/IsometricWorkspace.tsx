@@ -2,7 +2,7 @@ const trapCount = 49;
 
 export function IsometricWorkspace() {
   return (
-    <div className="isometric-scene" aria-label="Interactive portfolio preview">
+    <div className='isometric-scene' aria-label='Interactive portfolio preview'>
       <style>{`
         .isometric-scene {
           --n: 7;
@@ -37,8 +37,8 @@ export function IsometricWorkspace() {
           z-index: 2;
           display: grid;
           grid-template-columns: repeat(var(--n), 1fr);
-          width: clamp(15rem, 39vmin, 27rem);
-          aspect-ratio: 2 / 3;
+          width: clamp(16rem, 42vmin, 29rem);
+          aspect-ratio: 3 / 4;
         }
 
         .isometric-trap {
@@ -56,8 +56,8 @@ export function IsometricWorkspace() {
           position: relative;
           container-type: size;
           display: grid;
-          width: clamp(15rem, 39vmin, 27rem);
-          aspect-ratio: 2 / 3;
+          width: clamp(16rem, 42vmin, 29rem);
+          aspect-ratio: 3 / 4;
           overflow: hidden;
           border: 1px solid rgba(238, 244, 251, .1);
           border-radius: 1.25rem;
@@ -89,37 +89,105 @@ export function IsometricWorkspace() {
         .isometric-text {
           display: grid;
           place-content: center;
-          gap: .58rem;
-          padding: 2.5rem;
+          gap: .85rem;
+          padding: 1.45rem;
           text-align: left;
           transform: translateZ(var(--dz));
         }
 
+        .isometric-code-window {
+          width: min(100%, 23.5rem);
+          overflow: hidden;
+          border: 1px solid rgba(238, 244, 251, .13);
+          border-radius: .55rem;
+          background: rgba(13, 15, 20, .38);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
+          backdrop-filter: blur(.35rem);
+        }
+
+        .isometric-code-header {
+          display: flex;
+          align-items: center;
+          gap: .42rem;
+          border-bottom: 1px solid rgba(238, 244, 251, .1);
+          padding: .62rem .82rem;
+          font: 700 clamp(.58rem, 2.8cqw, .76rem) / 1 var(--font-geist-mono), ui-monospace, monospace;
+          color: rgba(238, 244, 251, .68);
+        }
+
+        .isometric-code-dot {
+          width: .44rem;
+          aspect-ratio: 1;
+          border-radius: 999px;
+          background: #f87171;
+        }
+
+        .isometric-code-dot:nth-child(2) {
+          background: #fbbf24;
+        }
+
+        .isometric-code-dot:nth-child(3) {
+          background: #34d399;
+          margin-right: .34rem;
+        }
+
         .isometric-code {
-          width: min(100%, 20rem);
-          font: 700 clamp(.9rem, 4.4cqw, 1.25rem) / 1.55 var(--font-geist-mono), ui-monospace, monospace;
+          padding: .95rem .95rem 1.05rem;
+          font: 700 clamp(.64rem, 3.15cqw, .9rem) / 1.74 var(--font-geist-mono), ui-monospace, monospace;
           text-shadow: .18em .18em 0 rgba(0, 0, 0, .32);
         }
 
         .isometric-code-line {
-          display: block;
+          display: grid;
+          grid-template-columns: 1.8rem 1fr;
+          gap: .72rem;
           white-space: nowrap;
+        }
+
+        .isometric-code-line::before {
+          color: rgba(238, 244, 251, .25);
+          content: attr(data-line);
+          text-align: right;
+          text-shadow: none;
+        }
+
+        .isometric-code-indent {
+          padding-left: 1.15rem;
         }
 
         .isometric-code-line:nth-child(1) {
           color: #67e8f9;
         }
 
-        .isometric-code-line:nth-child(2) {
+        .isometric-code-line:nth-child(2),
+        .isometric-code-line:nth-child(3),
+        .isometric-code-line:nth-child(4),
+        .isometric-code-line:nth-child(5) {
+          color: #d4d4d8;
+        }
+
+        .isometric-code-key {
           color: #e879f9;
         }
 
-        .isometric-code-line:nth-child(3) {
+        .isometric-code-var {
+          color: #34d399;
+        }
+
+        .isometric-code-brace {
+          color: #67e8f9;
+        }
+
+        .isometric-code-value {
           color: #fcd34d;
         }
 
-        .isometric-code-line:nth-child(4) {
-          color: #d4d4d8;
+        .isometric-code-array {
+          color: #7dd3fc;
+        }
+
+        .isometric-code-bool {
+          color: #a78bfa;
         }
 
         .isometric-scene:has(.isometric-trap:nth-child(7n + 1):hover) { --i: 0; }
@@ -145,19 +213,86 @@ export function IsometricWorkspace() {
         }
       `}</style>
 
-      <div className="isometric-grid" aria-hidden="true">
+      <div className='isometric-grid' aria-hidden='true'>
         {Array.from({ length: trapCount }).map((_, index) => (
-          <span className="isometric-trap" key={index} />
+          <span className='isometric-trap' key={index} />
         ))}
       </div>
 
-      <div className="isometric-card">
-        <div className="isometric-text">
-          <div className="isometric-code" aria-label="Portfolio code snippet">
-            <span className="isometric-code-line">const portfolio = build()</span>
-            <span className="isometric-code-line">interface Motion</span>
-            <span className="isometric-code-line">return cleanCode</span>
-            <span className="isometric-code-line">export default work</span>
+      <div className='isometric-card'>
+        <div className='isometric-text'>
+          <div className='isometric-code-window'>
+            <div className='isometric-code-header' aria-hidden='true'>
+              <span className='isometric-code-dot' />
+              <span className='isometric-code-dot' />
+              <span className='isometric-code-dot' />
+              developer.ts
+            </div>
+            <div className='isometric-code' aria-label='Portfolio code snippet'>
+              <span className='isometric-code-line' data-line='01'>
+                <span>
+                  const <span className='isometric-code-var'>developer</span> ={' '}
+                  <span className='isometric-code-brace'>{'{'}</span>
+                </span>
+              </span>
+              <span className='isometric-code-line' data-line='02'>
+                <span className='isometric-code-indent'>
+                  <span className='isometric-code-key'>name</span>:{' '}
+                  <span className='isometric-code-value'>{'"Denis"'}</span>,
+                </span>
+              </span>
+              <span className='isometric-code-line' data-line='03'>
+                <span className='isometric-code-indent'>
+                  <span className='isometric-code-key'>role</span>:{' '}
+                  <span className='isometric-code-value'>
+                    {'"Frontend Developer"'}
+                  </span>
+                  ,
+                </span>
+              </span>
+              <span className='isometric-code-line' data-line='04'>
+                <span className='isometric-code-indent'>
+                  <span className='isometric-code-key'>stack</span>:{' '}
+                  <span className='isometric-code-array'>
+                    {'["React", "Next.js", "TS"]'}
+                  </span>
+                  ,
+                </span>
+              </span>
+              <span className='isometric-code-line' data-line='05'>
+                <span className='isometric-code-indent'>
+                  <span className='isometric-code-key'>tools</span>:{' '}
+                  <span className='isometric-code-array'>
+                    {'["Redux", "Sass", "Figma"]'}
+                  </span>
+                  ,
+                </span>
+              </span>
+              <span className='isometric-code-line' data-line='06'>
+                <span className='isometric-code-indent'>
+                  <span className='isometric-code-key'>focus</span>:{' '}
+                  <span className='isometric-code-value'>
+                    {'"Clean UI & Motion"'}
+                  </span>
+                  ,
+                </span>
+              </span>
+              <span className='isometric-code-line' data-line='07'>
+                <span className='isometric-code-indent'>
+                  <span className='isometric-code-key'>experience</span>:{' '}
+                  <span className='isometric-code-value'>{'"3+ years"'}</span>,
+                </span>
+              </span>
+              <span className='isometric-code-line' data-line='08'>
+                <span className='isometric-code-indent'>
+                  <span className='isometric-code-key'>available</span>:{' '}
+                  <span className='isometric-code-bool'>true</span>
+                </span>
+              </span>
+              <span className='isometric-code-line' data-line='09'>
+                <span className='isometric-code-brace'>{'}'}</span>
+              </span>
+            </div>
           </div>
         </div>
       </div>

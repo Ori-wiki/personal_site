@@ -15,9 +15,10 @@ const aboutLinkClassName = `
 `;
 
 const aboutLinkArrowClassName = `
-  inline-block transition-transform duration-500 ease-out
-  group-hover:translate-x-1.5 group-hover:rotate-90
-  group-focus-visible:translate-x-1.5 group-focus-visible:rotate-90
+  h-2.5 w-2.5 rotate-[-45deg] border-b-2 border-r-2 border-current
+  transition-transform duration-500 ease-out
+  group-hover:translate-x-1.5 group-hover:rotate-45
+  group-focus-visible:translate-x-1.5 group-focus-visible:rotate-45
   motion-reduce:transition-none
 `;
 
@@ -38,9 +39,7 @@ export function Hero() {
           </p>
           <a className={aboutLinkClassName} href='#about'>
             <span>About me</span>
-            <span className={aboutLinkArrowClassName} aria-hidden='true'>
-              &gt;
-            </span>
+            <span className={aboutLinkArrowClassName} aria-hidden='true' />
           </a>
         </div>
         <div className='hidden -translate-x-4 justify-center lg:flex'>
