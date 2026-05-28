@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,6 +18,20 @@ export const metadata: Metadata = {
   description: "Personal portfolio website for a frontend developer.",
 };
 
+const initActiveSectionScript = `
+  (function () {
+    const sectionIds = ["top", "about", "skills", "work", "contact"];
+    const hash = window.location.hash ? window.location.hash.slice(1) : "top";
+    const index = Math.max(sectionIds.indexOf(hash), 0);
+    document.documentElement.dataset.activeSection = String(index);
+    document.documentElement.style.setProperty("--initial-section-offset", "-" + (index * 100) + "vh");
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,23 +44,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function () {
-                var sectionIds = ["top", "about", "skills", "work", "contact"];
-                var hash = window.location.hash ? window.location.hash.slice(1) : "top";
-                var index = Math.max(sectionIds.indexOf(hash), 0);
-                document.documentElement.dataset.activeSection = String(index);
-                document.documentElement.style.setProperty("--initial-section-offset", "-" + (index * 100) + "vh");
-                if ("scrollRestoration" in history) {
-                  history.scrollRestoration = "manual";
-                }
-                window.scrollTo(0, 0);
-              })();
-            `,
-          }}
-        />
+        <Script id="init-active-section" strategy="beforeInteractive">
+          {initActiveSectionScript}
+        </Script>
         {children}
       </body>
     </html>

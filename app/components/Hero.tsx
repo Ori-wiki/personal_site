@@ -24,7 +24,10 @@ const aboutLinkArrowClassName = `
 
 export function Hero() {
   return (
-    <section id='top' className='portfolio-section'>
+    <section
+      id='top'
+      className='relative h-screen min-h-screen snap-start overflow-hidden bg-[radial-gradient(circle_at_58%_43%,rgba(255,255,255,0.026)_0_2px,transparent_2px_44px),#121318] text-[#eef4fb]'
+    >
       <div className='pointer-events-none absolute left-[40%] top-[28%] hidden h-[210px] w-[52%] bg-[radial-gradient(circle,#3f414a_1.7px,transparent_2px)] bg-[length:42px_42px] lg:block' />
       <CodeGlow position='bottom-left' />
 

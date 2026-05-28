@@ -3,7 +3,10 @@ import { ProjectsSlider } from './ProjectsSlider';
 
 export function Projects() {
   return (
-    <section id='work' className='portfolio-section'>
+    <section
+      id='work'
+      className='relative h-screen min-h-screen snap-start overflow-hidden bg-[radial-gradient(circle_at_58%_43%,rgba(255,255,255,0.026)_0_2px,transparent_2px_44px),#121318] text-[#eef4fb]'
+    >
       <CodeGlow position='top-left' />
       <CodeGlow position='bottom-right' />
 

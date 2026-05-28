@@ -67,7 +67,10 @@ const skills = [
 
 export function Skills() {
   return (
-    <section id='skills' className='portfolio-section'>
+    <section
+      id='skills'
+      className='relative h-screen min-h-screen snap-start overflow-hidden bg-[radial-gradient(circle_at_58%_43%,rgba(255,255,255,0.026)_0_2px,transparent_2px_44px),#121318] text-[#eef4fb]'
+    >
       <CodeGlow position='top-right' />
       <CodeGlow position='bottom-left' />
 
