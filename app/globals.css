@@ -107,10 +107,15 @@ html[data-active-section="4"] #contact .section-content {
   transform: translate(-50%, -50%);
   pointer-events: none;
   mix-blend-mode: difference;
+  opacity: 0;
   transition:
     width 180ms ease,
     height 180ms ease,
     opacity 180ms ease;
+}
+
+.contact-string__cursor.visible {
+  opacity: 1;
 }
 
 .contact-string__cursor::after {

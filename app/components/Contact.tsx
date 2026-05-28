@@ -95,6 +95,7 @@ function ContactString() {
       down: false,
       dragging: false,
       grabbedSegment: -1,
+      inside: false,
       nearString: false,
       px: 0,
       py: 0,
@@ -271,6 +272,7 @@ function ContactString() {
     function updateCursor() {
       cursor.style.left = `${mouse.x}px`;
       cursor.style.top = `${mouse.y}px`;
+      cursor.classList.toggle('visible', mouse.inside);
       cursor.classList.toggle('near', mouse.nearString);
       cursor.classList.toggle('dragging', mouse.dragging);
     }
@@ -285,6 +287,7 @@ function ContactString() {
 
     function onPointerMove(event: PointerEvent) {
       const point = localPointer(event);
+      mouse.inside = true;
       mouse.px = mouse.x;
       mouse.py = mouse.y;
       mouse.x = point.x;
@@ -314,6 +317,7 @@ function ContactString() {
 
     function onPointerDown(event: PointerEvent) {
       const point = localPointer(event);
+      mouse.inside = true;
       mouse.down = true;
       mouse.x = point.x;
       mouse.y = point.y;
@@ -383,6 +387,18 @@ function ContactString() {
       mouse.down = false;
       mouse.dragging = false;
       mouse.grabbedSegment = -1;
+      updateCursor();
+    }
+
+    function onPointerLeave() {
+      onPointerUp();
+      mouse.inside = false;
+      mouse.nearString = false;
+      mouse.speed = 0;
+      mouse.rawVX = 0;
+      mouse.rawVY = 0;
+      mouse.vx = 0;
+      mouse.vy = 0;
       updateCursor();
     }
 
@@ -602,8 +618,8 @@ function ContactString() {
     wrapper.addEventListener('pointermove', onPointerMove);
     wrapper.addEventListener('pointerdown', onPointerDown);
     wrapper.addEventListener('pointerup', onPointerUp);
-    wrapper.addEventListener('pointercancel', onPointerUp);
-    wrapper.addEventListener('pointerleave', onPointerUp);
+    wrapper.addEventListener('pointercancel', onPointerLeave);
+    wrapper.addEventListener('pointerleave', onPointerLeave);
     window.addEventListener('resize', resize);
 
     return () => {
@@ -611,8 +627,8 @@ function ContactString() {
       wrapper.removeEventListener('pointermove', onPointerMove);
       wrapper.removeEventListener('pointerdown', onPointerDown);
       wrapper.removeEventListener('pointerup', onPointerUp);
-      wrapper.removeEventListener('pointercancel', onPointerUp);
-      wrapper.removeEventListener('pointerleave', onPointerUp);
+      wrapper.removeEventListener('pointercancel', onPointerLeave);
+      wrapper.removeEventListener('pointerleave', onPointerLeave);
       window.removeEventListener('resize', resize);
     };
   }, []);
