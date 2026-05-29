@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const slides = [
   {
@@ -386,7 +386,7 @@ export function ProjectsSlider() {
     };
   }, []);
 
-  function changeSlide(index: number) {
+  const changeSlide = useCallback((index: number) => {
     if (index === activeIndex || exitingTextTrackIndex !== null) {
       return;
     }
@@ -441,9 +441,9 @@ export function ProjectsSlider() {
         }
       }, slideTransitionDurationMs);
     }, slideStartDelayMs);
-  }
+  }, [activeIndex, exitingTextTrackIndex, trackIndex]);
 
-  function goToPrevious() {
+  const goToPrevious = useCallback(() => {
     const currentProjectIndex = projectSlides.findIndex(
       (slide) => slide.index === activeIndex,
     );
@@ -454,9 +454,9 @@ export function ProjectsSlider() {
     }
 
     changeSlide(projectSlides[currentProjectIndex - 1].index);
-  }
+  }, [activeIndex, changeSlide]);
 
-  function goToNext() {
+  const goToNext = useCallback(() => {
     const currentProjectIndex = projectSlides.findIndex(
       (slide) => slide.index === activeIndex,
     );
@@ -470,9 +470,59 @@ export function ProjectsSlider() {
     }
 
     changeSlide(projectSlides[currentProjectIndex + 1].index);
-  }
+  }, [activeIndex, changeSlide]);
 
   const isChangingSlide = exitingTextTrackIndex !== null;
+
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (
+        event.altKey ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.shiftKey ||
+        (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') ||
+        document.documentElement.dataset.activeSection !== '3'
+      ) {
+        return;
+      }
+
+      const target = event.target as HTMLElement | null;
+      const isEditableTarget =
+        target?.isContentEditable ||
+        target?.tagName === 'INPUT' ||
+        target?.tagName === 'TEXTAREA' ||
+        target?.tagName === 'SELECT';
+
+      if (isEditableTarget || isChangingSlide) {
+        return;
+      }
+
+      event.preventDefault();
+
+      if (!slides[activeIndex].image) {
+        changeSlide(
+          event.key === 'ArrowRight'
+            ? firstProjectIndex
+            : projectSlides[projectSlides.length - 1].index,
+        );
+        return;
+      }
+
+      if (event.key === 'ArrowRight') {
+        goToNext();
+        return;
+      }
+
+      goToPrevious();
+    }
+
+    window.addEventListener('keydown', handleKeyDown, { capture: true });
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown, { capture: true });
+    };
+  }, [activeIndex, changeSlide, goToNext, goToPrevious, isChangingSlide]);
 
   return (
     <div className='relative w-screen overflow-hidden pb-16'>
