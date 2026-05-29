@@ -6,7 +6,16 @@ export function Projects() {
     <section
       id='work'
       className='motion-section h-screen min-h-screen snap-start overflow-hidden'
+      aria-describedby='work-description'
+      aria-labelledby='work-title'
     >
+      <h2 id='work-title' className='sr-only'>
+        Projects
+      </h2>
+      <p id='work-description' className='sr-only'>
+        Selected portfolio projects with previews, descriptions, stack details,
+        and links.
+      </p>
       <CodeGlow position='top-left' />
       <CodeGlow position='bottom-right' />
 

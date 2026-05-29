@@ -6,6 +6,8 @@ export function About() {
     <section
       id='about'
       className='motion-section h-screen min-h-screen snap-start overflow-hidden'
+      aria-describedby='about-description'
+      aria-labelledby='about-title'
     >
       <CodeGlow position='top-left' />
       <CodeGlow position='bottom-right' />
@@ -24,7 +26,10 @@ export function About() {
 
       <div className='section-content relative z-10 mx-auto grid h-screen w-full max-w-[1500px] items-center gap-12 px-8 lg:grid-cols-[0.83fr_1fr] lg:px-[130px]'>
         <div className='relative z-20' data-about-intro>
-          <h2 className='text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-[58px]'>
+          <h2
+            id='about-title'
+            className='text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-[58px]'
+          >
             Hi, I&apos;m Denis
             <br />
             Web Developer
@@ -49,7 +54,10 @@ export function About() {
             />
             <div className='absolute inset-0 bg-[linear-gradient(90deg,rgba(18,19,24,0.98)_0_30%,rgba(18,19,24,0.45)_30%_68%,rgba(18,19,24,0.98)_68%)]' />
           </div>
-          <div className='relative z-10 max-w-[650px] space-y-8 text-base font-bold leading-[1.5] text-zinc-100'>
+          <div
+            id='about-description'
+            className='relative z-10 max-w-[650px] space-y-8 text-base font-bold leading-[1.5] text-zinc-100'
+          >
             <p data-reveal='right' data-reveal-delay='2'>
               Professionally focused on frontend development and modern web
               applications.

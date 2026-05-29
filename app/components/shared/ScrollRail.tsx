@@ -1,14 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import {
+  goToSectionEventName,
+  sectionChangeEventName,
+  sectionIds,
+  sectionLabels,
+} from '../../navigation/data';
 
 const numbers = ['00', '01', '02', '03', '04'];
-const sectionIds = ['top', 'about', 'skills', 'work', 'contact'];
 const markerHeight = 50;
 const railHeight = 250;
 const markerTrackHeight = railHeight - markerHeight;
 const markerStep = markerTrackHeight / (numbers.length - 1);
-const goToSectionEventName = 'portfolio-go-to-section';
 
 export function ScrollRail() {
   const [active, setActive] = useState(0);
@@ -33,13 +37,10 @@ export function ScrollRail() {
     };
 
     updateActiveSection();
-    window.addEventListener('portfolio-section-change', updateActiveSection);
+    window.addEventListener(sectionChangeEventName, updateActiveSection);
 
     return () => {
-      window.removeEventListener(
-        'portfolio-section-change',
-        updateActiveSection,
-      );
+      window.removeEventListener(sectionChangeEventName, updateActiveSection);
     };
   }, []);
 
@@ -55,7 +56,7 @@ export function ScrollRail() {
                 index === active ? 'text-white' : 'text-zinc-300'
               }`}
               onClick={() => goToSection(index)}
-              aria-label={`Go to section ${number}`}
+              aria-label={`Go to ${sectionLabels[index]} section`}
             >
               {number}
             </button>

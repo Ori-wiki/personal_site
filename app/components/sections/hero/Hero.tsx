@@ -28,6 +28,8 @@ export function Hero() {
     <section
       id='top'
       className='motion-section h-screen min-h-screen snap-start overflow-hidden'
+      aria-describedby='top-description'
+      aria-labelledby='top-title'
     >
       <div
         className='pointer-events-none absolute left-[40%] top-[28%]
@@ -55,10 +57,16 @@ export function Hero() {
           />
         </div>
         <div data-hero-text>
-          <h1 className='max-w-[650px] text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-[58px]'>
+          <h1
+            id='top-title'
+            className='max-w-[650px] text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-[58px]'
+          >
             Frontend Developer
           </h1>
-          <p className='mt-8 max-w-[420px] text-base font-semibold leading-[1.7] text-zinc-100'>
+          <p
+            id='top-description'
+            className='mt-8 max-w-[420px] text-base font-semibold leading-[1.7] text-zinc-100'
+          >
             Building modern web interfaces with React, Next.js and TypeScript.
             Focused on clean UI, motion and scalable frontend architecture.
           </p>

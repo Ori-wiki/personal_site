@@ -1,16 +1,23 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import {
+  activeSectionClasses,
+  directionClasses,
+  goToSectionEventName,
+  phaseClasses,
+  previousSectionClasses,
+  sectionChangeEventName,
+  sectionIds,
+} from '../../navigation/data';
 
-const sectionIds = ['top', 'about', 'skills', 'work', 'contact'];
 const wheelThreshold = 1;
-const goToSectionEventName = 'portfolio-go-to-section';
 const motionTiming = {
   aboutIntroDelayMs: 620,
   heroScrollStartDelayMs: 40,
   sectionTransitionMs: 940,
   skillsExitResetDelayMs: 1200,
-  skillsIntroDelayMs: 320,
+  skillsIntroDelayMs: 0,
   wheelLockMs: 980,
 };
 
@@ -23,6 +30,20 @@ function getIndexByHash() {
   const hashIndex = sectionIds.indexOf(hash);
 
   return hashIndex === -1 ? 0 : hashIndex;
+}
+
+function setExclusiveClass(classNames: string[], className: string) {
+  document.documentElement.classList.remove(...classNames);
+  document.documentElement.classList.add(className);
+}
+
+function clearSectionPhaseClass() {
+  document.documentElement.classList.remove(...phaseClasses);
+}
+
+function setSectionPhaseClass(phase: string) {
+  clearSectionPhaseClass();
+  document.documentElement.classList.add(`phase-${phase}`);
 }
 
 export function ScrollSnapController() {
@@ -81,11 +102,14 @@ export function ScrollSnapController() {
       const nextId = sectionIds[nextIndex];
       const previousIndex = targetIndexRef.current;
       const direction = nextIndex >= targetIndexRef.current ? 'down' : 'up';
-      document.documentElement.dataset.previousSection = String(previousIndex);
-      document.documentElement.dataset.sectionDirection = direction;
+      setExclusiveClass(
+        previousSectionClasses,
+        `previous-section-${previousIndex}`,
+      );
+      setExclusiveClass(directionClasses, `section-direction-${direction}`);
 
       if (clearSectionPhase) {
-        delete document.documentElement.dataset.sectionPhase;
+        clearSectionPhaseClass();
       }
 
       if (aboutIntroTimeoutRef.current) {
@@ -108,7 +132,7 @@ export function ScrollSnapController() {
         skillsExitTimeoutRef.current = null;
       }
 
-      delete document.documentElement.dataset.skillsLeaving;
+      document.documentElement.classList.remove('skills-leaving');
 
       targetIndexRef.current = nextIndex;
       document.documentElement.style.setProperty(
@@ -117,32 +141,33 @@ export function ScrollSnapController() {
       );
       pages.style.transform = `translate3d(0, -${nextIndex * 100}vh, 0)`;
       document.documentElement.dataset.activeSection = String(nextIndex);
+      setExclusiveClass(activeSectionClasses, `active-section-${nextIndex}`);
       window.dispatchEvent(
-        new CustomEvent('portfolio-section-change', { detail: nextIndex }),
+        new CustomEvent(sectionChangeEventName, { detail: nextIndex }),
       );
 
       if (nextIndex === 1) {
         aboutIntroTimeoutRef.current = window.setTimeout(() => {
-          document.documentElement.dataset.sectionPhase = 'about-intro';
-          document.documentElement.dataset.aboutIntroShown = 'true';
+          setSectionPhaseClass('about-intro');
+          document.documentElement.classList.add('about-intro-shown');
         }, activeMotionTiming.aboutIntroDelayMs);
       } else if (previousIndex === 1) {
         aboutIntroResetTimeoutRef.current = window.setTimeout(() => {
-          delete document.documentElement.dataset.aboutIntroShown;
+          document.documentElement.classList.remove('about-intro-shown');
         }, activeMotionTiming.sectionTransitionMs);
       }
 
       if (nextIndex === 2) {
         skillsIntroTimeoutRef.current = window.setTimeout(() => {
-          document.documentElement.dataset.sectionPhase = 'skills-intro';
+          setSectionPhaseClass('skills-intro');
         }, activeMotionTiming.skillsIntroDelayMs);
       } else if (previousIndex === 2) {
-        document.documentElement.dataset.skillsLeaving = 'true';
+        document.documentElement.classList.add('skills-leaving');
         skillsExitTimeoutRef.current = window.setTimeout(() => {
-          document.documentElement.dataset.skillsResetting = 'true';
-          delete document.documentElement.dataset.skillsLeaving;
+          document.documentElement.classList.add('skills-resetting');
+          document.documentElement.classList.remove('skills-leaving');
           window.requestAnimationFrame(() => {
-            delete document.documentElement.dataset.skillsResetting;
+            document.documentElement.classList.remove('skills-resetting');
           });
         }, activeMotionTiming.skillsExitResetDelayMs);
       }
@@ -165,19 +190,19 @@ export function ScrollSnapController() {
       }
 
       if (previousIndex === 0 && nextIndex > previousIndex) {
-        document.documentElement.dataset.previousSection =
-          String(previousIndex);
-        document.documentElement.dataset.sectionDirection = 'down';
-        document.documentElement.dataset.sectionPhase = 'hero-text-exit';
+        setExclusiveClass(
+          previousSectionClasses,
+          `previous-section-${previousIndex}`,
+        );
+        setExclusiveClass(directionClasses, 'section-direction-down');
+        setSectionPhaseClass('hero-text-exit');
         window.setTimeout(
           () => goToSection(nextIndex, updateHash, false),
           activeMotionTiming.heroScrollStartDelayMs,
         );
         window.setTimeout(() => {
-          if (
-            document.documentElement.dataset.sectionPhase === 'hero-text-exit'
-          ) {
-            delete document.documentElement.dataset.sectionPhase;
+          if (document.documentElement.classList.contains('phase-hero-text-exit')) {
+            clearSectionPhaseClass();
           }
         }, activeMotionTiming.heroScrollStartDelayMs + activeMotionTiming.sectionTransitionMs);
         return;

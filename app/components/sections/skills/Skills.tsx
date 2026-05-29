@@ -13,6 +13,8 @@ export function Skills() {
     <section
       id='skills'
       className='motion-section h-screen min-h-screen snap-start overflow-hidden'
+      aria-describedby='skills-description'
+      aria-labelledby='skills-title'
     >
       <CodeGlow position='top-right' />
       <CodeGlow position='bottom-left' />
@@ -21,10 +23,16 @@ export function Skills() {
         <p className='text-base uppercase text-zinc-500'>
           A problem is an opportunity to do your best.
         </p>
-        <h2 className='mt-4 text-5xl font-black leading-none tracking-tight text-white sm:text-6xl xl:text-[58px]'>
+        <h2
+          id='skills-title'
+          className='mt-4 text-5xl font-black leading-none tracking-tight text-white sm:text-6xl xl:text-[58px]'
+        >
           Skills &amp; Experience
         </h2>
-        <p className='mt-8 max-w-3xl text-base font-bold leading-7 text-zinc-100'>
+        <p
+          id='skills-description'
+          className='mt-8 max-w-3xl text-base font-bold leading-7 text-zinc-100'
+        >
           I specialize in crafting engaging and high-quality client-side web
           applications.
         </p>

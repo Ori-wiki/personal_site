@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import {
+  activeSectionClasses,
+  directionClasses,
+  phaseClasses,
+  previousSectionClasses,
+  sectionIds,
+} from "./navigation/data";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,15 +27,30 @@ export const metadata: Metadata = {
 
 const initActiveSectionScript = `
   (function () {
-    const sectionIds = ["top", "about", "skills", "work", "contact"];
+    const sectionIds = ${JSON.stringify(sectionIds)};
+    const activeSectionClasses = ${JSON.stringify(activeSectionClasses)};
+    const previousSectionClasses = ${JSON.stringify(previousSectionClasses)};
+    const directionClasses = ${JSON.stringify(directionClasses)};
+    const phaseClasses = ${JSON.stringify(phaseClasses)};
     const hash = window.location.hash ? window.location.hash.slice(1) : "top";
     const index = Math.max(sectionIds.indexOf(hash), 0);
     document.documentElement.dataset.activeSection = String(index);
-    document.documentElement.dataset.previousSection = String(index);
-    document.documentElement.dataset.sectionDirection = "down";
+    document.documentElement.classList.remove(
+      ...activeSectionClasses,
+      ...previousSectionClasses,
+      ...directionClasses,
+      ...phaseClasses
+    );
+    document.documentElement.classList.add(
+      "active-section-" + index,
+      "previous-section-" + index,
+      "section-direction-down"
+    );
     if (index === 1) {
-      document.documentElement.dataset.sectionPhase = "about-intro";
-      document.documentElement.dataset.aboutIntroShown = "true";
+      document.documentElement.classList.add("phase-about-intro", "about-intro-shown");
+    }
+    if (index === 2) {
+      document.documentElement.classList.add("phase-skills-intro");
     }
     document.documentElement.style.setProperty("--initial-section-offset", "-" + (index * 100) + "vh");
     if ("scrollRestoration" in history) {
