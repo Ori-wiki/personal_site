@@ -2,75 +2,14 @@
 
 import Image from 'next/image';
 import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from 'react';
-
-const slides = [
-  {
-    eyebrow: 'Selected Projects',
-    title: 'Portfolio & Previous Projects',
-    description:
-      'A selection of interfaces built with attention to structure, responsive behavior and clear user flows. Each project focuses on turning a familiar product idea into a polished, usable web experience.',
-    builtWith: '',
-    linkLabel: 'See Projects',
-    href: '',
-  },
-  {
-    eyebrow: 'Social Platform UI',
-    title: 'X / Twitter Clone',
-    description:
-      'A scalable social media interface inspired by X, featuring interactive timelines, authentication, dynamic routing and reusable UI architecture.',
-    builtWith: 'Next.js, TypeScript, TailwindCSS, JSON Server.',
-    linkLabel: 'Open project',
-    codeHref: 'https://github.com/Ori-wiki/next_x_tweet',
-    liveHref: 'https://next-x-tweet.vercel.app',
-    image: '/images/xtweet.png',
-  },
-  {
-    eyebrow: 'Product Website',
-    title: 'VPN Website',
-    description:
-      'Conversion-focused VPN platform interface designed to present product features clearly, increase engagement and support scalable content.',
-    builtWith: 'Next.js, TypeScript, Tailwind CSS, REST API',
-    linkLabel: 'Open project',
-    liveHref: 'https://hirovpn.com/ru',
-    image: '/images/vpn.png',
-  },
-];
-
-const firstProjectIndex = slides.findIndex((slide) => Boolean(slide.image));
-const projectSlides = slides
-  .map((slide, index) => ({ ...slide, index }))
-  .filter((slide) => Boolean(slide.image));
-const motionTiming = {
-  slideStartDelayMs: 40,
-  slideTransitionDurationMs: 1200,
-};
-const carouselSlides = [...slides, slides[firstProjectIndex]];
-const firstProjectCloneIndex = slides.length;
-const reducedMotionQuery = '(prefers-reduced-motion: reduce)';
-
-function subscribeToReducedMotionChange(onStoreChange: () => void) {
-  const mediaQuery = window.matchMedia(reducedMotionQuery);
-
-  mediaQuery.addEventListener('change', onStoreChange);
-
-  return () => {
-    mediaQuery.removeEventListener('change', onStoreChange);
-  };
-}
-
-function getReducedMotionSnapshot() {
-  return window.matchMedia(reducedMotionQuery).matches;
-}
-
-function getReducedMotionServerSnapshot() {
-  return false;
-}
+  carouselSlides,
+  firstProjectCloneIndex,
+  firstProjectIndex,
+  projectSlides,
+  slides,
+  type ProjectSlide,
+} from './data';
+import { useProjectSlider } from './useProjectSlider';
 
 function ArrowMark() {
   return (
@@ -192,7 +131,7 @@ function ProjectLinks({
     <div className='flex flex-col items-start gap-3'>
       {codeHref ? (
         <a
-          className='group inline-flex cursor-pointer items-center gap-4 text-base font-black text-white transition-colors hover:text-[#8be36d]'
+          className='group inline-flex cursor-pointer items-center gap-4 text-base font-black text-white transition-colors hover:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d]'
           href={codeHref}
           rel='noreferrer'
           target='_blank'
@@ -203,7 +142,7 @@ function ProjectLinks({
       ) : null}
       {liveHref ? (
         <a
-          className='group inline-flex cursor-pointer items-center gap-4 text-base font-black text-[#f4a949] transition-colors hover:text-white'
+          className='group inline-flex cursor-pointer items-center gap-4 text-base font-black text-[#f4a949] transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d]'
           href={liveHref}
           rel='noreferrer'
           target='_blank'
@@ -239,7 +178,8 @@ function SliderControls({
         {projectSlides.map((item, dotIndex) => (
           <button
             aria-label={`Show project ${dotIndex + 1}: ${item.title}`}
-            className={`h-2.5 cursor-pointer rounded-full transition-all ${
+            aria-current={activeIndex === item.index ? 'true' : undefined}
+            className={`h-2.5 cursor-pointer rounded-full transition-all focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d] disabled:cursor-default disabled:opacity-70 ${
               activeIndex === item.index
                 ? 'w-12 bg-[#8be36d]'
                 : 'w-2.5 bg-zinc-600 hover:bg-zinc-400'
@@ -254,7 +194,7 @@ function SliderControls({
       <div className='flex items-center gap-3'>
         <button
           aria-label='Previous project'
-          className='group grid h-12 w-12 cursor-pointer place-items-center rounded-full border border-white/15 bg-white/[0.06] text-white shadow-[0_14px_34px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur transition hover:border-[#8be36d]/60 hover:bg-[#8be36d]/10 hover:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d]'
+          className='group grid h-12 w-12 cursor-pointer place-items-center rounded-full border border-white/15 bg-white/[0.06] text-white shadow-[0_14px_34px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur transition hover:border-[#8be36d]/60 hover:bg-[#8be36d]/10 hover:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d] disabled:cursor-default disabled:opacity-60'
           disabled={isChangingSlide}
           onClick={goToPrevious}
           type='button'
@@ -263,7 +203,7 @@ function SliderControls({
         </button>
         <button
           aria-label='Next project'
-          className='group grid h-12 w-12 cursor-pointer place-items-center rounded-full border border-white/15 bg-white/[0.06] text-white shadow-[0_14px_34px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur transition hover:border-[#8be36d]/60 hover:bg-[#8be36d]/10 hover:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d]'
+          className='group grid h-12 w-12 cursor-pointer place-items-center rounded-full border border-white/15 bg-white/[0.06] text-white shadow-[0_14px_34px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur transition hover:border-[#8be36d]/60 hover:bg-[#8be36d]/10 hover:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d] disabled:cursor-default disabled:opacity-60'
           disabled={isChangingSlide}
           onClick={goToNext}
           type='button'
@@ -288,7 +228,7 @@ function ProjectArticle({
   isTextResetting: boolean;
   isTextExiting: boolean;
   slideDirection: 'previous' | 'next';
-  slide: (typeof slides)[number];
+  slide: ProjectSlide;
 }) {
   const textMotionClass = isTextExiting
     ? slideDirection === 'next'
@@ -321,7 +261,7 @@ function ProjectArticle({
           {slide.description}
         </p>
         <button
-          className='group relative z-10 mt-8 inline-flex cursor-pointer items-center gap-4 text-lg font-black text-[#b82ce0] transition-colors hover:text-white'
+          className='group relative z-10 mt-8 inline-flex cursor-pointer items-center gap-4 text-lg font-black text-[#b82ce0] transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#b82ce0]'
           data-reveal='tilt-left'
           data-reveal-delay='2'
           onClick={() => changeSlide(firstProjectIndex)}
@@ -385,189 +325,29 @@ function ProjectArticle({
 }
 
 export function ProjectsSlider() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [trackIndex, setTrackIndex] = useState(0);
-  const [exitingTextTrackIndex, setExitingTextTrackIndex] = useState<
-    number | null
-  >(null);
-  const [resettingTextTrackIndex, setResettingTextTrackIndex] = useState<
-    number | null
-  >(null);
-  const [isTrackSnapping, setIsTrackSnapping] = useState(false);
-  const reduceMotion = useSyncExternalStore(
-    subscribeToReducedMotionChange,
-    getReducedMotionSnapshot,
-    getReducedMotionServerSnapshot,
-  );
-  const [slideDirection, setSlideDirection] = useState<'previous' | 'next'>(
-    'next',
-  );
-  const textExitTimeoutRef = useRef<number | null>(null);
-  const slideCleanupTimeoutRef = useRef<number | null>(null);
-  const textResetRafRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (textExitTimeoutRef.current) {
-        window.clearTimeout(textExitTimeoutRef.current);
-      }
-
-      if (slideCleanupTimeoutRef.current) {
-        window.clearTimeout(slideCleanupTimeoutRef.current);
-      }
-
-      if (textResetRafRef.current) {
-        window.cancelAnimationFrame(textResetRafRef.current);
-      }
-    };
-  }, []);
-
-  const changeSlide = useCallback((index: number) => {
-    if (index === activeIndex || exitingTextTrackIndex !== null) {
-      return;
-    }
-
-    if (textExitTimeoutRef.current) {
-      window.clearTimeout(textExitTimeoutRef.current);
-    }
-
-    if (slideCleanupTimeoutRef.current) {
-      window.clearTimeout(slideCleanupTimeoutRef.current);
-    }
-
-    if (textResetRafRef.current) {
-      window.cancelAnimationFrame(textResetRafRef.current);
-    }
-
-    const lastProjectIndex = projectSlides[projectSlides.length - 1].index;
-    const isLastToFirstProject =
-      activeIndex === lastProjectIndex && index === firstProjectIndex;
-    const nextTrackIndex = isLastToFirstProject
-      ? firstProjectCloneIndex
-      : index;
-
-    setSlideDirection(nextTrackIndex > trackIndex ? 'next' : 'previous');
-    const previousTrackIndex = trackIndex;
-    const activeMotionTiming = reduceMotion
-      ? {
-          slideStartDelayMs: 0,
-          slideTransitionDurationMs: 0,
-        }
-      : motionTiming;
-
-    setExitingTextTrackIndex(previousTrackIndex);
-
-    textExitTimeoutRef.current = window.setTimeout(() => {
-      setActiveIndex(index);
-      setTrackIndex(nextTrackIndex);
-
-      slideCleanupTimeoutRef.current = window.setTimeout(() => {
-        setResettingTextTrackIndex(previousTrackIndex);
-        setExitingTextTrackIndex(null);
-
-        textResetRafRef.current = window.requestAnimationFrame(() => {
-          textResetRafRef.current = window.requestAnimationFrame(() => {
-            setResettingTextTrackIndex(null);
-          });
-        });
-
-        if (isLastToFirstProject) {
-          setIsTrackSnapping(true);
-          setTrackIndex(firstProjectIndex);
-
-          window.requestAnimationFrame(() => {
-            window.requestAnimationFrame(() => {
-              setIsTrackSnapping(false);
-            });
-          });
-        }
-      }, activeMotionTiming.slideTransitionDurationMs);
-    }, activeMotionTiming.slideStartDelayMs);
-  }, [activeIndex, exitingTextTrackIndex, reduceMotion, trackIndex]);
-
-  const goToPrevious = useCallback(() => {
-    const currentProjectIndex = projectSlides.findIndex(
-      (slide) => slide.index === activeIndex,
-    );
-
-    if (currentProjectIndex <= 0) {
-      changeSlide(projectSlides[projectSlides.length - 1].index);
-      return;
-    }
-
-    changeSlide(projectSlides[currentProjectIndex - 1].index);
-  }, [activeIndex, changeSlide]);
-
-  const goToNext = useCallback(() => {
-    const currentProjectIndex = projectSlides.findIndex(
-      (slide) => slide.index === activeIndex,
-    );
-
-    if (
-      currentProjectIndex === -1 ||
-      currentProjectIndex === projectSlides.length - 1
-    ) {
-      changeSlide(projectSlides[0].index);
-      return;
-    }
-
-    changeSlide(projectSlides[currentProjectIndex + 1].index);
-  }, [activeIndex, changeSlide]);
-
-  const isChangingSlide = exitingTextTrackIndex !== null;
-
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (
-        event.altKey ||
-        event.ctrlKey ||
-        event.metaKey ||
-        event.shiftKey ||
-        (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') ||
-        document.documentElement.dataset.activeSection !== '3'
-      ) {
-        return;
-      }
-
-      const target = event.target as HTMLElement | null;
-      const isEditableTarget =
-        target?.isContentEditable ||
-        target?.tagName === 'INPUT' ||
-        target?.tagName === 'TEXTAREA' ||
-        target?.tagName === 'SELECT';
-
-      if (isEditableTarget || isChangingSlide) {
-        return;
-      }
-
-      event.preventDefault();
-
-      if (!slides[activeIndex].image) {
-        changeSlide(
-          event.key === 'ArrowRight'
-            ? firstProjectIndex
-            : projectSlides[projectSlides.length - 1].index,
-        );
-        return;
-      }
-
-      if (event.key === 'ArrowRight') {
-        goToNext();
-        return;
-      }
-
-      goToPrevious();
-    }
-
-    window.addEventListener('keydown', handleKeyDown, { capture: true });
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown, { capture: true });
-    };
-  }, [activeIndex, changeSlide, goToNext, goToPrevious, isChangingSlide]);
+  const {
+    activeIndex,
+    changeSlide,
+    exitingTextTrackIndex,
+    goToNext,
+    goToPrevious,
+    isChangingSlide,
+    isTrackSnapping,
+    reduceMotion,
+    resettingTextTrackIndex,
+    slideDirection,
+    swipeHandlers,
+    trackIndex,
+  } = useProjectSlider();
 
   return (
-    <div className='relative w-screen overflow-hidden pb-16'>
+    <div
+      className='relative w-screen touch-pan-y overflow-hidden pb-16'
+      {...swipeHandlers}
+    >
+      <p className='sr-only' aria-live='polite'>
+        Current project slide: {slides[activeIndex].title}
+      </p>
       <div
         className={`flex ${
           isTrackSnapping

@@ -3,22 +3,20 @@
 import { useState } from 'react';
 import { CodeGlow } from '../../shared/CodeGlow';
 import { ContactString } from './ContactString';
-
-const EMAIL = 'ori21wiki@gmail.com';
-const TELEGRAM_HANDLE = '@denis_web_03';
+import { contactLinks } from './data';
 
 export function Contact() {
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedTelegram, setCopiedTelegram] = useState(false);
 
   async function copyEmail() {
-    await navigator.clipboard.writeText(EMAIL);
+    await navigator.clipboard.writeText(contactLinks.email);
     setCopiedEmail(true);
     window.setTimeout(() => setCopiedEmail(false), 1400);
   }
 
   async function copyTelegram() {
-    await navigator.clipboard.writeText(TELEGRAM_HANDLE);
+    await navigator.clipboard.writeText(contactLinks.telegramHandle);
     setCopiedTelegram(true);
     window.setTimeout(() => setCopiedTelegram(false), 1400);
   }
@@ -26,7 +24,7 @@ export function Contact() {
   return (
     <footer
       id='contact'
-      className='relative h-screen min-h-screen snap-start overflow-hidden bg-[radial-gradient(circle_at_58%_43%,rgba(255,255,255,0.026)_0_2px,transparent_2px_44px),#121318] text-[#eef4fb]'
+      className='motion-section h-screen min-h-screen snap-start overflow-visible'
     >
       <CodeGlow position='top-right' />
       <CodeGlow position='bottom-left' />
@@ -60,7 +58,7 @@ export function Contact() {
               <a
                 target='_blank'
                 className='transition-colors hover:text-[#b82ce0]'
-                href='https://t.me/denis_web_03'
+                href={contactLinks.telegramHref}
                 rel='noreferrer'
               >
                 Telegram
@@ -88,9 +86,9 @@ export function Contact() {
             >
               <a
                 className='break-all text-2xl transition-colors hover:text-[#b82ce0] sm:text-[30px]'
-                href={`mailto:${EMAIL}`}
+                href={`mailto:${contactLinks.email}`}
               >
-                {EMAIL}
+                {contactLinks.email}
               </a>
               <button
                 aria-label={copiedEmail ? 'Email copied' : 'Copy email'}

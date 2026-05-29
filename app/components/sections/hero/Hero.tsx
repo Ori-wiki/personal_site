@@ -27,8 +27,7 @@ export function Hero() {
   return (
     <section
       id='top'
-      className='relative h-screen min-h-screen snap-start overflow-hidden
-        bg-[radial-gradient(circle_at_58%_43%,rgba(255,255,255,0.026)_0_2px,transparent_2px_44px),#121318] text-[#eef4fb]'
+      className='motion-section h-screen min-h-screen snap-start overflow-hidden'
     >
       <div
         className='pointer-events-none absolute left-[40%] top-[28%]

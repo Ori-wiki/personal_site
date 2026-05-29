@@ -43,6 +43,42 @@ html {
   scroll-behavior: auto;
 }
 
+.motion-section {
+  position: relative;
+  background: var(--background);
+  color: var(--foreground);
+  isolation: isolate;
+}
+
+.motion-section::before {
+  position: absolute;
+  inset: -8vh 0;
+  z-index: -1;
+  background:
+    radial-gradient(
+      circle at calc(58% + var(--section-bg-shift-x, 0px))
+        calc(43% + var(--section-bg-shift-y, 0px)),
+      rgba(255, 255, 255, 0.026) 0 2px,
+      transparent 2px 44px
+    ),
+    var(--background);
+  content: '';
+  transform: translate3d(0, var(--section-bg-parallax, 0), 0);
+  transition: transform var(--motion-duration-section)
+    var(--motion-ease-section);
+  will-change: transform;
+}
+
+html[data-section-direction='down'] .motion-section::before {
+  --section-bg-parallax: -3.5vh;
+  --section-bg-shift-y: 10px;
+}
+
+html[data-section-direction='up'] .motion-section::before {
+  --section-bg-parallax: 3.5vh;
+  --section-bg-shift-y: -10px;
+}
+
 .section-content {
   transform: none;
 }
@@ -66,6 +102,50 @@ html[data-active-section='4'] #contact .section-content {
   transition: transform var(--motion-duration-reveal) var(--motion-ease-standard);
   transition-delay: var(--reveal-delay, 0ms);
   will-change: transform;
+}
+
+html[data-section-direction='down'][data-previous-section='0']
+  #top
+  .section-content
+  [data-reveal],
+html[data-section-direction='down'][data-previous-section='1']
+  #about
+  .section-content
+  [data-reveal],
+html[data-section-direction='down'][data-previous-section='2']
+  #skills
+  .section-content
+  [data-reveal],
+html[data-section-direction='down'][data-previous-section='3']
+  #work
+  .section-content
+  [data-reveal],
+html[data-section-direction='down'][data-previous-section='4']
+  #contact
+  .section-content
+  [data-reveal],
+html[data-section-direction='up'][data-previous-section='0']
+  #top
+  .section-content
+  [data-reveal],
+html[data-section-direction='up'][data-previous-section='1']
+  #about
+  .section-content
+  [data-reveal],
+html[data-section-direction='up'][data-previous-section='2']
+  #skills
+  .section-content
+  [data-reveal],
+html[data-section-direction='up'][data-previous-section='3']
+  #work
+  .section-content
+  [data-reveal],
+html[data-section-direction='up'][data-previous-section='4']
+  #contact
+  .section-content
+  [data-reveal] {
+  transition-duration: var(--motion-duration-hero-exit);
+  transition-timing-function: var(--motion-ease-exit);
 }
 
 html[data-section-direction='up'] .section-content [data-reveal] {
@@ -274,6 +354,11 @@ html[data-about-intro-shown='true']
 
 @media (prefers-reduced-motion: reduce) {
   #portfolio-pages {
+    transition: none;
+  }
+
+  .motion-section::before {
+    transform: none;
     transition: none;
   }
 
