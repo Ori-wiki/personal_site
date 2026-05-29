@@ -632,7 +632,7 @@ export function ContactString() {
   return (
     <div
       ref={wrapRef}
-      className="relative hidden h-[470px] w-full max-w-[620px] cursor-none before:pointer-events-none before:absolute before:inset-[-8%] before:rounded-[40px] before:bg-[radial-gradient(circle_at_50%_42%,rgba(23,25,34,0.92)_0%,rgba(15,16,20,0.64)_55%,rgba(9,10,13,0)_76%)] before:content-[''] lg:block"
+      className="relative hidden h-[470px] w-full max-w-[620px] cursor-none before:pointer-events-none before:absolute before:inset-[-22%] before:bg-[radial-gradient(ellipse_at_50%_42%,rgba(23,25,34,0.9)_0%,rgba(15,16,20,0.58)_48%,rgba(9,10,13,0.18)_68%,rgba(9,10,13,0)_86%)] before:[mask-image:radial-gradient(ellipse_at_center,black_0%,black_56%,transparent_78%)] before:content-[''] lg:block"
     >
       <canvas ref={canvasRef} className='relative z-[1] block h-full w-full' />
       <div

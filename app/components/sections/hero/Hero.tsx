@@ -32,10 +32,14 @@ export function Hero() {
       <div className='pointer-events-none absolute left-[40%] top-[28%] hidden h-[210px] w-[52%] bg-[radial-gradient(circle,#3f414a_1.7px,transparent_2px)] bg-[length:42px_42px] lg:block' />
       <CodeGlow position='bottom-left' />
 
-      <div className='section-content relative z-10 mx-auto grid h-screen w-full max-w-[1500px] items-center gap-8 px-8 lg:grid-cols-[0.72fr_1fr] lg:px-[130px]'>
+      <div
+        className='section-content relative z-10 mx-auto grid h-screen w-full max-w-[1500px] 
+        items-center gap-8 px-8 lg:grid-cols-[0.72fr_1fr] lg:px-[130px]'
+      >
         <div
           aria-hidden='true'
-          className='pointer-events-none absolute left-[45%] top-[58%] z-20 hidden h-40 w-40 -translate-x-1/2 rotate-12 opacity-90 drop-shadow-[0_28px_36px_rgba(184,44,224,0.24)] lg:block xl:h-52 xl:w-52'
+          className='pointer-events-none absolute left-[45%] top-[58%] z-20 hidden h-40 w-40 -translate-x-1/2
+            rotate-12 opacity-90 drop-shadow-[0_28px_36px_rgba(184,44,224,0.24)] lg:block xl:h-52 xl:w-52'
           data-reveal='tilt-right'
           data-reveal-delay='1'
         >
@@ -55,10 +59,7 @@ export function Hero() {
             Building modern web interfaces with React, Next.js and TypeScript.
             Focused on clean UI, motion and scalable frontend architecture.
           </p>
-          <a
-            className={aboutLinkClassName}
-            href='#about'
-          >
+          <a className={aboutLinkClassName} href='#about'>
             <span>About me</span>
             <span className={aboutLinkArrowClassName} aria-hidden='true' />
           </a>

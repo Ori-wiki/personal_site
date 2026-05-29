@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 
 const sectionIds = ['top', 'about', 'skills', 'work', 'contact'];
-const wheelLockMs = 1250;
+const wheelLockMs = 980;
 const wheelThreshold = 1;
 const goToSectionEventName = 'portfolio-go-to-section';
 const heroScrollStartDelayMs = 40;
@@ -194,6 +194,43 @@ export function ScrollSnapController() {
       }
     };
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.altKey ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.shiftKey ||
+        (event.key !== 'ArrowDown' && event.key !== 'ArrowUp')
+      ) {
+        return;
+      }
+
+      const target = event.target as HTMLElement | null;
+      const isEditableTarget =
+        target?.isContentEditable ||
+        target?.tagName === 'INPUT' ||
+        target?.tagName === 'TEXTAREA' ||
+        target?.tagName === 'SELECT';
+
+      if (isEditableTarget) {
+        return;
+      }
+
+      event.preventDefault();
+
+      if (wheelLockedRef.current) {
+        return;
+      }
+
+      const direction = event.key === 'ArrowDown' ? 1 : -1;
+      const nextIndex = clampSectionIndex(targetIndexRef.current + direction);
+
+      if (nextIndex !== targetIndexRef.current) {
+        lockWheel();
+        startSectionChange(nextIndex);
+      }
+    };
+
     const handleClick = (event: MouseEvent) => {
       const link = (event.target as Element | null)?.closest('a');
       const href = link?.getAttribute('href');
@@ -229,6 +266,7 @@ export function ScrollSnapController() {
       capture: true,
       passive: false,
     });
+    window.addEventListener('keydown', handleKeyDown, { capture: true });
     document.addEventListener('click', handleClick, { capture: true });
     window.addEventListener('hashchange', handleHashChange);
     window.addEventListener(goToSectionEventName, handleGoToSection);
@@ -255,6 +293,7 @@ export function ScrollSnapController() {
       }
 
       window.removeEventListener('wheel', handleWheel, { capture: true });
+      window.removeEventListener('keydown', handleKeyDown, { capture: true });
       document.removeEventListener('click', handleClick, { capture: true });
       window.removeEventListener('hashchange', handleHashChange);
       window.removeEventListener(goToSectionEventName, handleGoToSection);
