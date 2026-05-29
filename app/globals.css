@@ -4,6 +4,23 @@
   --background: #121318;
   --foreground: #eef4fb;
   --initial-section-offset: 0vh;
+  --motion-duration-fast: 180ms;
+  --motion-duration-ui: 300ms;
+  --motion-duration-skill-reveal: 520ms;
+  --motion-duration-hero-exit: 920ms;
+  --motion-duration-section: 940ms;
+  --motion-duration-project-slide: 1200ms;
+  --motion-duration-about-intro: 1650ms;
+  --motion-duration-reveal: 1800ms;
+  --motion-delay-micro: 40ms;
+  --motion-delay-hero-visual: 30ms;
+  --motion-delay-reveal-base: 180ms;
+  --motion-delay-reveal-step: 160ms;
+  --motion-ease-standard: cubic-bezier(0.19, 1, 0.22, 1);
+  --motion-ease-section: cubic-bezier(0.76, 0, 0.24, 1);
+  --motion-ease-exit: cubic-bezier(0.55, 0, 0.2, 1);
+  --motion-ease-project: cubic-bezier(0.88, 0, 0.265, 1);
+  --motion-ease-pop: cubic-bezier(.175, .885, .32, 1.275);
 }
 
 @theme inline {
@@ -46,7 +63,7 @@ html[data-active-section='4'] #contact .section-content {
   --reveal-scale: 0.985;
   transform: translate3d(var(--reveal-x), var(--reveal-y), 0)
     rotate(var(--reveal-rotate)) scale(var(--reveal-scale));
-  transition: transform 1800ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: transform var(--motion-duration-reveal) var(--motion-ease-standard);
   transition-delay: var(--reveal-delay, 0ms);
   will-change: transform;
 }
@@ -111,35 +128,61 @@ html[data-section-direction='up'][data-previous-section='4']
 }
 
 .section-content [data-reveal-delay='1'] {
-  --reveal-delay: 180ms;
+  --reveal-delay: var(--motion-delay-reveal-base);
 }
 
 .section-content [data-reveal-delay='2'] {
-  --reveal-delay: 340ms;
+  --reveal-delay: calc(
+    var(--motion-delay-reveal-base) + var(--motion-delay-reveal-step)
+  );
 }
 
 .section-content [data-reveal-delay='3'] {
-  --reveal-delay: 500ms;
+  --reveal-delay: calc(
+    var(--motion-delay-reveal-base) + var(--motion-delay-reveal-step) +
+      var(--motion-delay-reveal-step)
+  );
 }
 
 .section-content [data-reveal-delay='4'] {
-  --reveal-delay: 660ms;
+  --reveal-delay: calc(
+    var(--motion-delay-reveal-base) + var(--motion-delay-reveal-step) +
+      var(--motion-delay-reveal-step) + var(--motion-delay-reveal-step)
+  );
 }
 
 .section-content [data-reveal-delay='5'] {
-  --reveal-delay: 820ms;
+  --reveal-delay: calc(
+    var(--motion-delay-reveal-base) + var(--motion-delay-reveal-step) +
+      var(--motion-delay-reveal-step) + var(--motion-delay-reveal-step) +
+      var(--motion-delay-reveal-step)
+  );
 }
 
 .section-content [data-reveal-delay='6'] {
-  --reveal-delay: 980ms;
+  --reveal-delay: calc(
+    var(--motion-delay-reveal-base) + var(--motion-delay-reveal-step) +
+      var(--motion-delay-reveal-step) + var(--motion-delay-reveal-step) +
+      var(--motion-delay-reveal-step) + var(--motion-delay-reveal-step)
+  );
 }
 
 .section-content [data-reveal-delay='7'] {
-  --reveal-delay: 1140ms;
+  --reveal-delay: calc(
+    var(--motion-delay-reveal-base) + var(--motion-delay-reveal-step) +
+      var(--motion-delay-reveal-step) + var(--motion-delay-reveal-step) +
+      var(--motion-delay-reveal-step) + var(--motion-delay-reveal-step) +
+      var(--motion-delay-reveal-step)
+  );
 }
 
 .section-content [data-reveal-delay='8'] {
-  --reveal-delay: 1300ms;
+  --reveal-delay: calc(
+    var(--motion-delay-reveal-base) + var(--motion-delay-reveal-step) +
+      var(--motion-delay-reveal-step) + var(--motion-delay-reveal-step) +
+      var(--motion-delay-reveal-step) + var(--motion-delay-reveal-step) +
+      var(--motion-delay-reveal-step) + var(--motion-delay-reveal-step)
+  );
 }
 
 html:not([data-active-section]) #top .section-content [data-reveal],
@@ -153,7 +196,7 @@ html[data-active-section='4'] #contact .section-content [data-reveal] {
 
 #skills [data-skill-reveal] {
   opacity: 0;
-  transition: opacity 180ms ease;
+  transition: opacity var(--motion-duration-fast) ease;
   transition-delay: 0ms;
   will-change: opacity;
 }
@@ -174,7 +217,7 @@ html[data-skills-leaving='true']
 html[data-active-section='2'][data-section-phase='skills-intro']
   #skills
   [data-skill-reveal] {
-  transition-duration: 520ms;
+  transition-duration: var(--motion-duration-skill-reveal);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
@@ -184,16 +227,19 @@ html[data-active-section='2'][data-section-phase='skills-intro']
 }
 
 html[data-section-phase='hero-text-exit'] #top [data-hero-text] {
-  animation: hero-text-exit 920ms cubic-bezier(0.55, 0, 0.2, 1) forwards;
+  animation: hero-text-exit var(--motion-duration-hero-exit)
+    var(--motion-ease-exit) forwards;
 }
 
 html[data-section-phase='hero-text-exit'] #top [data-hero-visual='isometric'] {
-  animation: hero-visual-exit 920ms cubic-bezier(0.55, 0, 0.2, 1) 30ms forwards;
+  animation: hero-visual-exit var(--motion-duration-hero-exit)
+    var(--motion-ease-exit) var(--motion-delay-hero-visual) forwards;
 }
 
 #about [data-about-intro] {
   transform: translate3d(-42vw, 0, 0);
-  transition: transform 1650ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: transform var(--motion-duration-about-intro)
+    var(--motion-ease-standard);
   will-change: transform;
 }
 
@@ -227,6 +273,10 @@ html[data-about-intro-shown='true']
 }
 
 @media (prefers-reduced-motion: reduce) {
+  #portfolio-pages {
+    transition: none;
+  }
+
   .section-content,
   .section-content [data-reveal] {
     transform: none;

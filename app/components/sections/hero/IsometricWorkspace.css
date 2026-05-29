@@ -3,7 +3,7 @@
   --ma: 24deg;
   --oz: 4.25rem;
   --dz: 3.25rem;
-  --fn: cubic-bezier(.175, .885, .32, 1.275);
+  --fn: var(--motion-ease-pop);
   --g: 1.25rem;
   --l: 1px;
   --back:

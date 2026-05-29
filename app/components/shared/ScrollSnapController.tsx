@@ -3,14 +3,16 @@
 import { useEffect, useRef } from 'react';
 
 const sectionIds = ['top', 'about', 'skills', 'work', 'contact'];
-const wheelLockMs = 980;
 const wheelThreshold = 1;
 const goToSectionEventName = 'portfolio-go-to-section';
-const heroScrollStartDelayMs = 40;
-const sectionTransitionMs = 940;
-const aboutIntroDelayMs = 620;
-const skillsIntroDelayMs = 320;
-const skillsExitResetDelayMs = sectionTransitionMs + 260;
+const motionTiming = {
+  aboutIntroDelayMs: 620,
+  heroScrollStartDelayMs: 40,
+  sectionTransitionMs: 940,
+  skillsExitResetDelayMs: 1200,
+  skillsIntroDelayMs: 320,
+  wheelLockMs: 980,
+};
 
 function clampSectionIndex(index: number) {
   return Math.min(Math.max(index, 0), sectionIds.length - 1);
@@ -39,6 +41,20 @@ export function ScrollSnapController() {
       return;
     }
 
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
+    const activeMotionTiming = prefersReducedMotion
+      ? {
+          aboutIntroDelayMs: 0,
+          heroScrollStartDelayMs: 0,
+          sectionTransitionMs: 0,
+          skillsExitResetDelayMs: 0,
+          skillsIntroDelayMs: 0,
+          wheelLockMs: 120,
+        }
+      : motionTiming;
+
     const unlockWheel = () => {
       wheelLockedRef.current = false;
     };
@@ -52,7 +68,7 @@ export function ScrollSnapController() {
 
       wheelUnlockTimeoutRef.current = window.setTimeout(
         unlockWheel,
-        wheelLockMs,
+        activeMotionTiming.wheelLockMs,
       );
     };
 
@@ -109,17 +125,17 @@ export function ScrollSnapController() {
         aboutIntroTimeoutRef.current = window.setTimeout(() => {
           document.documentElement.dataset.sectionPhase = 'about-intro';
           document.documentElement.dataset.aboutIntroShown = 'true';
-        }, aboutIntroDelayMs);
+        }, activeMotionTiming.aboutIntroDelayMs);
       } else if (previousIndex === 1) {
         aboutIntroResetTimeoutRef.current = window.setTimeout(() => {
           delete document.documentElement.dataset.aboutIntroShown;
-        }, sectionTransitionMs);
+        }, activeMotionTiming.sectionTransitionMs);
       }
 
       if (nextIndex === 2) {
         skillsIntroTimeoutRef.current = window.setTimeout(() => {
           document.documentElement.dataset.sectionPhase = 'skills-intro';
-        }, skillsIntroDelayMs);
+        }, activeMotionTiming.skillsIntroDelayMs);
       } else if (previousIndex === 2) {
         document.documentElement.dataset.skillsLeaving = 'true';
         skillsExitTimeoutRef.current = window.setTimeout(() => {
@@ -128,7 +144,7 @@ export function ScrollSnapController() {
           window.requestAnimationFrame(() => {
             delete document.documentElement.dataset.skillsResetting;
           });
-        }, skillsExitResetDelayMs);
+        }, activeMotionTiming.skillsExitResetDelayMs);
       }
 
       if (updateHash) {
@@ -155,7 +171,7 @@ export function ScrollSnapController() {
         document.documentElement.dataset.sectionPhase = 'hero-text-exit';
         window.setTimeout(
           () => goToSection(nextIndex, updateHash, false),
-          heroScrollStartDelayMs,
+          activeMotionTiming.heroScrollStartDelayMs,
         );
         window.setTimeout(() => {
           if (
@@ -163,7 +179,7 @@ export function ScrollSnapController() {
           ) {
             delete document.documentElement.dataset.sectionPhase;
           }
-        }, heroScrollStartDelayMs + sectionTransitionMs);
+        }, activeMotionTiming.heroScrollStartDelayMs + activeMotionTiming.sectionTransitionMs);
         return;
       }
 

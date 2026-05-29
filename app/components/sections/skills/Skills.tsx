@@ -2,8 +2,10 @@ import Image from 'next/image';
 import type { CSSProperties } from 'react';
 import { CodeGlow } from '../../shared/CodeGlow';
 
-const firstSkillRevealDelayMs = 80;
-const skillRevealStepMs = 85;
+const motionTiming = {
+  firstSkillRevealDelayMs: 80,
+  skillRevealStepMs: 85,
+};
 
 const skills = [
   {
@@ -122,7 +124,10 @@ export function Skills() {
               data-skill-reveal
               style={
                 {
-                  '--reveal-delay': `${firstSkillRevealDelayMs + index * skillRevealStepMs}ms`,
+                  '--reveal-delay': `${
+                    motionTiming.firstSkillRevealDelayMs +
+                    index * motionTiming.skillRevealStepMs
+                  }ms`,
                 } as CSSProperties
               }
             >

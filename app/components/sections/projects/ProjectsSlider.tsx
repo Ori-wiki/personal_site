@@ -1,7 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
 
 const slides = [
   {
@@ -40,10 +46,31 @@ const firstProjectIndex = slides.findIndex((slide) => Boolean(slide.image));
 const projectSlides = slides
   .map((slide, index) => ({ ...slide, index }))
   .filter((slide) => Boolean(slide.image));
-const slideStartDelayMs = 40;
-const slideTransitionDurationMs = 1200;
+const motionTiming = {
+  slideStartDelayMs: 40,
+  slideTransitionDurationMs: 1200,
+};
 const carouselSlides = [...slides, slides[firstProjectIndex]];
 const firstProjectCloneIndex = slides.length;
+const reducedMotionQuery = '(prefers-reduced-motion: reduce)';
+
+function subscribeToReducedMotionChange(onStoreChange: () => void) {
+  const mediaQuery = window.matchMedia(reducedMotionQuery);
+
+  mediaQuery.addEventListener('change', onStoreChange);
+
+  return () => {
+    mediaQuery.removeEventListener('change', onStoreChange);
+  };
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia(reducedMotionQuery).matches;
+}
+
+function getReducedMotionServerSnapshot() {
+  return false;
+}
 
 function ArrowMark() {
   return (
@@ -249,12 +276,14 @@ function SliderControls({
 }
 
 function ProjectArticle({
+  reduceMotion,
   changeSlide,
   isTextResetting,
   isTextExiting,
   slideDirection,
   slide,
 }: {
+  reduceMotion: boolean;
   changeSlide: (index: number) => void;
   isTextResetting: boolean;
   isTextExiting: boolean;
@@ -268,7 +297,9 @@ function ProjectArticle({
     : 'translate-x-0';
   const textTransitionClass = isTextResetting
     ? 'transition-none'
-    : 'transition-transform duration-[920ms] ease-[cubic-bezier(0.55,0,0.2,1)]';
+    : reduceMotion
+      ? 'transition-none'
+    : 'transition-transform duration-[var(--motion-duration-hero-exit)] ease-[var(--motion-ease-exit)]';
 
   if (!slide.image) {
     return (
@@ -363,6 +394,11 @@ export function ProjectsSlider() {
     number | null
   >(null);
   const [isTrackSnapping, setIsTrackSnapping] = useState(false);
+  const reduceMotion = useSyncExternalStore(
+    subscribeToReducedMotionChange,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot,
+  );
   const [slideDirection, setSlideDirection] = useState<'previous' | 'next'>(
     'next',
   );
@@ -412,6 +448,12 @@ export function ProjectsSlider() {
 
     setSlideDirection(nextTrackIndex > trackIndex ? 'next' : 'previous');
     const previousTrackIndex = trackIndex;
+    const activeMotionTiming = reduceMotion
+      ? {
+          slideStartDelayMs: 0,
+          slideTransitionDurationMs: 0,
+        }
+      : motionTiming;
 
     setExitingTextTrackIndex(previousTrackIndex);
 
@@ -439,9 +481,9 @@ export function ProjectsSlider() {
             });
           });
         }
-      }, slideTransitionDurationMs);
-    }, slideStartDelayMs);
-  }, [activeIndex, exitingTextTrackIndex, trackIndex]);
+      }, activeMotionTiming.slideTransitionDurationMs);
+    }, activeMotionTiming.slideStartDelayMs);
+  }, [activeIndex, exitingTextTrackIndex, reduceMotion, trackIndex]);
 
   const goToPrevious = useCallback(() => {
     const currentProjectIndex = projectSlides.findIndex(
@@ -530,7 +572,9 @@ export function ProjectsSlider() {
         className={`flex ${
           isTrackSnapping
             ? ''
-            : 'transition-transform duration-[1200ms] ease-[cubic-bezier(0.88,0,0.265,1)]'
+            : reduceMotion
+              ? ''
+            : 'transition-transform duration-[var(--motion-duration-project-slide)] ease-[var(--motion-ease-project)]'
         }`}
         style={{
           width: `${carouselSlides.length * 100}%`,
@@ -552,6 +596,7 @@ export function ProjectsSlider() {
             <div className='relative mx-auto grid min-h-[560px] w-full max-w-[1500px] items-center gap-12 px-8 lg:grid-cols-[0.74fr_1fr] lg:px-[130px]'>
               <ProjectArticle
                 changeSlide={changeSlide}
+                reduceMotion={reduceMotion}
                 isTextResetting={resettingTextTrackIndex === slideIndex}
                 isTextExiting={exitingTextTrackIndex === slideIndex}
                 slide={slide}
