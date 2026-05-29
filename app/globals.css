@@ -151,6 +151,33 @@ html[data-active-section='4'] #contact .section-content [data-reveal] {
   transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
 }
 
+#skills [data-skill-reveal] {
+  opacity: 0;
+  transition: opacity 180ms ease;
+  transition-delay: 0ms;
+  will-change: opacity;
+}
+
+html[data-skills-resetting='true'] #skills [data-skill-reveal] {
+  transition: none;
+}
+
+html[data-active-section='2'][data-section-phase='skills-intro']
+  #skills
+  [data-skill-reveal],
+html[data-skills-leaving='true']
+  #skills
+  [data-skill-reveal] {
+  opacity: 1;
+}
+
+html[data-active-section='2'][data-section-phase='skills-intro']
+  #skills
+  [data-skill-reveal] {
+  transition-duration: 520ms;
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
 #top [data-hero-text] {
   transform: translate3d(0, 0, 0);
   will-change: transform;
@@ -203,6 +230,11 @@ html[data-about-intro-shown='true']
   .section-content,
   .section-content [data-reveal] {
     transform: none;
+    transition: none;
+  }
+
+  #skills [data-skill-reveal] {
+    opacity: 1;
     transition: none;
   }
 }

@@ -9,6 +9,8 @@ const goToSectionEventName = 'portfolio-go-to-section';
 const heroScrollStartDelayMs = 40;
 const sectionTransitionMs = 940;
 const aboutIntroDelayMs = 620;
+const skillsIntroDelayMs = 320;
+const skillsExitResetDelayMs = sectionTransitionMs + 260;
 
 function clampSectionIndex(index: number) {
   return Math.min(Math.max(index, 0), sectionIds.length - 1);
@@ -27,6 +29,8 @@ export function ScrollSnapController() {
   const wheelUnlockTimeoutRef = useRef<number | null>(null);
   const aboutIntroTimeoutRef = useRef<number | null>(null);
   const aboutIntroResetTimeoutRef = useRef<number | null>(null);
+  const skillsIntroTimeoutRef = useRef<number | null>(null);
+  const skillsExitTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     const pages = document.getElementById('portfolio-pages');
@@ -78,6 +82,18 @@ export function ScrollSnapController() {
         aboutIntroResetTimeoutRef.current = null;
       }
 
+      if (skillsIntroTimeoutRef.current) {
+        window.clearTimeout(skillsIntroTimeoutRef.current);
+        skillsIntroTimeoutRef.current = null;
+      }
+
+      if (skillsExitTimeoutRef.current) {
+        window.clearTimeout(skillsExitTimeoutRef.current);
+        skillsExitTimeoutRef.current = null;
+      }
+
+      delete document.documentElement.dataset.skillsLeaving;
+
       targetIndexRef.current = nextIndex;
       document.documentElement.style.setProperty(
         '--initial-section-offset',
@@ -98,6 +114,21 @@ export function ScrollSnapController() {
         aboutIntroResetTimeoutRef.current = window.setTimeout(() => {
           delete document.documentElement.dataset.aboutIntroShown;
         }, sectionTransitionMs);
+      }
+
+      if (nextIndex === 2) {
+        skillsIntroTimeoutRef.current = window.setTimeout(() => {
+          document.documentElement.dataset.sectionPhase = 'skills-intro';
+        }, skillsIntroDelayMs);
+      } else if (previousIndex === 2) {
+        document.documentElement.dataset.skillsLeaving = 'true';
+        skillsExitTimeoutRef.current = window.setTimeout(() => {
+          document.documentElement.dataset.skillsResetting = 'true';
+          delete document.documentElement.dataset.skillsLeaving;
+          window.requestAnimationFrame(() => {
+            delete document.documentElement.dataset.skillsResetting;
+          });
+        }, skillsExitResetDelayMs);
       }
 
       if (updateHash) {
@@ -213,6 +244,14 @@ export function ScrollSnapController() {
 
       if (aboutIntroResetTimeoutRef.current) {
         window.clearTimeout(aboutIntroResetTimeoutRef.current);
+      }
+
+      if (skillsIntroTimeoutRef.current) {
+        window.clearTimeout(skillsIntroTimeoutRef.current);
+      }
+
+      if (skillsExitTimeoutRef.current) {
+        window.clearTimeout(skillsExitTimeoutRef.current);
       }
 
       window.removeEventListener('wheel', handleWheel, { capture: true });

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const slides = [
   {
@@ -40,6 +40,10 @@ const firstProjectIndex = slides.findIndex((slide) => Boolean(slide.image));
 const projectSlides = slides
   .map((slide, index) => ({ ...slide, index }))
   .filter((slide) => Boolean(slide.image));
+const slideStartDelayMs = 40;
+const slideTransitionDurationMs = 1200;
+const carouselSlides = [...slides, slides[firstProjectIndex]];
+const firstProjectCloneIndex = slides.length;
 
 function ArrowMark() {
   return (
@@ -187,14 +191,16 @@ function ProjectLinks({
 
 function SliderControls({
   activeIndex,
+  isChangingSlide,
   goToNext,
   goToPrevious,
-  setActiveIndex,
+  changeSlide,
 }: {
   activeIndex: number;
+  isChangingSlide: boolean;
   goToNext: () => void;
   goToPrevious: () => void;
-  setActiveIndex: (index: number) => void;
+  changeSlide: (index: number) => void;
 }) {
   return (
     <div
@@ -211,8 +217,9 @@ function SliderControls({
                 ? 'w-12 bg-[#8be36d]'
                 : 'w-2.5 bg-zinc-600 hover:bg-zinc-400'
             }`}
+            disabled={isChangingSlide}
             key={item.title}
-            onClick={() => setActiveIndex(item.index)}
+            onClick={() => changeSlide(item.index)}
             type='button'
           />
         ))}
@@ -221,6 +228,7 @@ function SliderControls({
         <button
           aria-label='Previous project'
           className='group grid h-12 w-12 cursor-pointer place-items-center rounded-full border border-white/15 bg-white/[0.06] text-white shadow-[0_14px_34px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur transition hover:border-[#8be36d]/60 hover:bg-[#8be36d]/10 hover:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d]'
+          disabled={isChangingSlide}
           onClick={goToPrevious}
           type='button'
         >
@@ -229,6 +237,7 @@ function SliderControls({
         <button
           aria-label='Next project'
           className='group grid h-12 w-12 cursor-pointer place-items-center rounded-full border border-white/15 bg-white/[0.06] text-white shadow-[0_14px_34px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur transition hover:border-[#8be36d]/60 hover:bg-[#8be36d]/10 hover:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d]'
+          disabled={isChangingSlide}
           onClick={goToNext}
           type='button'
         >
@@ -240,15 +249,32 @@ function SliderControls({
 }
 
 function ProjectArticle({
-  setActiveIndex,
+  changeSlide,
+  isTextResetting,
+  isTextExiting,
+  slideDirection,
   slide,
 }: {
-  setActiveIndex: (index: number) => void;
+  changeSlide: (index: number) => void;
+  isTextResetting: boolean;
+  isTextExiting: boolean;
+  slideDirection: 'previous' | 'next';
   slide: (typeof slides)[number];
 }) {
+  const textMotionClass = isTextExiting
+    ? slideDirection === 'next'
+      ? '-translate-x-[72vw]'
+      : 'translate-x-[72vw]'
+    : 'translate-x-0';
+  const textTransitionClass = isTextResetting
+    ? 'transition-none'
+    : 'transition-transform duration-[920ms] ease-[cubic-bezier(0.55,0,0.2,1)]';
+
   if (!slide.image) {
     return (
-      <article className='relative col-span-full mx-auto flex min-h-[430px] max-w-[820px] flex-col items-center justify-center text-center'>
+      <article
+        className={`pointer-events-auto relative col-span-full row-start-1 mx-auto flex min-h-[430px] max-w-[820px] flex-col items-center justify-center text-center ${textTransitionClass} ${textMotionClass}`}
+      >
         <IntroDecorations />
         <h2
           className='relative z-10 max-w-[820px] text-5xl font-black leading-[0.92] tracking-tight text-white sm:text-6xl xl:text-[58px]'
@@ -267,7 +293,7 @@ function ProjectArticle({
           className='group relative z-10 mt-8 inline-flex cursor-pointer items-center gap-4 text-lg font-black text-[#b82ce0] transition-colors hover:text-white'
           data-reveal='tilt-left'
           data-reveal-delay='2'
-          onClick={() => setActiveIndex(firstProjectIndex)}
+          onClick={() => changeSlide(firstProjectIndex)}
           type='button'
         >
           {slide.linkLabel}
@@ -280,7 +306,9 @@ function ProjectArticle({
   return (
     <>
       <ProjectSlideDecorations />
-      <article className='relative min-h-[430px] max-w-[620px]'>
+      <article
+        className={`pointer-events-auto relative col-start-1 row-start-1 min-h-[430px] max-w-[620px] ${textTransitionClass} ${textMotionClass}`}
+      >
         <p className='text-base uppercase text-zinc-500' data-reveal='down'>
           {slide.eyebrow}
         </p>
@@ -314,7 +342,6 @@ function ProjectArticle({
           />
         </div>
       </article>
-
       <div
         className='relative hidden min-h-[560px] items-center justify-center overflow-visible lg:flex'
         data-reveal='right'
@@ -328,67 +355,170 @@ function ProjectArticle({
 
 export function ProjectsSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [trackIndex, setTrackIndex] = useState(0);
+  const [exitingTextTrackIndex, setExitingTextTrackIndex] = useState<
+    number | null
+  >(null);
+  const [resettingTextTrackIndex, setResettingTextTrackIndex] = useState<
+    number | null
+  >(null);
+  const [isTrackSnapping, setIsTrackSnapping] = useState(false);
+  const [slideDirection, setSlideDirection] = useState<'previous' | 'next'>(
+    'next',
+  );
+  const textExitTimeoutRef = useRef<number | null>(null);
+  const slideCleanupTimeoutRef = useRef<number | null>(null);
+  const textResetRafRef = useRef<number | null>(null);
 
-  function goToPrevious() {
-    setActiveIndex((current) => {
-      const currentProjectIndex = projectSlides.findIndex(
-        (slide) => slide.index === current,
-      );
-
-      if (currentProjectIndex <= 0) {
-        return projectSlides[projectSlides.length - 1].index;
+  useEffect(() => {
+    return () => {
+      if (textExitTimeoutRef.current) {
+        window.clearTimeout(textExitTimeoutRef.current);
       }
 
-      return projectSlides[currentProjectIndex - 1].index;
-    });
+      if (slideCleanupTimeoutRef.current) {
+        window.clearTimeout(slideCleanupTimeoutRef.current);
+      }
+
+      if (textResetRafRef.current) {
+        window.cancelAnimationFrame(textResetRafRef.current);
+      }
+    };
+  }, []);
+
+  function changeSlide(index: number) {
+    if (index === activeIndex || exitingTextTrackIndex !== null) {
+      return;
+    }
+
+    if (textExitTimeoutRef.current) {
+      window.clearTimeout(textExitTimeoutRef.current);
+    }
+
+    if (slideCleanupTimeoutRef.current) {
+      window.clearTimeout(slideCleanupTimeoutRef.current);
+    }
+
+    if (textResetRafRef.current) {
+      window.cancelAnimationFrame(textResetRafRef.current);
+    }
+
+    const lastProjectIndex = projectSlides[projectSlides.length - 1].index;
+    const isLastToFirstProject =
+      activeIndex === lastProjectIndex && index === firstProjectIndex;
+    const nextTrackIndex = isLastToFirstProject
+      ? firstProjectCloneIndex
+      : index;
+
+    setSlideDirection(nextTrackIndex > trackIndex ? 'next' : 'previous');
+    const previousTrackIndex = trackIndex;
+
+    setExitingTextTrackIndex(previousTrackIndex);
+
+    textExitTimeoutRef.current = window.setTimeout(() => {
+      setActiveIndex(index);
+      setTrackIndex(nextTrackIndex);
+
+      slideCleanupTimeoutRef.current = window.setTimeout(() => {
+        setResettingTextTrackIndex(previousTrackIndex);
+        setExitingTextTrackIndex(null);
+
+        textResetRafRef.current = window.requestAnimationFrame(() => {
+          textResetRafRef.current = window.requestAnimationFrame(() => {
+            setResettingTextTrackIndex(null);
+          });
+        });
+
+        if (isLastToFirstProject) {
+          setIsTrackSnapping(true);
+          setTrackIndex(firstProjectIndex);
+
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+              setIsTrackSnapping(false);
+            });
+          });
+        }
+      }, slideTransitionDurationMs);
+    }, slideStartDelayMs);
+  }
+
+  function goToPrevious() {
+    const currentProjectIndex = projectSlides.findIndex(
+      (slide) => slide.index === activeIndex,
+    );
+
+    if (currentProjectIndex <= 0) {
+      changeSlide(projectSlides[projectSlides.length - 1].index);
+      return;
+    }
+
+    changeSlide(projectSlides[currentProjectIndex - 1].index);
   }
 
   function goToNext() {
-    setActiveIndex((current) => {
-      const currentProjectIndex = projectSlides.findIndex(
-        (slide) => slide.index === current,
-      );
+    const currentProjectIndex = projectSlides.findIndex(
+      (slide) => slide.index === activeIndex,
+    );
 
-      if (
-        currentProjectIndex === -1 ||
-        currentProjectIndex === projectSlides.length - 1
-      ) {
-        return projectSlides[0].index;
-      }
+    if (
+      currentProjectIndex === -1 ||
+      currentProjectIndex === projectSlides.length - 1
+    ) {
+      changeSlide(projectSlides[0].index);
+      return;
+    }
 
-      return projectSlides[currentProjectIndex + 1].index;
-    });
+    changeSlide(projectSlides[currentProjectIndex + 1].index);
   }
+
+  const isChangingSlide = exitingTextTrackIndex !== null;
 
   return (
     <div className='relative w-screen overflow-hidden pb-16'>
       <div
-        className='flex transition-transform duration-[1200ms] ease-[cubic-bezier(0.88,0,0.265,1)]'
+        className={`flex ${
+          isTrackSnapping
+            ? ''
+            : 'transition-transform duration-[1200ms] ease-[cubic-bezier(0.88,0,0.265,1)]'
+        }`}
         style={{
-          width: `${slides.length * 100}%`,
-          transform: `translate3d(-${activeIndex * (100 / slides.length)}%, 0, 0)`,
+          width: `${carouselSlides.length * 100}%`,
+          transform: `translate3d(-${trackIndex * (100 / carouselSlides.length)}%, 0, 0)`,
         }}
       >
-        {slides.map((slide, slideIndex) => (
+        {carouselSlides.map((slide, slideIndex) => {
+          const canonicalSlideIndex =
+            slideIndex === firstProjectCloneIndex ? firstProjectIndex : slideIndex;
+
+          return (
           <div
-            aria-hidden={activeIndex !== slideIndex}
+            aria-hidden={activeIndex !== canonicalSlideIndex}
             className='min-h-[560px] shrink-0'
-            key={slide.title}
-            inert={activeIndex !== slideIndex}
-            style={{ width: `${100 / slides.length}%` }}
+            key={`${slide.title}-${slideIndex}`}
+            inert={activeIndex !== canonicalSlideIndex}
+            style={{ width: `${100 / carouselSlides.length}%` }}
           >
             <div className='relative mx-auto grid min-h-[560px] w-full max-w-[1500px] items-center gap-12 px-8 lg:grid-cols-[0.74fr_1fr] lg:px-[130px]'>
-              <ProjectArticle setActiveIndex={setActiveIndex} slide={slide} />
+              <ProjectArticle
+                changeSlide={changeSlide}
+                isTextResetting={resettingTextTrackIndex === slideIndex}
+                isTextExiting={exitingTextTrackIndex === slideIndex}
+                slide={slide}
+                slideDirection={slideDirection}
+              />
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
       {slides[activeIndex].image ? (
         <SliderControls
           activeIndex={activeIndex}
+          changeSlide={changeSlide}
           goToNext={goToNext}
           goToPrevious={goToPrevious}
-          setActiveIndex={setActiveIndex}
+          isChangingSlide={isChangingSlide}
         />
       ) : null}
     </div>
