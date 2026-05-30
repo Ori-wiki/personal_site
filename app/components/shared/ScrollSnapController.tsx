@@ -12,6 +12,8 @@ import {
 } from '../../navigation/data';
 
 const wheelThreshold = 1;
+const swipeAxisRatio = 1.15;
+const swipeThreshold = 56;
 const motionTiming = {
   aboutIntroDelayMs: 620,
   heroScrollStartDelayMs: 40,
@@ -41,6 +43,10 @@ function clearSectionPhaseClass() {
   document.documentElement.classList.remove(...phaseClasses);
 }
 
+function shouldHandleMouseSwipe() {
+  return window.innerWidth < 1024;
+}
+
 function setSectionPhaseClass(phase: string) {
   clearSectionPhaseClass();
   document.documentElement.classList.add(`phase-${phase}`);
@@ -50,6 +56,9 @@ export function ScrollSnapController() {
   const targetIndexRef = useRef(0);
   const wheelLockedRef = useRef(false);
   const wheelUnlockTimeoutRef = useRef<number | null>(null);
+  const swipeStartXRef = useRef<number | null>(null);
+  const swipeStartYRef = useRef<number | null>(null);
+  const swipeHandledRef = useRef(false);
   const aboutIntroTimeoutRef = useRef<number | null>(null);
   const aboutIntroResetTimeoutRef = useRef<number | null>(null);
   const skillsIntroTimeoutRef = useRef<number | null>(null);
@@ -291,6 +300,140 @@ export function ScrollSnapController() {
       }
     };
 
+    const resetSwipe = () => {
+      swipeStartXRef.current = null;
+      swipeStartYRef.current = null;
+      swipeHandledRef.current = false;
+    };
+
+    const startSwipe = (clientX: number, clientY: number) => {
+      swipeStartXRef.current = clientX;
+      swipeStartYRef.current = clientY;
+      swipeHandledRef.current = false;
+    };
+
+    const finishSwipe = (clientX: number, clientY: number) => {
+      const startX = swipeStartXRef.current;
+      const startY = swipeStartYRef.current;
+
+      if (
+        startX === null ||
+        startY === null ||
+        swipeHandledRef.current ||
+        wheelLockedRef.current
+      ) {
+        return;
+      }
+
+      const deltaX = clientX - startX;
+      const deltaY = clientY - startY;
+      const absX = Math.abs(deltaX);
+      const absY = Math.abs(deltaY);
+
+      if (absY < swipeThreshold || absY < absX * swipeAxisRatio) {
+        return;
+      }
+
+      swipeHandledRef.current = true;
+      const direction = deltaY < 0 ? 1 : -1;
+      const nextIndex = clampSectionIndex(targetIndexRef.current + direction);
+
+      if (nextIndex !== targetIndexRef.current) {
+        lockWheel();
+        startSectionChange(nextIndex);
+      }
+    };
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (
+        event.button !== 0 ||
+        (event.pointerType === 'mouse' && !shouldHandleMouseSwipe())
+      ) {
+        return;
+      }
+
+      const target = event.target as HTMLElement | null;
+      const isEditableTarget =
+        target?.isContentEditable ||
+        target?.tagName === 'INPUT' ||
+        target?.tagName === 'TEXTAREA' ||
+        target?.tagName === 'SELECT';
+
+      if (isEditableTarget) {
+        return;
+      }
+
+      startSwipe(event.clientX, event.clientY);
+    };
+
+    const handlePointerUp = (event: PointerEvent) => {
+      if (event.pointerType === 'mouse' && !shouldHandleMouseSwipe()) {
+        return;
+      }
+
+      finishSwipe(event.clientX, event.clientY);
+      resetSwipe();
+    };
+
+    const handlePointerCancel = (event: PointerEvent) => {
+      if (event.pointerType === 'touch') {
+        return;
+      }
+
+      resetSwipe();
+    };
+
+    const handleTouchStart = (event: TouchEvent) => {
+      if (event.touches.length !== 1) {
+        resetSwipe();
+        return;
+      }
+
+      const touch = event.touches[0];
+      startSwipe(touch.clientX, touch.clientY);
+    };
+
+    const handleTouchEnd = (event: TouchEvent) => {
+      const touch = event.changedTouches[0];
+
+      if (!touch) {
+        resetSwipe();
+        return;
+      }
+
+      finishSwipe(touch.clientX, touch.clientY);
+      resetSwipe();
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
+      const touch = event.touches[0];
+
+      if (!touch) {
+        resetSwipe();
+        return;
+      }
+
+      const startX = swipeStartXRef.current;
+      const startY = swipeStartYRef.current;
+
+      if (startX === null || startY === null) {
+        return;
+      }
+
+      const deltaX = touch.clientX - startX;
+      const deltaY = touch.clientY - startY;
+      const absX = Math.abs(deltaX);
+      const absY = Math.abs(deltaY);
+
+      if (absY >= swipeThreshold && absY >= absX * swipeAxisRatio) {
+        if (event.cancelable) {
+          event.preventDefault();
+        }
+
+        finishSwipe(touch.clientX, touch.clientY);
+      }
+    };
+
     const handleClick = (event: MouseEvent) => {
       const link = (event.target as Element | null)?.closest('a');
       const href = link?.getAttribute('href');
@@ -327,6 +470,23 @@ export function ScrollSnapController() {
       passive: false,
     });
     window.addEventListener('keydown', handleKeyDown, { capture: true });
+    document.addEventListener('pointerdown', handlePointerDown, {
+      capture: true,
+    });
+    document.addEventListener('pointerup', handlePointerUp, { capture: true });
+    document.addEventListener('pointercancel', handlePointerCancel, {
+      capture: true,
+    });
+    document.addEventListener('touchstart', handleTouchStart, {
+      capture: true,
+      passive: true,
+    });
+    document.addEventListener('touchmove', handleTouchMove, {
+      capture: true,
+      passive: false,
+    });
+    document.addEventListener('touchend', handleTouchEnd, { capture: true });
+    document.addEventListener('touchcancel', resetSwipe, { capture: true });
     document.addEventListener('click', handleClick, { capture: true });
     window.addEventListener('hashchange', handleHashChange);
     window.addEventListener(goToSectionEventName, handleGoToSection);
@@ -362,6 +522,27 @@ export function ScrollSnapController() {
 
       window.removeEventListener('wheel', handleWheel, { capture: true });
       window.removeEventListener('keydown', handleKeyDown, { capture: true });
+      document.removeEventListener('pointerdown', handlePointerDown, {
+        capture: true,
+      });
+      document.removeEventListener('pointerup', handlePointerUp, {
+        capture: true,
+      });
+      document.removeEventListener('pointercancel', handlePointerCancel, {
+        capture: true,
+      });
+      document.removeEventListener('touchstart', handleTouchStart, {
+        capture: true,
+      });
+      document.removeEventListener('touchmove', handleTouchMove, {
+        capture: true,
+      });
+      document.removeEventListener('touchend', handleTouchEnd, {
+        capture: true,
+      });
+      document.removeEventListener('touchcancel', resetSwipe, {
+        capture: true,
+      });
       document.removeEventListener('click', handleClick, { capture: true });
       window.removeEventListener('hashchange', handleHashChange);
       window.removeEventListener(goToSectionEventName, handleGoToSection);

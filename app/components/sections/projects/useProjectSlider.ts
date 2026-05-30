@@ -7,6 +7,7 @@ import {
   useState,
   useSyncExternalStore,
   type PointerEvent,
+  type TouchEvent,
 } from 'react';
 import {
   firstProjectCloneIndex,
@@ -52,6 +53,10 @@ function isEditableTarget(target: EventTarget | null) {
   );
 }
 
+function shouldHandleMouseSwipe() {
+  return window.innerWidth < 1024;
+}
+
 export function useProjectSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [trackIndex, setTrackIndex] = useState(0);
@@ -74,6 +79,8 @@ export function useProjectSlider() {
   const slideCleanupTimeoutRef = useRef<number | null>(null);
   const textResetRafRef = useRef<number | null>(null);
   const swipeStartXRef = useRef<number | null>(null);
+  const swipeStartYRef = useRef<number | null>(null);
+  const swipeHandledRef = useRef(false);
 
   useEffect(() => {
     return () => {
@@ -221,26 +228,42 @@ export function useProjectSlider() {
     };
   }, [goToNext, goToPrevious, isChangingSlide]);
 
-  const handlePointerDown = useCallback((event: PointerEvent<HTMLDivElement>) => {
-    if (event.pointerType === 'mouse') {
-      return;
-    }
-
-    swipeStartXRef.current = event.clientX;
+  const resetSwipe = useCallback(() => {
+    swipeStartXRef.current = null;
+    swipeStartYRef.current = null;
+    swipeHandledRef.current = false;
   }, []);
 
-  const handlePointerUp = useCallback(
-    (event: PointerEvent<HTMLDivElement>) => {
-      if (event.pointerType === 'mouse' || swipeStartXRef.current === null) {
+  const startSwipe = useCallback((clientX: number, clientY: number) => {
+    swipeStartXRef.current = clientX;
+    swipeStartYRef.current = clientY;
+    swipeHandledRef.current = false;
+  }, []);
+
+  const finishSwipe = useCallback(
+    (clientX: number, clientY: number) => {
+      const startX = swipeStartXRef.current;
+      const startY = swipeStartYRef.current;
+
+      if (
+        startX === null ||
+        startY === null ||
+        swipeHandledRef.current ||
+        isChangingSlide
+      ) {
         return;
       }
 
-      const deltaX = event.clientX - swipeStartXRef.current;
-      swipeStartXRef.current = null;
+      const deltaX = clientX - startX;
+      const deltaY = clientY - startY;
+      const absX = Math.abs(deltaX);
+      const absY = Math.abs(deltaY);
 
-      if (Math.abs(deltaX) < swipeThresholdPx || isChangingSlide) {
+      if (absX < swipeThresholdPx || absX < absY * 1.15) {
         return;
       }
+
+      swipeHandledRef.current = true;
 
       if (deltaX < 0) {
         goToNext();
@@ -252,9 +275,91 @@ export function useProjectSlider() {
     [goToNext, goToPrevious, isChangingSlide],
   );
 
-  const handlePointerCancel = useCallback(() => {
-    swipeStartXRef.current = null;
-  }, []);
+  const handlePointerDown = useCallback(
+    (event: PointerEvent<HTMLDivElement>) => {
+      if (event.pointerType === 'mouse' && !shouldHandleMouseSwipe()) {
+        return;
+      }
+
+      startSwipe(event.clientX, event.clientY);
+    },
+    [startSwipe],
+  );
+
+  const handlePointerUp = useCallback(
+    (event: PointerEvent<HTMLDivElement>) => {
+      if (event.pointerType === 'mouse' && !shouldHandleMouseSwipe()) {
+        return;
+      }
+
+      finishSwipe(event.clientX, event.clientY);
+      resetSwipe();
+    },
+    [finishSwipe, resetSwipe],
+  );
+
+  const handlePointerCancel = useCallback(
+    (event: PointerEvent<HTMLDivElement>) => {
+      if (event.pointerType === 'touch') {
+        return;
+      }
+
+      resetSwipe();
+    },
+    [resetSwipe],
+  );
+
+  const handleTouchStart = useCallback(
+    (event: TouchEvent<HTMLDivElement>) => {
+      if (event.touches.length !== 1) {
+        resetSwipe();
+        return;
+      }
+
+      const touch = event.touches[0];
+      startSwipe(touch.clientX, touch.clientY);
+    },
+    [resetSwipe, startSwipe],
+  );
+
+  const handleTouchMove = useCallback(
+    (event: TouchEvent<HTMLDivElement>) => {
+      const touch = event.touches[0];
+      const startX = swipeStartXRef.current;
+      const startY = swipeStartYRef.current;
+
+      if (!touch || startX === null || startY === null) {
+        return;
+      }
+
+      const deltaX = touch.clientX - startX;
+      const deltaY = touch.clientY - startY;
+      const absX = Math.abs(deltaX);
+      const absY = Math.abs(deltaY);
+
+      if (absX >= swipeThresholdPx && absX >= absY * 1.15) {
+        if (event.cancelable) {
+          event.preventDefault();
+        }
+
+        finishSwipe(touch.clientX, touch.clientY);
+      }
+    },
+    [finishSwipe],
+  );
+
+  const handleTouchEnd = useCallback(
+    (event: TouchEvent<HTMLDivElement>) => {
+      const touch = event.changedTouches[0];
+
+      if (touch) {
+        finishSwipe(touch.clientX, touch.clientY);
+      }
+
+      resetSwipe();
+    },
+    [finishSwipe, resetSwipe],
+  );
 
   return {
     activeIndex,
@@ -272,6 +377,10 @@ export function useProjectSlider() {
       onPointerCancel: handlePointerCancel,
       onPointerDown: handlePointerDown,
       onPointerUp: handlePointerUp,
+      onTouchCancel: resetSwipe,
+      onTouchEnd: handleTouchEnd,
+      onTouchMove: handleTouchMove,
+      onTouchStart: handleTouchStart,
     },
   };
 }

@@ -13,15 +13,15 @@ export function Contact() {
     >
       <CodeGlow position='top-right' />
       <CodeGlow position='bottom-left' />
-      <div className='absolute right-[16%] bottom-[13%] h-20 w-20 rotate-12 rounded-2xl bg-gradient-to-br from-zinc-100 to-sky-950 shadow-[0_26px_40px_rgba(0,0,0,0.45)]' />
-      <div className='section-content relative z-10 mx-auto grid h-screen w-full max-w-[1500px] items-center gap-14 px-8 lg:grid-cols-[1fr_0.82fr] lg:px-28'>
+      <div className='absolute bottom-[13%] right-[16%] hidden h-20 w-20 rotate-12 rounded-2xl bg-gradient-to-br from-zinc-100 to-sky-950 shadow-[0_26px_40px_rgba(0,0,0,0.45)] sm:block' />
+      <div className='section-content relative z-10 mx-auto grid h-screen w-full max-w-[1500px] items-center gap-10 px-5 pt-10 sm:px-8 lg:grid-cols-[1fr_0.82fr] lg:gap-14 lg:px-28 lg:pt-0'>
         <div className='hidden lg:block' data-reveal='left'>
           <ContactStringLazy />
         </div>
         <div className='max-w-[560px] text-left'>
           <p
             id='contact-title'
-            className='text-lg font-black leading-8 text-zinc-100'
+            className='text-base font-black leading-7 text-zinc-100 sm:text-lg sm:leading-8'
             data-reveal='right'
             data-reveal-delay='1'
           >
@@ -29,14 +29,14 @@ export function Contact() {
           </p>
           <p
             id='contact-description'
-            className='mt-7 text-lg font-semibold leading-8 text-zinc-100'
+            className='mt-5 text-base font-semibold leading-7 text-zinc-100 sm:mt-7 sm:text-lg sm:leading-8'
             data-reveal='right'
             data-reveal-delay='2'
           >
             I&apos;m always open to discussing new ideas, interesting products
             and development opportunities.
           </p>
-          <div className='mt-10 flex flex-col items-start gap-4 text-3xl font-black tracking-tight text-white sm:text-[34px]'>
+          <div className='mt-8 flex flex-col items-start gap-4 text-[28px] font-black tracking-tight text-white sm:mt-10 sm:text-[34px]'>
             <div
               className='flex max-w-full items-center gap-3'
               data-reveal='tilt-right'
@@ -62,7 +62,7 @@ export function Contact() {
               data-reveal-delay='4'
             >
               <a
-                className='break-all text-2xl transition-colors hover:text-[#b82ce0] sm:text-[30px]'
+                className='break-all text-[22px] transition-colors hover:text-[#b82ce0] sm:text-[30px]'
                 href={`mailto:${contactLinks.email}`}
               >
                 {contactLinks.email}

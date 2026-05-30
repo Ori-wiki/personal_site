@@ -199,7 +199,7 @@ function MobileProjectCard({ slide }: { slide: ProjectSlide }) {
 
   return (
     <div
-      className='mt-7 overflow-hidden rounded-md border border-white/10 bg-white/[0.035] shadow-[0_22px_52px_rgba(0,0,0,0.28)] lg:hidden'
+      className='mt-5 overflow-hidden rounded-md border border-white/10 bg-white/[0.035] shadow-[0_22px_52px_rgba(0,0,0,0.28)] lg:hidden'
       data-reveal='up'
       data-reveal-delay='2'
     >
@@ -209,14 +209,14 @@ function MobileProjectCard({ slide }: { slide: ProjectSlide }) {
         title={slide.title}
         variant='mobile'
       />
-      <div className='space-y-5 px-5 pb-5 pt-4 text-left'>
-        <p className='text-sm font-bold leading-6 text-zinc-100'>
+      <div className='space-y-3 px-4 pb-4 pt-3 text-left'>
+        <p className='text-xs font-bold leading-5 text-zinc-100 min-[390px]:text-sm min-[390px]:leading-6'>
           {slide.description}
         </p>
-        <p className='text-xs font-black uppercase tracking-[0.16em] text-zinc-500'>
+        <p className='text-[11px] font-black uppercase tracking-[0.16em] text-zinc-500'>
           Stack
         </p>
-        <p className='text-sm font-semibold leading-6 text-zinc-200'>
+        <p className='text-xs font-semibold leading-5 text-zinc-200 min-[390px]:text-sm min-[390px]:leading-6'>
           {slide.builtWith}
         </p>
         <ProjectLinks
@@ -224,7 +224,7 @@ function MobileProjectCard({ slide }: { slide: ProjectSlide }) {
           linkLabel={slide.linkLabel}
           liveHref={slide.liveHref}
         />
-        <p className='border-t border-white/10 pt-4 text-xs font-bold uppercase tracking-[0.16em] text-zinc-500'>
+        <p className='border-t border-white/10 pt-3 text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-500'>
           Swipe left or right
         </p>
       </div>
@@ -247,11 +247,11 @@ export function SliderControls({
 }) {
   return (
     <div
-      className='absolute bottom-0 left-1/2 z-20 flex -translate-x-1/2 items-center gap-7'
+      className='absolute bottom-2 left-1/2 z-20 flex -translate-x-1/2 items-center gap-4 lg:bottom-0 lg:gap-7'
       data-reveal='up'
       data-reveal-delay='5'
     >
-      <div className='flex gap-4'>
+      <div className='flex gap-3 lg:gap-4'>
         {projectSlides.map((item, dotIndex) => (
           <button
             aria-label={`Show project ${dotIndex + 1}: ${item.title}`}
@@ -271,7 +271,7 @@ export function SliderControls({
       <div className='flex items-center gap-3'>
         <button
           aria-label='Previous project'
-          className='group grid h-12 w-12 cursor-pointer place-items-center rounded-full border border-white/15 bg-white/[0.06] text-white shadow-[0_14px_34px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur transition hover:border-[#8be36d]/60 hover:bg-[#8be36d]/10 hover:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d] disabled:cursor-default disabled:opacity-60'
+          className='group grid h-10 w-10 cursor-pointer place-items-center rounded-full border border-white/15 bg-white/[0.06] text-white shadow-[0_14px_34px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur transition hover:border-[#8be36d]/60 hover:bg-[#8be36d]/10 hover:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d] disabled:cursor-default disabled:opacity-60 lg:h-12 lg:w-12'
           disabled={isChangingSlide}
           onClick={goToPrevious}
           type='button'
@@ -280,7 +280,7 @@ export function SliderControls({
         </button>
         <button
           aria-label='Next project'
-          className='group grid h-12 w-12 cursor-pointer place-items-center rounded-full border border-white/15 bg-white/[0.06] text-white shadow-[0_14px_34px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur transition hover:border-[#8be36d]/60 hover:bg-[#8be36d]/10 hover:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d] disabled:cursor-default disabled:opacity-60'
+          className='group grid h-10 w-10 cursor-pointer place-items-center rounded-full border border-white/15 bg-white/[0.06] text-white shadow-[0_14px_34px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur transition hover:border-[#8be36d]/60 hover:bg-[#8be36d]/10 hover:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d] disabled:cursor-default disabled:opacity-60 lg:h-12 lg:w-12'
           disabled={isChangingSlide}
           onClick={goToNext}
           type='button'
@@ -321,17 +321,17 @@ export function ProjectArticle({
   if (!slide.image) {
     return (
       <article
-        className={`pointer-events-auto relative col-span-full row-start-1 mx-auto flex min-h-[430px] max-w-[820px] flex-col items-center justify-center text-center ${textTransitionClass} ${textMotionClass}`}
+        className={`pointer-events-auto relative col-span-full row-start-1 mx-auto flex min-h-[360px] max-w-[820px] flex-col items-center justify-center text-center lg:min-h-[430px] ${textTransitionClass} ${textMotionClass}`}
       >
         <IntroDecorations />
         <h2
-          className='relative z-10 max-w-[820px] text-5xl font-black leading-[0.92] tracking-tight text-white sm:text-6xl xl:text-[58px]'
+          className='relative z-10 max-w-[820px] text-[40px] font-black leading-[0.92] tracking-tight text-white sm:text-6xl xl:text-[58px]'
           data-reveal='scale'
         >
           {slide.title}
         </h2>
         <p
-          className='relative z-10 mt-8 max-w-[690px] text-base font-bold leading-7 text-zinc-100'
+          className='relative z-10 mt-6 max-w-[690px] text-sm font-bold leading-6 text-zinc-100 sm:mt-8 sm:text-base sm:leading-7'
           data-reveal='up'
           data-reveal-delay='1'
         >
@@ -355,13 +355,13 @@ export function ProjectArticle({
     <>
       <ProjectSlideDecorations />
       <article
-        className={`pointer-events-auto relative col-start-1 row-start-1 min-h-[430px] max-w-[620px] ${textTransitionClass} ${textMotionClass}`}
+        className={`pointer-events-auto relative col-start-1 row-start-1 min-h-[auto] max-w-[620px] lg:min-h-[430px] ${textTransitionClass} ${textMotionClass}`}
       >
-        <p className='text-base uppercase text-zinc-500' data-reveal='down'>
+        <p className='text-xs uppercase text-zinc-500 sm:text-base' data-reveal='down'>
           {slide.eyebrow}
         </p>
         <h2
-          className='mt-4 max-w-[650px] text-5xl font-black leading-[0.92] tracking-tight text-white sm:text-6xl xl:text-[58px]'
+          className='mt-3 max-w-[650px] text-[36px] font-black leading-[0.92] tracking-tight text-white sm:mt-4 sm:text-6xl xl:text-[58px]'
           data-reveal='left'
           data-reveal-delay='1'
         >

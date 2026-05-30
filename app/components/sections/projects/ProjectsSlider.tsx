@@ -27,7 +27,7 @@ export function ProjectsSlider() {
 
   return (
     <div
-      className='relative w-screen touch-pan-y overflow-hidden pb-16'
+      className='relative w-screen touch-pan-y overflow-hidden pb-24 lg:pb-16'
       {...swipeHandlers}
     >
       <p className='sr-only' aria-live='polite'>
@@ -55,12 +55,12 @@ export function ProjectsSlider() {
           return (
             <div
               aria-hidden={activeIndex !== canonicalSlideIndex}
-              className='min-h-[560px] shrink-0'
+              className='min-h-[calc(100vh-120px)] shrink-0 lg:min-h-[560px]'
               inert={activeIndex !== canonicalSlideIndex}
               key={`${slide.title}-${slideIndex}`}
               style={{ width: `${100 / carouselSlides.length}%` }}
             >
-              <div className='relative mx-auto grid min-h-[560px] w-full max-w-[1500px] items-center gap-12 px-8 lg:grid-cols-[0.74fr_1fr] lg:px-[130px]'>
+              <div className='relative mx-auto grid min-h-[calc(100vh-120px)] w-full max-w-[1500px] items-center gap-8 px-5 pt-10 sm:px-8 lg:min-h-[560px] lg:grid-cols-[0.74fr_1fr] lg:gap-12 lg:px-[130px] lg:pt-0'>
                 <ProjectArticle
                   changeSlide={changeSlide}
                   isTextExiting={exitingTextTrackIndex === slideIndex}

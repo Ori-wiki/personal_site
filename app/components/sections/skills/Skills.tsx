@@ -19,30 +19,30 @@ export function Skills() {
       <CodeGlow position='top-right' />
       <CodeGlow position='bottom-left' />
 
-      <div className='section-content relative z-10 mx-auto flex h-screen w-full max-w-[1500px] flex-col items-center justify-center px-8 text-center lg:px-[130px]'>
-        <p className='text-base uppercase text-zinc-500'>
+      <div className='section-content relative z-10 mx-auto flex h-screen w-full max-w-[1500px] flex-col items-center justify-center px-5 pt-12 text-center sm:px-8 lg:px-[130px] lg:pt-0'>
+        <p className='text-xs uppercase text-zinc-500 sm:text-base'>
           A problem is an opportunity to do your best.
         </p>
         <h2
           id='skills-title'
-          className='mt-4 text-5xl font-black leading-none tracking-tight text-white sm:text-6xl xl:text-[58px]'
+          className='mt-3 text-[38px] font-black leading-none tracking-tight text-white sm:mt-4 sm:text-6xl xl:text-[58px]'
         >
           Skills &amp; Experience
         </h2>
         <p
           id='skills-description'
-          className='mt-8 max-w-3xl text-base font-bold leading-7 text-zinc-100'
+          className='mt-5 max-w-3xl text-sm font-bold leading-6 text-zinc-100 sm:mt-8 sm:text-base sm:leading-7'
         >
           I specialize in crafting engaging and high-quality client-side web
           applications.
         </p>
-        <p className='mt-5 max-w-[700px] text-base font-bold leading-7 text-zinc-100'>
+        <p className='mt-4 hidden max-w-[700px] text-base font-bold leading-7 text-zinc-100 sm:block'>
           My experience includes HTML, CSS, and JavaScript, building projects
           with React and Vue, developing custom features and plugins, creating
           animations, and coding interactive layouts. I also have full-stack
           experience, including working with Node.js, and Go.
         </p>
-        <p className='mt-5 text-base font-bold text-zinc-100'>
+        <p className='mt-4 text-sm font-bold text-zinc-100 sm:mt-5 sm:text-base'>
           For a deeper look at my work and experience, visit my{' '}
           <a
             target='blank'
@@ -61,11 +61,11 @@ export function Skills() {
           </a>
         </p>
 
-        <div className='mt-12 flex w-full max-w-[960px] flex-wrap justify-center gap-x-5 gap-y-7'>
+        <div className='mt-7 flex w-full max-w-[960px] flex-wrap justify-center gap-x-3 gap-y-4 sm:mt-12 sm:gap-x-5 sm:gap-y-7'>
           {skills.map((skill, index) => (
             <div
               key={skill.label}
-              className='flex w-[88px] flex-col items-center gap-3'
+              className='flex w-[58px] flex-col items-center gap-2 sm:w-[88px] sm:gap-3'
               data-skill-reveal
               style={
                 {
@@ -76,18 +76,18 @@ export function Skills() {
                 } as CSSProperties
               }
             >
-              <div className='grid h-[64px] w-[64px] place-items-center rounded-md border border-white/10 bg-white/[0.04] shadow-[0_0_28px_rgba(184,44,224,0.08)] transition duration-300 hover:-translate-y-1 hover:border-[#b82ce0]/50 hover:bg-white/[0.07] hover:shadow-[0_0_32px_rgba(184,44,224,0.22)]'>
+              <div className='grid h-11 w-11 place-items-center rounded-md border border-white/10 bg-white/[0.04] shadow-[0_0_28px_rgba(184,44,224,0.08)] transition duration-300 hover:-translate-y-1 hover:border-[#b82ce0]/50 hover:bg-white/[0.07] hover:shadow-[0_0_32px_rgba(184,44,224,0.22)] sm:h-[64px] sm:w-[64px]'>
                 <Image
                   src={skill.icon}
                   alt={`${skill.label} logo`}
                   height={44}
                   width={44}
-                  className={`h-11 w-11 object-contain ${
+                  className={`h-8 w-8 object-contain sm:h-11 sm:w-11 ${
                     skill.invert ? 'invert' : ''
                   }`}
                 />
               </div>
-              <p className='text-sm font-semibold text-zinc-200'>
+              <p className='text-[11px] font-semibold leading-4 text-zinc-200 sm:text-sm'>
                 {skill.label}
               </p>
             </div>
