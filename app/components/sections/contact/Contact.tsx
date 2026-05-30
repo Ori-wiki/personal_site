@@ -1,6 +1,6 @@
 import { CodeGlow } from '../../shared/CodeGlow';
 import { ContactCopyButton } from './ContactCopyButton';
-import { ContactString } from './ContactString';
+import { ContactStringLazy } from './ContactStringLazy';
 import { contactLinks } from './data';
 
 export function Contact() {
@@ -16,7 +16,7 @@ export function Contact() {
       <div className='absolute right-[16%] bottom-[13%] h-20 w-20 rotate-12 rounded-2xl bg-gradient-to-br from-zinc-100 to-sky-950 shadow-[0_26px_40px_rgba(0,0,0,0.45)]' />
       <div className='section-content relative z-10 mx-auto grid h-screen w-full max-w-[1500px] items-center gap-14 px-8 lg:grid-cols-[1fr_0.82fr] lg:px-28'>
         <div className='hidden lg:block' data-reveal='left'>
-          <ContactString />
+          <ContactStringLazy />
         </div>
         <div className='max-w-[560px] text-left'>
           <p

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import {
@@ -21,8 +21,46 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Denis Kazakov | Frontend Developer",
-  description: "Personal portfolio website for a frontend developer.",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://dvlpr.dev",
+  ),
+  applicationName: "DVLPR",
+  authors: [{ name: "Denis Kazakov" }],
+  creator: "Denis Kazakov",
+  keywords: [
+    "Denis Kazakov",
+    "DVLPR",
+    "Frontend Developer",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Portfolio",
+  ],
+  title: {
+    default: "DVLPR | Denis Kazakov",
+    template: "%s | DVLPR",
+  },
+  description:
+    "Frontend developer portfolio by Denis Kazakov, focused on React, Next.js, TypeScript, motion and polished web interfaces.",
+  openGraph: {
+    title: "DVLPR | Denis Kazakov",
+    description:
+      "Frontend developer portfolio focused on React, Next.js, TypeScript, motion and polished web interfaces.",
+    siteName: "DVLPR",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DVLPR | Denis Kazakov",
+    description:
+      "Frontend developer portfolio focused on React, Next.js, TypeScript, motion and polished web interfaces.",
+  },
+};
+
+export const viewport: Viewport = {
+  colorScheme: "dark",
+  themeColor: "#121318",
 };
 
 const initActiveSectionScript = `

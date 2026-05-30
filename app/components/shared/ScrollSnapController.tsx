@@ -53,6 +53,8 @@ export function ScrollSnapController() {
   const aboutIntroTimeoutRef = useRef<number | null>(null);
   const aboutIntroResetTimeoutRef = useRef<number | null>(null);
   const skillsIntroTimeoutRef = useRef<number | null>(null);
+  const skillsResetFrameRef = useRef<number | null>(null);
+  const skillsIntroFrameRef = useRef<number | null>(null);
   const skillsExitTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -132,6 +134,16 @@ export function ScrollSnapController() {
         skillsExitTimeoutRef.current = null;
       }
 
+      if (skillsResetFrameRef.current) {
+        window.cancelAnimationFrame(skillsResetFrameRef.current);
+        skillsResetFrameRef.current = null;
+      }
+
+      if (skillsIntroFrameRef.current) {
+        window.cancelAnimationFrame(skillsIntroFrameRef.current);
+        skillsIntroFrameRef.current = null;
+      }
+
       document.documentElement.classList.remove('skills-leaving');
 
       targetIndexRef.current = nextIndex;
@@ -147,6 +159,7 @@ export function ScrollSnapController() {
       );
 
       if (nextIndex === 1) {
+        document.documentElement.classList.remove('about-intro-shown');
         aboutIntroTimeoutRef.current = window.setTimeout(() => {
           setSectionPhaseClass('about-intro');
           document.documentElement.classList.add('about-intro-shown');
@@ -158,8 +171,14 @@ export function ScrollSnapController() {
       }
 
       if (nextIndex === 2) {
+        document.documentElement.classList.add('skills-resetting');
         skillsIntroTimeoutRef.current = window.setTimeout(() => {
-          setSectionPhaseClass('skills-intro');
+          skillsResetFrameRef.current = window.requestAnimationFrame(() => {
+            skillsIntroFrameRef.current = window.requestAnimationFrame(() => {
+              document.documentElement.classList.remove('skills-resetting');
+              setSectionPhaseClass('skills-intro');
+            });
+          });
         }, activeMotionTiming.skillsIntroDelayMs);
       } else if (previousIndex === 2) {
         document.documentElement.classList.add('skills-leaving');
@@ -327,6 +346,14 @@ export function ScrollSnapController() {
 
       if (skillsIntroTimeoutRef.current) {
         window.clearTimeout(skillsIntroTimeoutRef.current);
+      }
+
+      if (skillsResetFrameRef.current) {
+        window.cancelAnimationFrame(skillsResetFrameRef.current);
+      }
+
+      if (skillsIntroFrameRef.current) {
+        window.cancelAnimationFrame(skillsIntroFrameRef.current);
       }
 
       if (skillsExitTimeoutRef.current) {

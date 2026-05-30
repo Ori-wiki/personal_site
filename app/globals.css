@@ -52,16 +52,14 @@ html {
 
 .motion-section::before {
   position: absolute;
-  inset: -8vh 0;
+  inset: 0;
   z-index: -1;
-  background:
-    radial-gradient(
-      circle at calc(58% + var(--section-bg-shift-x, 0px))
-        calc(43% + var(--section-bg-shift-y, 0px)),
-      rgba(255, 255, 255, 0.026) 0 2px,
-      transparent 2px 44px
-    ),
-    var(--background);
+  background: radial-gradient(
+    circle at calc(58% + var(--section-bg-shift-x, 0px))
+      calc(43% + var(--section-bg-shift-y, 0px)),
+    rgba(255, 255, 255, 0.026) 0 2px,
+    transparent 2px 44px
+  );
   content: '';
   transform: translate3d(0, var(--section-bg-parallax, 0), 0);
   transition: transform var(--motion-duration-section)
@@ -324,9 +322,6 @@ html.phase-hero-text-exit #top [data-hero-visual='isometric'] {
 }
 
 html.active-section-1.phase-about-intro
-  #about
-  [data-about-intro],
-html.active-section-1
   #about
   [data-about-intro],
 html.about-intro-shown

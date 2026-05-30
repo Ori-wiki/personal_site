@@ -52,6 +52,7 @@ export function Hero() {
             alt=''
             className='object-contain'
             fill
+            preload
             sizes='208px'
             src='/images/5.png'
           />

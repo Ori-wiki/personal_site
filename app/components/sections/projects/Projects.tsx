@@ -5,7 +5,7 @@ export function Projects() {
   return (
     <section
       id='work'
-      className='motion-section h-screen min-h-screen snap-start overflow-hidden'
+      className='motion-section h-screen min-h-screen snap-start overflow-visible'
       aria-describedby='work-description'
       aria-labelledby='work-title'
     >

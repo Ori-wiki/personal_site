@@ -61,10 +61,12 @@ function FloatingPreviewImage({
 
 export function ProjectPreview({
   image,
+  liveHref,
   title,
   variant = 'desktop',
 }: {
   image: string;
+  liveHref?: string;
   title: string;
   variant?: 'desktop' | 'mobile';
 }) {
@@ -76,24 +78,46 @@ export function ProjectPreview({
     variant === 'mobile'
       ? '(max-width: 1023px) calc(100vw - 64px), 0px'
       : '(min-width: 1500px) 685px, (min-width: 1024px) calc((100vw - 308px) / 1.74), 0px';
-
-  return (
-    <div className={previewClassName}>
-      <div className='relative z-10 rounded-[22px] border-[7px] border-black bg-black shadow-[0_30px_80px_rgba(0,0,0,0.54),0_0_0_1px_rgba(255,255,255,0.12)] lg:rounded-[30px] lg:border-[9px]'>
+  const previewFrame = (
+    <>
+      <div
+        aria-hidden='true'
+        className='pointer-events-none absolute -inset-4 z-0 rounded-[30px] bg-black/35 opacity-80 shadow-[0_34px_80px_rgba(0,0,0,0.42)] lg:rounded-[38px]'
+      />
+      <div className='relative z-10 rounded-[22px] border-[7px] border-black bg-black shadow-[0_30px_80px_rgba(0,0,0,0.54),0_0_0_1px_rgba(255,255,255,0.12)] transition-[box-shadow,border-color] duration-[var(--motion-duration-ui)] ease-[var(--motion-ease-standard)] group-hover:border-zinc-900 group-hover:shadow-[0_32px_84px_rgba(0,0,0,0.58),0_0_0_1px_rgba(255,255,255,0.2)] motion-reduce:transition-none lg:rounded-[30px] lg:border-[9px]'>
         <div className='overflow-hidden rounded-[13px] bg-black lg:rounded-[18px]'>
           <div className='relative aspect-[16/9]'>
             <Image
               alt={`${title} preview`}
-              className='scale-[1.01] object-cover object-top'
+              className='scale-[1.01] object-cover object-top transition-[filter,opacity] duration-[var(--motion-duration-ui)] ease-[var(--motion-ease-standard)] group-hover:brightness-110 group-hover:contrast-105 motion-reduce:transition-none'
               fill
               sizes={sizes}
               src={image}
             />
+            <div className='pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.2),rgba(0,0,0,0.44))] transition-opacity duration-[var(--motion-duration-ui)] ease-[var(--motion-ease-standard)] group-hover:opacity-45 motion-reduce:transition-none' />
           </div>
         </div>
       </div>
       <div className='relative z-10 mx-auto h-2 w-[88%] rounded-b-[14px] bg-gradient-to-b from-zinc-500 to-zinc-900 shadow-[0_18px_26px_rgba(0,0,0,0.38)] lg:h-3 lg:rounded-b-[18px]' />
-    </div>
+    </>
+  );
+
+  return (
+    <>
+      {liveHref ? (
+        <a
+          aria-label={`Open ${title} site`}
+          className={`${previewClassName} group block cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-[#8be36d]`}
+          href={liveHref}
+          rel='noreferrer'
+          target='_blank'
+        >
+          {previewFrame}
+        </a>
+      ) : (
+        <div className={`${previewClassName} group`}>{previewFrame}</div>
+      )}
+    </>
   );
 }
 
@@ -164,6 +188,46 @@ export function ProjectLinks({
           <ArrowMark />
         </a>
       ) : null}
+    </div>
+  );
+}
+
+function MobileProjectCard({ slide }: { slide: ProjectSlide }) {
+  if (!slide.image) {
+    return null;
+  }
+
+  return (
+    <div
+      className='mt-7 overflow-hidden rounded-md border border-white/10 bg-white/[0.035] shadow-[0_22px_52px_rgba(0,0,0,0.28)] lg:hidden'
+      data-reveal='up'
+      data-reveal-delay='2'
+    >
+      <ProjectPreview
+        image={slide.image}
+        liveHref={slide.liveHref}
+        title={slide.title}
+        variant='mobile'
+      />
+      <div className='space-y-5 px-5 pb-5 pt-4 text-left'>
+        <p className='text-sm font-bold leading-6 text-zinc-100'>
+          {slide.description}
+        </p>
+        <p className='text-xs font-black uppercase tracking-[0.16em] text-zinc-500'>
+          Stack
+        </p>
+        <p className='text-sm font-semibold leading-6 text-zinc-200'>
+          {slide.builtWith}
+        </p>
+        <ProjectLinks
+          codeHref={slide.codeHref}
+          linkLabel={slide.linkLabel}
+          liveHref={slide.liveHref}
+        />
+        <p className='border-t border-white/10 pt-4 text-xs font-bold uppercase tracking-[0.16em] text-zinc-500'>
+          Swipe left or right
+        </p>
+      </div>
     </div>
   );
 }
@@ -303,29 +367,27 @@ export function ProjectArticle({
         >
           {slide.title}
         </h2>
-        <div className='mt-8 lg:hidden' data-reveal='up' data-reveal-delay='2'>
-          <ProjectPreview
-            image={slide.image}
-            title={slide.title}
-            variant='mobile'
-          />
-        </div>
+        <MobileProjectCard slide={slide} />
         <p
-          className='mt-10 max-w-[560px] text-base font-bold leading-7 text-zinc-100'
+          className='mt-10 hidden max-w-[560px] text-base font-bold leading-7 text-zinc-100 lg:block'
           data-reveal='up'
           data-reveal-delay='2'
         >
           {slide.description}
         </p>
         <p
-          className='mt-6 max-w-[590px] text-base font-black leading-7 text-zinc-100'
+          className='mt-6 hidden max-w-[590px] text-base font-black leading-7 text-zinc-100 lg:block'
           data-reveal='up'
           data-reveal-delay='3'
         >
           Stack: <span className='font-semibold'>{slide.builtWith}</span>
         </p>
 
-        <div className='mt-11' data-reveal='tilt-left' data-reveal-delay='4'>
+        <div
+          className='mt-11 hidden lg:block'
+          data-reveal='tilt-left'
+          data-reveal-delay='4'
+        >
           <ProjectLinks
             codeHref={slide.codeHref}
             linkLabel={slide.linkLabel}
@@ -338,7 +400,11 @@ export function ProjectArticle({
         data-reveal='right'
         data-reveal-delay='3'
       >
-        <ProjectPreview image={slide.image} title={slide.title} />
+        <ProjectPreview
+          image={slide.image}
+          liveHref={slide.liveHref}
+          title={slide.title}
+        />
       </div>
     </>
   );
