@@ -24,12 +24,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://dvlpr.dev",
   ),
-  applicationName: "DVLPR",
+  applicationName: "Denis Kazakov",
   authors: [{ name: "Denis Kazakov" }],
   creator: "Denis Kazakov",
   keywords: [
     "Denis Kazakov",
-    "DVLPR",
+    "Denis Kazakov",
     "Frontend Developer",
     "React",
     "Next.js",
@@ -37,22 +37,22 @@ export const metadata: Metadata = {
     "Portfolio",
   ],
   title: {
-    default: "DVLPR | Denis Kazakov",
-    template: "%s | DVLPR",
+    default: "Denis Kazakov | Frontend Developer",
+    template: "%s | Denis Kazakov",
   },
   description:
     "Frontend developer portfolio by Denis Kazakov, focused on React, Next.js, TypeScript, motion and polished web interfaces.",
   openGraph: {
-    title: "DVLPR | Denis Kazakov",
+    title: "Denis Kazakov | Frontend Developer",
     description:
       "Frontend developer portfolio focused on React, Next.js, TypeScript, motion and polished web interfaces.",
-    siteName: "DVLPR",
+    siteName: "Denis Kazakov Portfolio",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "DVLPR | Denis Kazakov",
+    title: "Denis Kazakov | Frontend Developer",
     description:
       "Frontend developer portfolio focused on React, Next.js, TypeScript, motion and polished web interfaces.",
   },

@@ -3,11 +3,11 @@ export function Header() {
     <header className='fixed inset-x-0 top-0 z-50'>
       <nav className='flex h-[145px] w-full items-center justify-between px-4 sm:px-[55px]'>
         <a
-          className='flex items-center gap-2 text-xl font-black tracking-[0.16em] text-white sm:gap-3 sm:text-[28px] sm:tracking-[0.19em]'
+          className='flex items-center gap-2 text-xl font-black tracking-[0.16em] text-white sm:gap-3 sm:text-[28px] sm:tracking-[0.2em]'
           href='#top'
         >
-          <span className='grid h-[23px] w-[29px] place-items-center bg-white text-base font-black leading-none text-[#121318]'>
-            &gt;
+          <span className='grid h-[26px] w-[35px] place-items-center bg-white font-mono text-[18px] font-black leading-none tracking-[0.04em] text-[#121318]'>
+            &lt;/&gt;
           </span>
           DVLPR
         </a>

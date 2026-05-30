@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'DVLPR | Denis Kazakov frontend developer portfolio';
+export const alt = 'Denis Kazakov frontend developer portfolio';
 export const size = {
   width: 1200,
   height: 630,
@@ -79,16 +79,20 @@ export default function Image() {
                 style={{
                   alignItems: 'center',
                   background: '#eef4fb',
+                  border: '1px solid rgba(255,255,255,0.18)',
+                  borderRadius: 10,
                   color: '#121318',
                   display: 'flex',
-                  fontSize: 34,
+                  fontFamily: 'monospace',
+                  fontSize: 22,
                   fontWeight: 900,
                   height: 54,
                   justifyContent: 'center',
-                  width: 64,
+                  letterSpacing: -1,
+                  width: 118,
                 }}
               >
-                &gt;
+                {'</>'}
               </div>
               <div
                 style={{
@@ -97,7 +101,7 @@ export default function Image() {
                   letterSpacing: 8,
                 }}
               >
-                DVLPR
+                DENIS
               </div>
             </div>
             <div
