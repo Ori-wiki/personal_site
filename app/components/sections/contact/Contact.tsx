@@ -7,14 +7,14 @@ export function Contact() {
   return (
     <footer
       id='contact'
-      className='motion-section h-screen min-h-screen snap-start overflow-visible'
+      className='motion-section h-svh min-h-svh snap-start overflow-visible'
       aria-describedby='contact-description'
       aria-labelledby='contact-title'
     >
       <CodeGlow position='top-right' />
       <CodeGlow position='bottom-left' />
       <div className='absolute bottom-[13%] right-[16%] hidden h-20 w-20 rotate-12 rounded-2xl bg-gradient-to-br from-zinc-100 to-sky-950 shadow-[0_26px_40px_rgba(0,0,0,0.45)] sm:block' />
-      <div className='section-content relative z-10 mx-auto grid h-screen w-full max-w-[1500px] items-center gap-10 px-5 pt-10 sm:px-8 lg:grid-cols-[1fr_0.82fr] lg:gap-14 lg:px-28 lg:pt-0'>
+      <div className='section-content relative z-10 mx-auto grid h-svh w-full max-w-[1500px] items-center gap-10 px-5 pb-8 pt-28 sm:px-8 sm:pt-32 lg:grid-cols-[1fr_0.82fr] lg:gap-14 lg:px-28 lg:pb-0 lg:pt-0'>
         <div className='hidden lg:block' data-reveal='left'>
           <ContactStringLazy />
         </div>

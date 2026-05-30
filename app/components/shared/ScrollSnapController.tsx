@@ -158,9 +158,9 @@ export function ScrollSnapController() {
       targetIndexRef.current = nextIndex;
       document.documentElement.style.setProperty(
         '--initial-section-offset',
-        `-${nextIndex * 100}vh`,
+        `-${nextIndex * 100}svh`,
       );
-      pages.style.transform = `translate3d(0, -${nextIndex * 100}vh, 0)`;
+      pages.style.transform = `translate3d(0, -${nextIndex * 100}svh, 0)`;
       document.documentElement.dataset.activeSection = String(nextIndex);
       setExclusiveClass(activeSectionClasses, `active-section-${nextIndex}`);
       window.dispatchEvent(

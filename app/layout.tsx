@@ -90,7 +90,7 @@ const initActiveSectionScript = `
     if (index === 2) {
       document.documentElement.classList.add("phase-skills-intro");
     }
-    document.documentElement.style.setProperty("--initial-section-offset", "-" + (index * 100) + "vh");
+    document.documentElement.style.setProperty("--initial-section-offset", "-" + (index * 100) + "svh");
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
     }

@@ -19,7 +19,7 @@ function SliderArrow({ direction }: { direction: 'previous' | 'next' }) {
   return (
     <svg
       aria-hidden='true'
-      className='h-10 w-7 transition-transform duration-300 ease-out motion-reduce:transition-none lg:h-12 lg:w-8'
+      className='h-11 w-8 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-transform duration-300 ease-out motion-reduce:transition-none lg:h-12 lg:w-8'
       viewBox='0 0 50 80'
     >
       <polyline
@@ -29,14 +29,14 @@ function SliderArrow({ direction }: { direction: 'previous' | 'next' }) {
         stroke='currentColor'
         strokeLinecap='round'
         strokeLinejoin='round'
-        strokeWidth={1}
+        strokeWidth={1.6}
       />
     </svg>
   );
 }
 
 const sliderArrowButtonClassName =
-  'group grid h-11 w-9 cursor-pointer place-items-center border-0 bg-transparent p-0 text-zinc-100/90 transition-colors duration-300 hover:text-[#8be36d] focus-visible:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d] disabled:cursor-default disabled:opacity-50 motion-reduce:transition-none lg:h-12 lg:w-10';
+  'group grid h-12 w-12 cursor-pointer place-items-center border-0 bg-transparent p-0 text-zinc-100 transition-colors duration-300 hover:text-[#8be36d] focus-visible:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d] disabled:cursor-default disabled:opacity-50 motion-reduce:transition-none lg:h-12 lg:w-12';
 
 function FloatingPreviewImage({
   className,
@@ -205,7 +205,7 @@ function MobileProjectCard({ slide }: { slide: ProjectSlide }) {
 
   return (
     <div
-      className='mt-5 overflow-hidden rounded-md border border-white/10 bg-white/[0.035] shadow-[0_22px_52px_rgba(0,0,0,0.28)] lg:hidden'
+      className='mt-4 overflow-hidden rounded-md border border-white/10 bg-white/[0.035] shadow-[0_22px_52px_rgba(0,0,0,0.28)] lg:hidden'
       data-reveal='up'
       data-reveal-delay='2'
     >
@@ -215,7 +215,7 @@ function MobileProjectCard({ slide }: { slide: ProjectSlide }) {
         title={slide.title}
         variant='mobile'
       />
-      <div className='space-y-3 px-4 pb-4 pt-3 text-left'>
+      <div className='space-y-2.5 px-4 pb-4 pt-3 text-left'>
         <p className='text-xs font-bold leading-5 text-zinc-100 min-[390px]:text-sm min-[390px]:leading-6'>
           {slide.description}
         </p>
@@ -230,7 +230,7 @@ function MobileProjectCard({ slide }: { slide: ProjectSlide }) {
           linkLabel={slide.linkLabel}
           liveHref={slide.liveHref}
         />
-        <p className='border-t border-white/10 pt-3 text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-500'>
+        <p className='border-t border-white/10 pt-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-500'>
           Swipe left or right
         </p>
       </div>
@@ -253,7 +253,7 @@ export function SliderControls({
 }) {
   return (
     <div
-      className='absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3 sm:bottom-8 lg:bottom-0 lg:gap-5'
+      className='absolute bottom-0 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-5 lg:flex'
       data-reveal='up'
       data-reveal-delay='5'
     >
@@ -274,7 +274,7 @@ export function SliderControls({
           />
         ))}
       </div>
-      <div className='flex items-center gap-4 lg:gap-8'>
+      <div className='flex items-center gap-16 lg:gap-8'>
         <button
           aria-label='Previous project'
           className={sliderArrowButtonClassName}
@@ -327,17 +327,17 @@ export function ProjectArticle({
   if (!slide.image) {
     return (
       <article
-        className={`pointer-events-auto relative col-span-full row-start-1 mx-auto flex min-h-[360px] max-w-[820px] flex-col items-center justify-center text-center lg:min-h-[430px] ${textTransitionClass} ${textMotionClass}`}
+        className={`pointer-events-auto relative col-span-full row-start-1 mx-auto flex min-h-[360px] max-w-[calc(100vw-40px)] flex-col items-center justify-center text-center lg:min-h-[430px] lg:max-w-[820px] ${textTransitionClass} ${textMotionClass}`}
       >
         <IntroDecorations />
         <h2
-          className='relative z-10 max-w-[820px] text-[40px] font-black leading-[0.92] tracking-tight text-white sm:text-6xl xl:text-[58px]'
+          className='relative z-10 max-w-[300px] text-[30px] font-black leading-[0.92] tracking-tight text-white sm:max-w-[820px] sm:text-6xl xl:text-[58px]'
           data-reveal='scale'
         >
           {slide.title}
         </h2>
         <p
-          className='relative z-10 mt-6 max-w-[690px] text-sm font-bold leading-6 text-zinc-100 sm:mt-8 sm:text-base sm:leading-7'
+          className='relative z-10 mt-5 max-w-[310px] text-sm font-bold leading-6 text-zinc-100 sm:mt-8 sm:max-w-[690px] sm:text-base sm:leading-7'
           data-reveal='up'
           data-reveal-delay='1'
         >
@@ -370,7 +370,7 @@ export function ProjectArticle({
           {slide.eyebrow}
         </p>
         <h2
-          className='mt-3 max-w-[650px] text-[36px] font-black leading-[0.92] tracking-tight text-white sm:mt-4 sm:text-6xl xl:text-[58px]'
+          className='mt-3 max-w-[650px] text-[32px] font-black leading-[0.92] tracking-tight text-white sm:mt-4 sm:text-6xl xl:text-[58px]'
           data-reveal='left'
           data-reveal-delay='1'
         >

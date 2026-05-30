@@ -10,14 +10,14 @@ import { ScrollSnapController } from "./components/shared/ScrollSnapController";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-svh bg-background text-foreground">
       <ScrollSnapController />
       <ScrollRail />
       <GithubLink />
       <Header />
       <main
         id="portfolio-pages"
-        className="fixed inset-0 min-h-screen w-full overflow-visible transition-[transform] duration-[var(--motion-duration-section)] ease-[var(--motion-ease-section)] will-change-transform [transform:translate3d(0,var(--initial-section-offset),0)]"
+        className="fixed inset-0 min-h-svh w-full overflow-visible transition-[transform] duration-[var(--motion-duration-section)] ease-[var(--motion-ease-section)] will-change-transform [transform:translate3d(0,var(--initial-section-offset),0)]"
       >
         <Hero />
         <About />

@@ -3,7 +3,7 @@
 :root {
   --background: #121318;
   --foreground: #eef4fb;
-  --initial-section-offset: 0vh;
+  --initial-section-offset: 0svh;
   --motion-duration-fast: 180ms;
   --motion-duration-ui: 300ms;
   --motion-duration-skill-reveal: 520ms;

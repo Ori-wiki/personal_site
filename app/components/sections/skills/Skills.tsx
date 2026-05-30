@@ -12,20 +12,20 @@ export function Skills() {
   return (
     <section
       id='skills'
-      className='motion-section h-screen min-h-screen snap-start overflow-hidden'
+      className='motion-section h-svh min-h-svh snap-start overflow-hidden'
       aria-describedby='skills-description'
       aria-labelledby='skills-title'
     >
       <CodeGlow position='top-right' />
       <CodeGlow position='bottom-left' />
 
-      <div className='section-content relative z-10 mx-auto flex h-screen w-full max-w-[1500px] flex-col items-center justify-center px-5 pt-12 text-center sm:px-8 lg:px-[130px] lg:pt-0'>
+      <div className='section-content relative z-10 mx-auto flex h-svh w-full max-w-[1500px] flex-col items-center justify-center px-5 pb-8 pt-28 text-center sm:px-8 sm:pt-32 lg:px-[130px] lg:pb-0 lg:pt-0'>
         <p className='text-xs uppercase text-zinc-500 sm:text-base'>
           A problem is an opportunity to do your best.
         </p>
         <h2
           id='skills-title'
-          className='mt-3 text-[38px] font-black leading-none tracking-tight text-white sm:mt-4 sm:text-6xl xl:text-[58px]'
+          className='mt-3 text-[34px] font-black leading-none tracking-tight text-white sm:mt-4 sm:text-6xl xl:text-[58px]'
         >
           Skills &amp; Experience
         </h2>
@@ -53,11 +53,11 @@ export function Skills() {
           </a>
         </p>
 
-        <div className='mt-7 flex w-full max-w-[960px] flex-wrap justify-center gap-x-3 gap-y-4 sm:mt-12 sm:gap-x-5 sm:gap-y-7'>
+        <div className='mt-6 flex w-full max-w-[960px] flex-wrap justify-center gap-x-2.5 gap-y-3 sm:mt-12 sm:gap-x-5 sm:gap-y-7'>
           {skills.map((skill, index) => (
             <div
               key={skill.label}
-              className='flex w-[58px] flex-col items-center gap-2 sm:w-[88px] sm:gap-3'
+              className='flex w-[54px] flex-col items-center gap-2 sm:w-[88px] sm:gap-3'
               data-skill-reveal
               style={
                 {

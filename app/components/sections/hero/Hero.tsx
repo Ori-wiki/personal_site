@@ -27,7 +27,7 @@ export function Hero() {
   return (
     <section
       id='top'
-      className='motion-section h-screen min-h-screen snap-start overflow-hidden'
+      className='motion-section h-svh min-h-svh snap-start overflow-hidden'
       aria-describedby='top-description'
       aria-labelledby='top-title'
     >
@@ -38,8 +38,8 @@ export function Hero() {
       <CodeGlow position='bottom-left' />
 
       <div
-        className='section-content relative z-10 mx-auto grid h-screen w-full max-w-[1500px] 
-        items-center gap-8 px-5 pt-10 sm:px-8 lg:grid-cols-[0.72fr_1fr] lg:px-[130px] lg:pt-0'
+        className='section-content relative z-10 mx-auto grid h-svh w-full max-w-[1500px]
+        items-center gap-8 px-5 pb-8 pt-28 sm:px-8 sm:pt-32 lg:grid-cols-[0.72fr_1fr] lg:px-[130px] lg:pb-0 lg:pt-0'
       >
         <div
           aria-hidden='true'
@@ -57,16 +57,16 @@ export function Hero() {
             src='/images/5.png'
           />
         </div>
-        <div data-hero-text>
+        <div className='min-w-0' data-hero-text>
           <h1
             id='top-title'
-            className='max-w-[650px] text-[42px] font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-[58px]'
+            className='max-w-[340px] text-[38px] font-black leading-[0.95] tracking-tight text-white sm:max-w-[650px] sm:text-6xl xl:text-[58px]'
           >
             Frontend Developer
           </h1>
           <p
             id='top-description'
-            className='mt-6 max-w-[420px] text-sm font-semibold leading-6 text-zinc-100 sm:mt-8 sm:text-base sm:leading-[1.7]'
+            className='mt-6 max-w-[340px] text-sm font-semibold leading-6 text-zinc-100 sm:mt-8 sm:max-w-[420px] sm:text-base sm:leading-[1.7]'
           >
             Building modern web interfaces with React, Next.js and TypeScript.
             Focused on clean UI, motion and scalable frontend architecture.

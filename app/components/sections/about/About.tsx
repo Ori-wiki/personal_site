@@ -5,7 +5,7 @@ export function About() {
   return (
     <section
       id='about'
-      className='motion-section h-screen min-h-screen snap-start overflow-hidden'
+      className='motion-section h-svh min-h-svh snap-start overflow-hidden'
       aria-describedby='about-description'
       aria-labelledby='about-title'
     >
@@ -24,17 +24,17 @@ export function About() {
         <div className='absolute left-[33%] bottom-[18%] h-24 w-24 rotate-45 border border-sky-300/20 bg-sky-300/[0.03] shadow-[0_24px_52px_rgba(14,165,233,0.16)]' />
       </div>
 
-      <div className='section-content relative z-10 mx-auto grid h-screen w-full max-w-[1500px] content-center gap-8 px-5 pt-10 sm:px-8 lg:grid-cols-[0.83fr_1fr] lg:items-center lg:gap-12 lg:px-[130px] lg:pt-0'>
+      <div className='section-content relative z-10 mx-auto grid h-svh w-full max-w-[1500px] content-center gap-6 px-5 pb-8 pt-28 sm:px-8 sm:pt-32 lg:grid-cols-[0.83fr_1fr] lg:items-center lg:gap-12 lg:px-[130px] lg:pb-0 lg:pt-0'>
         <div className='relative z-20' data-about-intro>
           <h2
             id='about-title'
-            className='text-[40px] font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-[58px]'
+            className='text-[36px] font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-[58px]'
           >
             Hi, I&apos;m Denis
             <br />
             Web Developer
           </h2>
-          <p className='mt-5 text-base tracking-wide text-zinc-500 sm:mt-7 sm:text-xl'>
+          <p className='mt-4 text-sm tracking-wide text-zinc-500 sm:mt-7 sm:text-xl'>
             JavaScript Enthusiast / Creative Problem Solver
           </p>
         </div>
@@ -56,7 +56,7 @@ export function About() {
           </div>
           <div
             id='about-description'
-            className='relative z-10 max-w-[650px] space-y-5 text-sm font-bold leading-6 text-zinc-100 sm:space-y-8 sm:text-base sm:leading-[1.5]'
+            className='relative z-10 max-w-[650px] space-y-4 text-sm font-bold leading-6 text-zinc-100 sm:space-y-8 sm:text-base sm:leading-[1.5]'
           >
             <p data-reveal='right' data-reveal-delay='2'>
               Professionally focused on frontend development and modern web
