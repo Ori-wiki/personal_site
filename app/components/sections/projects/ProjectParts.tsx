@@ -11,26 +11,32 @@ export function ArrowMark() {
 }
 
 function SliderArrow({ direction }: { direction: 'previous' | 'next' }) {
+  const points =
+    direction === 'previous'
+      ? '45.63,75.8 0.375,38.087 45.63,0.375'
+      : '0.375,0.375 45.63,38.087 0.375,75.8';
+
   return (
-    <span
+    <svg
       aria-hidden='true'
-      className={`relative block h-4 w-5 transition-transform duration-300 ${
-        direction === 'previous'
-          ? 'group-hover:-translate-x-0.5'
-          : 'group-hover:translate-x-0.5'
-      }`}
+      className='h-10 w-7 transition-transform duration-300 ease-out motion-reduce:transition-none lg:h-12 lg:w-8'
+      viewBox='0 0 50 80'
     >
-      <span className='absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-current' />
-      <span
-        className={`absolute top-1/2 h-2.5 w-2.5 -translate-y-1/2 rotate-45 border-current ${
-          direction === 'previous'
-            ? 'left-0 border-b border-l'
-            : 'right-0 border-r border-t'
-        }`}
+      <polyline
+        className='transition-[stroke-width] duration-300 ease-in-out group-hover:stroke-[2.8] group-focus-visible:stroke-[2.8] group-active:stroke-[4.5] motion-reduce:transition-none'
+        fill='none'
+        points={points}
+        stroke='currentColor'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={1}
       />
-    </span>
+    </svg>
   );
 }
+
+const sliderArrowButtonClassName =
+  'group grid h-11 w-9 cursor-pointer place-items-center border-0 bg-transparent p-0 text-zinc-100/90 transition-colors duration-300 hover:text-[#8be36d] focus-visible:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d] disabled:cursor-default disabled:opacity-50 motion-reduce:transition-none lg:h-12 lg:w-10';
 
 function FloatingPreviewImage({
   className,
@@ -247,7 +253,7 @@ export function SliderControls({
 }) {
   return (
     <div
-      className='absolute bottom-2 left-1/2 z-20 flex -translate-x-1/2 items-center gap-4 lg:bottom-0 lg:gap-7'
+      className='absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3 sm:bottom-8 lg:bottom-0 lg:gap-5'
       data-reveal='up'
       data-reveal-delay='5'
     >
@@ -268,10 +274,10 @@ export function SliderControls({
           />
         ))}
       </div>
-      <div className='flex items-center gap-3'>
+      <div className='flex items-center gap-4 lg:gap-8'>
         <button
           aria-label='Previous project'
-          className='group grid h-10 w-10 cursor-pointer place-items-center rounded-full border border-white/15 bg-white/[0.06] text-white shadow-[0_14px_34px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur transition hover:border-[#8be36d]/60 hover:bg-[#8be36d]/10 hover:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d] disabled:cursor-default disabled:opacity-60 lg:h-12 lg:w-12'
+          className={sliderArrowButtonClassName}
           disabled={isChangingSlide}
           onClick={goToPrevious}
           type='button'
@@ -280,7 +286,7 @@ export function SliderControls({
         </button>
         <button
           aria-label='Next project'
-          className='group grid h-10 w-10 cursor-pointer place-items-center rounded-full border border-white/15 bg-white/[0.06] text-white shadow-[0_14px_34px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur transition hover:border-[#8be36d]/60 hover:bg-[#8be36d]/10 hover:text-[#8be36d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8be36d] disabled:cursor-default disabled:opacity-60 lg:h-12 lg:w-12'
+          className={sliderArrowButtonClassName}
           disabled={isChangingSlide}
           onClick={goToNext}
           type='button'
@@ -357,7 +363,10 @@ export function ProjectArticle({
       <article
         className={`pointer-events-auto relative col-start-1 row-start-1 min-h-[auto] max-w-[620px] lg:min-h-[430px] ${textTransitionClass} ${textMotionClass}`}
       >
-        <p className='text-xs uppercase text-zinc-500 sm:text-base' data-reveal='down'>
+        <p
+          className='text-xs uppercase text-zinc-500 sm:text-base'
+          data-reveal='down'
+        >
           {slide.eyebrow}
         </p>
         <h2

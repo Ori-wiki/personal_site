@@ -49,14 +49,6 @@ export function Skills() {
             href='https://spb.hh.ru/resume/33cc3ec3ff0b768f8d0039ed1f433375464777'
             className='text-amber-400 hover:text-[#b82ce0]'
           >
-            Linkedin
-          </a>
-          <span className=''> or </span>
-          <a
-            target='blank'
-            href='https://spb.hh.ru/resume/33cc3ec3ff0b768f8d0039ed1f433375464777'
-            className='text-amber-400 hover:text-[#b82ce0]'
-          >
             HH
           </a>
         </p>
